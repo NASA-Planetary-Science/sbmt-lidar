@@ -39,7 +39,7 @@ import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
-import edu.jhuapl.sbmt.app.SmallBodyViewConfig;
+import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.lidar.test.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.test.LidarPoint;
 import edu.jhuapl.sbmt.model.bennu.Bennu;
