@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
+package edu.jhuapl.sbmt.lidar.hyperoctree.mola;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -7,25 +7,33 @@ import java.nio.file.Path;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeNode;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException.HyperDimensionMismatchException;
+import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 import edu.jhuapl.sbmt.lidar.test.DataOutputStreamPool;
 
-public class OlaFSHyperTreeNode extends FSHyperTreeNode<OlaFSHyperPoint>
+public class MolaFSHyperTreeNode extends FSHyperTreeNode<MolaFSHyperPoint>
 {
+
     final long bytesPerPoint=new OlaFSHyperPoint().getSizeInBytes();
 
-    public OlaFSHyperTreeNode(FSHyperTreeNode<OlaFSHyperPoint> parent, Path path,
-            HyperBox bbox, int maxPoints, DataOutputStreamPool pool)
+    public MolaFSHyperTreeNode(FSHyperTreeNode<MolaFSHyperPoint> parent,
+            Path path, HyperBox bbox, int maxPoints, DataOutputStreamPool pool)
     {
         super(parent, path, bbox, maxPoints, pool);
         writeBoundsFile();
     }
 
     @Override
-    public OlaFSHyperTreeNode createNewChild(int i)
+    public long getNumberOfPoints()
+    {
+        return getDataFilePath().toFile().length()/bytesPerPoint;
+    }
+
+    @Override
+    public MolaFSHyperTreeNode createNewChild(int i)
     {
         try
         {
-            return new OlaFSHyperTreeNode(this, getChildPath(i), getChildBounds(i), maxPoints, pool);
+            return new MolaFSHyperTreeNode(this, getChildPath(i), getChildBounds(i), maxPoints, pool);
         }
         catch (HyperDimensionMismatchException e)
         {
@@ -35,11 +43,11 @@ public class OlaFSHyperTreeNode extends FSHyperTreeNode<OlaFSHyperPoint>
     }
 
     @Override
-    public OlaFSHyperPoint createNewPoint(DataInputStream stream)
+    public MolaFSHyperPoint createNewPoint(DataInputStream stream)
     {
         try
         {
-            return new OlaFSHyperPoint(stream);
+            return new MolaFSHyperPoint(stream);
         }
         catch (IOException e)
         {
@@ -47,12 +55,5 @@ public class OlaFSHyperTreeNode extends FSHyperTreeNode<OlaFSHyperPoint>
             return null;
         }
     }
-
-    @Override
-    public long getNumberOfPoints()
-    {
-        return getDataFilePath().toFile().length()/bytesPerPoint;
-    }
-
 
 }

@@ -39,9 +39,9 @@ public class OlaFSHyperTreeGeneratorApp extends JFrame
                 L2FileSet fileSet=new L2FileSet();
                 fileSet.load(fc.getSelectedFile().toPath());
                 //
-                collector.fileListing.clear();
-                for (int i=0; i<fileSet.files.size(); i++)
-                    collector.fileListing.addFile(new File(fileSet.files.get(i)));
+                collector.getFileListing().clear();
+                for (int i=0; i<fileSet.getFiles().size(); i++)
+                    collector.getFileListing().addFile(new File(fileSet.getFiles().get(i)));
             }
 
         }
@@ -68,8 +68,8 @@ public class OlaFSHyperTreeGeneratorApp extends JFrame
             if (fc.showOpenDialog(null)==JFileChooser.APPROVE_OPTION)
             {
                 L2FileSet fileSet=new L2FileSet();
-                for (int i=0; i<collector.fileListing.listModel.size(); i++)
-                    fileSet.addFile(collector.fileListing.listModel.getElementAt(i));
+                for (int i=0; i<collector.getFileListing().getListModel().size(); i++)
+                    fileSet.addFile(collector.getFileListing().getListModel().getElementAt(i));
                 fileSet.setDescription(descriptionField.getText());
                 fileSet.save(fc.getSelectedFile().toPath());
             }

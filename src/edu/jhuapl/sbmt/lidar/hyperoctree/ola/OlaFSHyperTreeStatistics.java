@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree;
+package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -24,6 +24,9 @@ import com.google.common.collect.Lists;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
+import edu.jhuapl.sbmt.lidar.hyperoctree.Dimensioned;
+import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
+import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException;
 
 public class OlaFSHyperTreeStatistics implements Dimensioned
 {

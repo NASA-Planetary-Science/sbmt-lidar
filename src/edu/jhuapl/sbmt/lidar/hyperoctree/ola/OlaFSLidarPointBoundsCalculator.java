@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree;
+package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -6,63 +6,21 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
-import com.google.common.collect.Lists;
 
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
+import edu.jhuapl.sbmt.lidar.hyperoctree.FSLidarPointBoundsCalculator;
 
-public class OlaBruteForceBoundsCalculator
+public class OlaFSLidarPointBoundsCalculator extends FSLidarPointBoundsCalculator
 {
-    static double tmin=Double.POSITIVE_INFINITY;
-    static double tmax=Double.NEGATIVE_INFINITY;
-    static double xmin=Double.POSITIVE_INFINITY;
-    static double xmax=Double.NEGATIVE_INFINITY;
-    static double ymin=Double.POSITIVE_INFINITY;
-    static double ymax=Double.NEGATIVE_INFINITY;
-    static double zmin=Double.POSITIVE_INFINITY;
-    static double zmax=Double.NEGATIVE_INFINITY;
-
-    public static void main(String[] args) throws IOException
+    public OlaFSLidarPointBoundsCalculator(String inputDirectoryList)
     {
-        String inputDirectoryListFileString=args[0];
-        System.out.println("Input data directory listing = "+inputDirectoryListFileString);
-        Path inputDirectoryListFile=Paths.get(inputDirectoryListFileString);
-        List<File> fileList=Lists.newArrayList();
-        Scanner scanner=new Scanner(inputDirectoryListFile.toFile());
-        while (scanner.hasNextLine())
-        {
-            File dataDirectory=inputDirectoryListFile.getParent().resolve(scanner.nextLine().trim()).toFile();
-            System.out.println("Searching for .l2 files in "+dataDirectory.toString());
-            Collection<File> fileCollection=FileUtils.listFiles(dataDirectory, new WildcardFileFilter("*.l2"), null);
-            for (File f : fileCollection) {
-                System.out.println("Adding file "+f+" to the processing queue");
-                fileList.add(f);
-            }
-        }
-        scanner.close();
-
-        System.out.println("Processing files...");
-        for (int i=0; i<fileList.size(); i++)
-        {
-            getBounds(fileList.get(i));
-            System.out.println("File "+i+"/"+fileList.size()+":  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
-        }
-
-        System.out.println("Final results:  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
-
+        super(inputDirectoryList,"l2");
     }
 
-    public static void getBounds(File f)
+    public void checkBounds(File f)
     {
         try
         {
@@ -144,4 +102,5 @@ public class OlaBruteForceBoundsCalculator
             e.printStackTrace();
         }
     }
+
 }

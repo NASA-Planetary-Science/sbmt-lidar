@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -17,7 +16,7 @@ import com.google.common.collect.Sets;
 
 import edu.jhuapl.saavtk.util.FileCache;
 
-public class OlaFSHyperTreeSkeleton
+public abstract class FSHyperTreeSkeleton
 {
 
     Node rootNode;
@@ -57,25 +56,13 @@ public class OlaFSHyperTreeSkeleton
         }
     }
 
-    public OlaFSHyperTreeSkeleton(Path dataSourcePath)  // data source path defines where the .lidar file representing the tree structure resides; basepath is its parent
+    public FSHyperTreeSkeleton(Path dataSourcePath)  // data source path defines where the .lidar file representing the tree structure resides; basepath is its parent
     {
         this.dataSourcePath=dataSourcePath;
         this.basePath=dataSourcePath.getParent();
     }
 
-    private double[] readBoundsFile(Path path)
-    {
-        File f=FileCache.getFileFromServer(path.toString());
-        if (f.exists())
-            return OlaFSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
-        //
-        f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
-        if (f.exists())
-            return OlaFSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
-
-        //
-        return null;
-    }
+    protected abstract double[] readBoundsFile(Path path);
 
     public void read()  // cf. OlaFSHyperTreeCondenser for code to write the skeleton file
     {
@@ -109,7 +96,7 @@ public class OlaFSHyperTreeSkeleton
             f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+dataSourcePath.toString());
         //
         double[] rootBounds=readBoundsFile(basePath.resolve("bounds"));
-        rootNode=new Node(rootBounds,basePath,false,idCount); // false -> root is not a leaf
+        rootNode=new Node(rootBounds,basePath,true,idCount); // false -> root is not a leaf
         nodeMap.put(rootNode.id, rootNode);
         idCount++;
         //
@@ -152,6 +139,7 @@ public class OlaFSHyperTreeSkeleton
 
     private void readChildren(Scanner scanner, Node node)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
     {
+        node.isLeaf=true;
         for (int i=0; i<16; i++)
         {
             String line=scanner.nextLine();
@@ -162,6 +150,7 @@ public class OlaFSHyperTreeSkeleton
             if (childInfo.equals("*"))   // child does not exist
                 continue;
             //
+            node.isLeaf=false;
             double[] bounds=new double[8];
             for (int j=0; j<8; j++)
                 bounds[j]=Double.valueOf(tokens[2+j]);

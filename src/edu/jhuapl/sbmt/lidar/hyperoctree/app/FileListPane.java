@@ -13,38 +13,48 @@ public class FileListPane extends JPanel
 
     JScrollPane scrollPane;
     JList<String> list=new JList<String>();
-    DefaultListModel<String> listModel=new DefaultListModel<String>();
+    private DefaultListModel<String> listModel=new DefaultListModel<String>();
 
     public FileListPane()
     {
         scrollPane=new JScrollPane(list);
         list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         list.setLayoutOrientation(JList.VERTICAL);
-        list.setModel(listModel);
+        list.setModel(getListModel());
         add(scrollPane);
     }
 
     public void addFile(File file)
     {
-        if (!listModel.contains(file.toString()))
-            listModel.addElement(file.toString());
+        if (!getListModel().contains(file.toString()))
+            getListModel().addElement(file.toString());
     }
 
     public void removeFile(File file)
     {
-        listModel.removeElement(file.toString());
+        getListModel().removeElement(file.toString());
     }
 
     public void removeSelectedFiles()
     {
         int[] idx=list.getSelectedIndices();
         for (int i=0; i<idx.length; i++)
-            listModel.remove(idx[i]);
+            getListModel().remove(idx[i]);
     }
 
     public void clear()
     {
-        listModel.clear();
+        getListModel().clear();
+    }
+
+    public DefaultListModel<String> getListModel()
+    {
+        return listModel;
+    }
+
+    public void setListModel(DefaultListModel<String> listModel)
+    {
+        this.listModel = listModel;
     }
 
 }

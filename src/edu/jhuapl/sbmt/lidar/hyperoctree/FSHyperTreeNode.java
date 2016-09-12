@@ -15,10 +15,10 @@ import edu.jhuapl.sbmt.lidar.test.DataOutputStreamPool;
 public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensioned
 {
     Path path;
-    DataOutputStreamPool pool;
+    protected DataOutputStreamPool pool;
     HyperBox bbox;
-    boolean isLeaf=true;
-    int maxPoints;
+    public boolean isLeaf=true;
+    protected int maxPoints;
     int numPoints;
     FSHyperTreeNode<T>[] children;
     FSHyperTreeNode<T> parent;
@@ -179,11 +179,11 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
         return isLeaf;
     }
 
-    protected abstract long getNumberOfPoints();
-    protected abstract <S extends FSHyperTreeNode> S createNewChild(int i);
-    protected abstract T createNewPoint(DataInputStream stream);
+    public abstract long getNumberOfPoints();
+    public abstract <S extends FSHyperTreeNode> S createNewChild(int i);
+    public abstract T createNewPoint(DataInputStream stream);
 
-    void split() throws HyperException, IOException
+    public void split() throws HyperException, IOException
     {
         pool.closeStream(getDataFilePath());
         for (int i=0; i<getNumberOfChildren(); i++)

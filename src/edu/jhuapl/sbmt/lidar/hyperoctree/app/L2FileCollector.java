@@ -14,7 +14,7 @@ public class L2FileCollector extends JPanel implements ActionListener
 {
 
     L2FileChooser chooser=new L2FileChooser();
-    FileListPane fileListing=new FileListPane();
+    private FileListPane fileListing=new FileListPane();
     JPanel controlPanel=new JPanel();
     JButton addButton=new JButton("⇒");
     JButton remButton=new JButton("×");
@@ -22,7 +22,7 @@ public class L2FileCollector extends JPanel implements ActionListener
 
     public L2FileCollector()
     {
-        fileListing.scrollPane.setPreferredSize(chooser.getPreferredSize());
+        getFileListing().scrollPane.setPreferredSize(chooser.getPreferredSize());
 
         addButton.setSize(new Dimension(50,50));
         remButton.setSize(new Dimension(50,50));
@@ -35,7 +35,7 @@ public class L2FileCollector extends JPanel implements ActionListener
 
         rightPanel.setLayout(new FlowLayout());
         rightPanel.add(controlPanel);
-        rightPanel.add(fileListing);
+        rightPanel.add(getFileListing());
 
         setLayout(new FlowLayout());
         add(chooser);
@@ -50,13 +50,23 @@ public class L2FileCollector extends JPanel implements ActionListener
             File[] files=chooser.getSelectedFiles();
             for (int f=0; f<files.length; f++)
             {
-                fileListing.addFile(files[f]);
+                getFileListing().addFile(files[f]);
             }
         }
         if (e.getSource().equals(remButton))
         {
-            fileListing.removeSelectedFiles();
+            getFileListing().removeSelectedFiles();
         }
+    }
+
+    public FileListPane getFileListing()
+    {
+        return fileListing;
+    }
+
+    public void setFileListing(FileListPane fileListing)
+    {
+        this.fileListing = fileListing;
     }
 
 }

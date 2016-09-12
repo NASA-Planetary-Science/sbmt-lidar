@@ -10,7 +10,7 @@ import com.google.common.base.Stopwatch;
 
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 
-public class OlaFSHyperTreeCondenser implements Dimensioned
+public class FSHyperTreeSkeletonizer implements Dimensioned
 {
     static { NativeLibraryLoader.loadVtkLibraries(); }
 
@@ -19,13 +19,13 @@ public class OlaFSHyperTreeCondenser implements Dimensioned
     Stopwatch sw;
     FileWriter writer;
 
-    public OlaFSHyperTreeCondenser(Path rootPath, Path outFilePath)
+    public FSHyperTreeSkeletonizer(Path rootPath, Path outFilePath)
     {
         rootNodePath=rootPath;
         this.outFilePath=outFilePath;
     }
 
-    public void condense()
+    public void makeThemBones()
     {
         sw=new Stopwatch();
         sw.start();
@@ -171,8 +171,8 @@ public class OlaFSHyperTreeCondenser implements Dimensioned
         Path outFilePath=rootPath.resolve("dataSource.lidar");
         System.out.println("Root path = "+rootPath);
         System.out.println("Output path = "+outFilePath);
-        OlaFSHyperTreeCondenser condenser=new OlaFSHyperTreeCondenser(rootPath,outFilePath);
-        condenser.condense();
+        FSHyperTreeSkeletonizer skeltonizer=new FSHyperTreeSkeletonizer(rootPath,outFilePath);
+        skeltonizer.makeThemBones();
         System.out.println("Wrote tree structure to "+outFilePath);
     }
 }

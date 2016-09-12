@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class L2FileSet
 {
     String description;
-    List<String> files;
+    private List<String> files;
 
     public L2FileSet()
     {
@@ -19,7 +19,7 @@ public class L2FileSet
 
     public void addFile(String file)
     {
-        files.add(file);
+        getFiles().add(file);
     }
 
     public void setDescription(String description)
@@ -35,9 +35,9 @@ public class L2FileSet
             Writer writer = new FileWriter(outputFile.toFile());
             writer.write("Description: ");
             writer.write(description+"\n");
-            writer.write("Number of items: "+files.size()+"\n");
-            for (int i=0; i<files.size(); i++)
-                writer.write(files.get(i)+"\n");
+            writer.write("Number of items: "+getFiles().size()+"\n");
+            for (int i=0; i<getFiles().size(); i++)
+                writer.write(getFiles().get(i)+"\n");
             writer.close();
         }
         catch (IOException e)
@@ -48,7 +48,7 @@ public class L2FileSet
     }
 
     public void load(Path inputFile)
-    {   files.clear();
+    {   getFiles().clear();
         try
         {
             Scanner scanner=new Scanner(inputFile.toFile());
@@ -57,7 +57,7 @@ public class L2FileSet
             String[] tok=scanner.nextLine().split(" ");
             int nFiles=Integer.valueOf(tok[tok.length-1]);
             for (int i=0; i<nFiles; i++)
-                files.add(scanner.nextLine().replace("\n", "").replace("\r", ""));
+                getFiles().add(scanner.nextLine().replace("\n", "").replace("\r", ""));
             scanner.close();
         }
         catch (IOException e)
@@ -66,6 +66,16 @@ public class L2FileSet
             e.printStackTrace();
         }
 
+    }
+
+    public List<String> getFiles()
+    {
+        return files;
+    }
+
+    public void setFiles(List<String> files)
+    {
+        this.files = files;
     }
 
 
