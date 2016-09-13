@@ -62,4 +62,10 @@ public class BasicLidarPoint implements LidarPoint
     {
         return time.compareTo(o.getTime());
     }
+
+    @Override
+    public double getRange()
+    {
+        return getTargetPosition().subtract(getSourcePosition()).getNorm();
+    }
 }

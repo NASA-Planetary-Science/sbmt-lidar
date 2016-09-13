@@ -12,13 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 
-import edu.jhuapl.saavtk.util.LatLon;
-import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
@@ -49,26 +46,14 @@ public class MolaFSHyperTreeGenerator extends FSHyperTreeGenerator
         else
             fileNum=fileMap.get(inputFile);
 
-
-        Scanner scanner=new Scanner(inputFile.toFile());
-        scanner.nextLine();
-        while (scanner.hasNextLine())
+        MolaInputFile file=new MolaInputFile(inputFile, fileNum);
+        while (file.hasNextLine())
         {
-            String line=scanner.nextLine();
-            String[] tokens=line.trim().split("\\s+");   // split on whitespace, cf. http://stackoverflow.com/questions/225337/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters
-            if (tokens.length==0)
+            MolaFSHyperPoint point=file.getNextLidarPoint();
+            if (point==null)
                 break;
-            double lon=Double.valueOf(tokens[0]);   // degrees
-            double lat=Double.valueOf(tokens[1]);   // degrees
-            double r=Double.valueOf(tokens[2])/1000;            // convert to km
-            double time=Double.valueOf(tokens[5]);
-            double intensity=0;
-            //
-            double[] xyz = MathUtil.latrec(new LatLon(lat/180.*Math.PI, lon/180.*Math.PI, r));
-            Vector3D tgpos=new Vector3D(xyz[1],xyz[0],xyz[2]);
-            Vector3D scpos=Vector3D.ZERO;
-            //
-            root.add(new MolaFSHyperPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity, fileNum));
+            root.add(point);
+
         }
     }
 

@@ -1,12 +1,7 @@
 package edu.jhuapl.sbmt.lidar.hyperoctree.mola;
 
 import java.io.File;
-import java.util.Scanner;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
-import edu.jhuapl.saavtk.util.LatLon;
-import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSLidarPointBoundsCalculator;
 
 public class MolaFSLidarPointBoundsCalculator extends FSLidarPointBoundsCalculator
@@ -26,44 +21,35 @@ public class MolaFSLidarPointBoundsCalculator extends FSLidarPointBoundsCalculat
             if (!filePathString.endsWith("."+molaFileExtension))
                 throw new Exception("Incorrect file extension \""+filePathString.substring(filePathString.lastIndexOf('.'))+"\" expected "+molaFileExtension);
 
-            Scanner scanner=new Scanner(f);
-            scanner.nextLine();
-            while (scanner.hasNextLine())
-            {
-                String line=scanner.nextLine();
-                String[] tokens=line.trim().split("\\s+");   // split on whitespace, cf. http://stackoverflow.com/questions/225337/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters
-                if (tokens.length==0)
-                    break;
-                double lon=Double.valueOf(tokens[0]);   // degrees
-                double lat=Double.valueOf(tokens[1]);   // degrees
-                double r=Double.valueOf(tokens[2])/1000;            // convert to km
-                double time=Double.valueOf(tokens[5]);
-                double intensity=0;
-                //
-                double[] xyz = MathUtil.latrec(new LatLon(lat/180.*Math.PI, lon/180.*Math.PI, r));
-                //
-                Vector3D tgpos=new Vector3D(xyz[1],xyz[0],xyz[2]);
-                System.out.println(tgpos);
-                if (time>tmax)
-                    tmax=time;
-                if (time<tmin)
-                    tmin=time;
-                double tgx=tgpos.getX();
-                double tgy=tgpos.getY();
-                double tgz=tgpos.getZ();
-                if (tgx>xmax)
-                    xmax=tgx;
-                if (tgx<xmin)
-                    xmin=tgx;
-                if (tgy>ymax)
-                    ymax=tgy;
-                if (tgy<ymin)
-                    ymin=tgy;
-                if (tgz>zmax)
-                    zmax=tgz;
-                if (tgz<zmin)
-                    zmin=tgz;
-            }
+
+
+                MolaInputFile file=new MolaInputFile(f.toPath(), 0);
+                while (file.hasNextLine())
+                {
+                    MolaFSHyperPoint point=file.getNextLidarPoint();
+                    if (point==null)
+                        break;
+                    double time=point.getTime();
+                    double tgx=point.getTargetPosition().getX();
+                    double tgy=point.getTargetPosition().getY();
+                    double tgz=point.getTargetPosition().getZ();
+                    if (time>tmax)
+                        tmax=time;
+                    if (time<tmin)
+                        tmin=time;
+                    if (tgx>xmax)
+                        xmax=tgx;
+                    if (tgx<xmin)
+                        xmin=tgx;
+                    if (tgy>ymax)
+                        ymax=tgy;
+                    if (tgy<ymin)
+                        ymin=tgy;
+                    if (tgz>zmax)
+                        zmax=tgz;
+                    if (tgz<zmin)
+                        zmin=tgz;
+                }
         }
         catch (Exception e)
         {
