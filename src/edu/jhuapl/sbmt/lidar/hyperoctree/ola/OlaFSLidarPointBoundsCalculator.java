@@ -20,6 +20,12 @@ public class OlaFSLidarPointBoundsCalculator extends FSLidarPointBoundsCalculato
         super(inputDirectoryList,"l2");
     }
 
+    public OlaFSLidarPointBoundsCalculator()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
+
     public void checkBounds(File f)
     {
         try
@@ -101,6 +107,13 @@ public class OlaFSLidarPointBoundsCalculator extends FSLidarPointBoundsCalculato
         {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args)
+    {
+        OlaFSLidarPointBoundsCalculator boundsCalculator=new OlaFSLidarPointBoundsCalculator();
+        boundsCalculator.checkBounds(new File(args[0]));
+        System.out.println(boundsCalculator.xmin+" "+boundsCalculator.xmax+" "+boundsCalculator.ymin+" "+boundsCalculator.ymax+" "+boundsCalculator.zmin+" "+boundsCalculator.zmax+" "+boundsCalculator.tmin+" "+boundsCalculator.tmax);
     }
 
 }

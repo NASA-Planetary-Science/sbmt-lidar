@@ -26,6 +26,7 @@ public abstract class FSLidarPointBoundsCalculator
 
     public FSLidarPointBoundsCalculator(String inputDirectoryList, String extension)
     {
+
         List<File> fileList=Lists.newArrayList();
         try
         {
@@ -58,6 +59,11 @@ public abstract class FSLidarPointBoundsCalculator
 
         //System.out.println("Final results:  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
 
+    }
+
+    public FSLidarPointBoundsCalculator()
+    {
+        // TODO Auto-generated constructor stub
     }
 
     public abstract void checkBounds(File f);
