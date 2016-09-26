@@ -19,12 +19,12 @@ import edu.jhuapl.saavtk.util.FileCache;
 public abstract class FSHyperTreeSkeleton
 {
 
-    Node rootNode;
-    int idCount=0;
-    TreeMap<Integer, Node> nodeMap=Maps.newTreeMap(); // unfortunately this extra level of indirection is required by the "LidarSearchDataCollection" class
-    Path basePath;
-    Path dataSourcePath;
-    Map<Integer, String> fileMap=Maps.newHashMap();
+    protected Node rootNode;
+    protected int idCount=0;
+    protected TreeMap<Integer, Node> nodeMap=Maps.newTreeMap(); // unfortunately this extra level of indirection is required by the "LidarSearchDataCollection" class
+    protected Path basePath;
+    protected Path dataSourcePath;
+    protected Map<Integer, String> fileMap=Maps.newHashMap();
 
     public class Node
     {
@@ -53,6 +53,11 @@ public abstract class FSHyperTreeSkeleton
         public Path getPath()
         {
             return path;
+        }
+
+        public int getId()
+        {
+            return id;
         }
     }
 
@@ -137,7 +142,7 @@ public abstract class FSHyperTreeSkeleton
         }
     }
 
-    private void readChildren(Scanner scanner, Node node)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
+    protected void readChildren(Scanner scanner, Node node)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
     {
         node.isLeaf=true;
         for (int i=0; i<16; i++)
