@@ -87,6 +87,10 @@ public class OlaFootprintGenerator
                 ids.Initialize();
                 double[] pos=lidarPoints.get(m).getTargetPosition().toArray();
                 cellLocator.FindCellsAlongLine(pos, Vector3D.ZERO.toArray(), 1e-12, ids);  // find closest point on target sphere
+                if (ids.GetNumberOfIds()==0)
+                    cellLocator.FindCellsAlongLine(pos, new Vector3D(pos).scalarMultiply(2).toArray(), 1e-12, ids);  // find closest point on target sphere
+                if (ids.GetNumberOfIds()==0)
+                    continue;
                 int id=ids.GetId(0);
                 l2flag[i][id]=true;
             }
