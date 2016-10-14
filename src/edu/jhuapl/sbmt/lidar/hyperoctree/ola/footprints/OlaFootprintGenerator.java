@@ -20,6 +20,7 @@ import vtk.vtkPolyDataWriter;
 
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
+import edu.jhuapl.sbmt.model.lidar.OLAL2File;
 
 public class OlaFootprintGenerator
 {
