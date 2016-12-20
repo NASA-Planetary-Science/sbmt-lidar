@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.test;
+package edu.jhuapl.sbmt.lidar;
 
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;

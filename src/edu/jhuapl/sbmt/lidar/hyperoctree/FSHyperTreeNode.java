@@ -9,15 +9,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import edu.jhuapl.sbmt.lidar.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException.HyperDimensionMismatchException;
-import edu.jhuapl.sbmt.lidar.test.DataOutputStreamPool;
+
 
 public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensioned
 {
     Path path;
     protected DataOutputStreamPool pool;
     HyperBox bbox;
-    public boolean isLeaf=true;
+    boolean isLeaf=true;
     protected int maxPoints;
     int numPoints;
     FSHyperTreeNode<T>[] children;
@@ -179,9 +180,9 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
         return isLeaf;
     }
 
-    public abstract long getNumberOfPoints();
-    public abstract <S extends FSHyperTreeNode> S createNewChild(int i);
-    public abstract T createNewPoint(DataInputStream stream);
+    protected abstract long getNumberOfPoints();
+    protected abstract <S extends FSHyperTreeNode> S createNewChild(int i);
+    protected abstract T createNewPoint(DataInputStream stream);
 
     public void split() throws HyperException, IOException
     {

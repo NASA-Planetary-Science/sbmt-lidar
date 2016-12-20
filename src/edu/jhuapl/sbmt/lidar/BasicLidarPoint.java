@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.test;
+package edu.jhuapl.sbmt.lidar;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
@@ -61,11 +61,5 @@ public class BasicLidarPoint implements LidarPoint
     public int compareTo(LidarPoint o)
     {
         return time.compareTo(o.getTime());
-    }
-
-    @Override
-    public double getRange()
-    {
-        return getTargetPosition().subtract(getSourcePosition()).getNorm();
     }
 }

@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.mola;
+package edu.jhuapl.sbmt.lidar.hyperoctree;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -6,35 +6,40 @@ import java.io.IOException;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSLidarHyperPoint;
-import edu.jhuapl.sbmt.lidar.test.LidarPoint;
+import edu.jhuapl.sbmt.lidar.LidarPoint;
 
-public class MolaFSHyperPoint implements FSLidarHyperPoint
+
+public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
 {
 
-
-
-    // there are 6 data values but only 4 are used to define the hyperspace: tgx,tgy,tgz,time
-    double[] data=new double[6];    // tgx,tgy,tgz,time,intensity,range
+    // there are 8 data values but only 4 are used to define the hyperspace: tgx,tgy,tgz,time
+    double[] data=new double[8];    // tgx,tgy,tgz,time,scx,scy,scz,intensity
     int fileNum;
 
-    public MolaFSHyperPoint()
+    public FSHyperPointWithFileTag()
     {
         // TODO Auto-generated constructor stub
     }
 
-    public MolaFSHyperPoint(double tgx, double tgy, double tgz, double time, double intensity, double range, int fileNum)
+    public static FSHyperPointWithFileTag wrap(LidarPoint pt, int filenum)
+    {
+        return new FSHyperPointWithFileTag(pt.getTargetPosition().getX(),pt.getTargetPosition().getY(),pt.getTargetPosition().getZ(),pt.getTime(),pt.getSourcePosition().getX(),pt.getSourcePosition().getY(),pt.getSourcePosition().getZ(),pt.getIntensityReceived(),filenum);
+    }
+
+    public FSHyperPointWithFileTag(double tgx, double tgy, double tgz, double time, double scx, double scy, double scz, double intensity, int fileNum)
     {
         data[0]=tgx;
         data[1]=tgy;
         data[2]=tgz;
         data[3]=time;
-        data[4]=intensity;
-        data[5]=range;
+        data[4]=scx;
+        data[5]=scy;
+        data[6]=scz;
+        data[7]=intensity;
         this.fileNum=fileNum;
     }
 
-    public MolaFSHyperPoint(DataInputStream stream) throws IOException
+    public FSHyperPointWithFileTag(DataInputStream stream) throws IOException
     {
         read(stream);
     }
@@ -46,7 +51,7 @@ public class MolaFSHyperPoint implements FSLidarHyperPoint
     }
 
     @Override
-    public double[] getData()
+    public double[] get()
     {
         return data;
     }
@@ -58,9 +63,9 @@ public class MolaFSHyperPoint implements FSLidarHyperPoint
     }
 
     @Override
-    public void read(DataInputStream inputStream) throws IOException    // the hyperpoint only has 4 coordinates but we need to write all 6
+    public void read(DataInputStream inputStream) throws IOException    // the hyperpoint only has 4 coordinates but we need to write all 8
     {
-        for (int i=0; i<6; i++)
+        for (int i=0; i<8; i++)
             data[i]=inputStream.readDouble();
         fileNum=inputStream.readInt();
     }
@@ -68,7 +73,7 @@ public class MolaFSHyperPoint implements FSLidarHyperPoint
     @Override
     public void write(DataOutputStream outputStream) throws IOException
     {
-        for (int i=0; i<6; i++)
+        for (int i=0; i<8; i++)
             outputStream.writeDouble(data[i]);
         outputStream.writeInt(fileNum);
     }
@@ -88,13 +93,13 @@ public class MolaFSHyperPoint implements FSLidarHyperPoint
     @Override
     public Vector3D getSourcePosition()
     {
-        return Vector3D.ZERO;
+        return new Vector3D(data[4],data[5],data[6]);
     }
 
     @Override
     public Double getIntensityReceived()
     {
-        return data[4];
+        return data[7];
     }
 
     @Override
@@ -113,12 +118,5 @@ public class MolaFSHyperPoint implements FSLidarHyperPoint
     {
         return fileNum;
     }
-
-    @Override
-    public double getRange()
-    {
-        return data[5];
-    }
-
 
 }

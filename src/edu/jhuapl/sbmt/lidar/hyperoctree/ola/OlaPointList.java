@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.test;
+package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -15,6 +15,9 @@ import com.google.common.collect.Lists;
 import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
+import edu.jhuapl.sbmt.lidar.BasicLidarPoint;
+import edu.jhuapl.sbmt.lidar.LidarPointList;
+
 
 public class OlaPointList implements LidarPointList
 {
@@ -45,9 +48,9 @@ public class OlaPointList implements LidarPointList
         double zmin=Double.MAX_VALUE;
         double zmax=Double.MIN_VALUE;
         for (int i=0; i<getNumberOfPoints(); i++) {
-            double x=getPoint(i).tgpos.getX();
-            double y=getPoint(i).tgpos.getY();
-            double z=getPoint(i).tgpos.getZ();
+            double x=getPoint(i).getTargetPosition().getX();
+            double y=getPoint(i).getTargetPosition().getY();
+            double z=getPoint(i).getTargetPosition().getZ();
             if (x<xmin)
                 xmin=x;
             if (x>xmax)

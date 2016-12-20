@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
+package edu.jhuapl.sbmt.lidar.hyperoctree.nlr;
 
 import java.nio.file.Path;
 
@@ -7,11 +7,10 @@ import edu.jhuapl.sbmt.lidar.RawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
 
-
-public class OlaFSHyperTreeGenerator extends FSHyperTreeGenerator
+public class NlrFSHyperTreeGenerator extends FSHyperTreeGenerator
 {
 
-    public OlaFSHyperTreeGenerator(Path outputDirectory,
+    public NlrFSHyperTreeGenerator(Path outputDirectory,
             int maxNumberOfPointsPerLeaf, HyperBox bbox,
             int maxNumberOfOpenOutputFiles, DataOutputStreamPool pool)
     {
@@ -23,7 +22,8 @@ public class OlaFSHyperTreeGenerator extends FSHyperTreeGenerator
     @Override
     public RawLidarFile openFile(Path file)
     {
-        return new OlaLidarFile(file.toString());
+        return new NlrRawLidarFile(file.toString());
     }
+
 
 }

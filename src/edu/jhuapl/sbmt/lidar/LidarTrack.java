@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.test;
+package edu.jhuapl.sbmt.lidar;
 
 public interface LidarTrack extends LidarPointList
 {

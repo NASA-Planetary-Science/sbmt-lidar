@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.test;
+package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -6,6 +6,9 @@ import java.io.EOFException;
 import java.io.IOException;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+
+import edu.jhuapl.sbmt.lidar.BasicLidarPoint;
+import edu.jhuapl.sbmt.lidar.hyperoctree.OctreePoint;
 
 public class OlaOctreePoint extends BasicLidarPoint implements OctreePoint {
 
@@ -27,7 +30,7 @@ public class OlaOctreePoint extends BasicLidarPoint implements OctreePoint {
 
     public OlaOctreePoint(BasicLidarPoint point)
     {
-        super(point.scpos, point.tgpos, point.time, point.intensity);
+        super(point.getSourcePosition(), point.getTargetPosition(), point.getTime(), point.getIntensityReceived());
     }
 
     @Override

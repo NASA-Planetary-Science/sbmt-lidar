@@ -1,63 +1,70 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.mola;
+package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.List;
+import java.util.Scanner;
 
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSLidarPointBoundsCalculator;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-public class MolaFSLidarPointBoundsCalculator extends FSLidarPointBoundsCalculator
+import com.google.common.collect.Lists;
+
+import edu.jhuapl.saavtk.util.FileUtil;
+import edu.jhuapl.saavtk.util.MathUtil;
+
+public class OlaBruteForceBoundsCalculator
 {
-    static final String molaFileExtension="1.75";
+    static double tmin=Double.POSITIVE_INFINITY;
+    static double tmax=Double.NEGATIVE_INFINITY;
+    static double xmin=Double.POSITIVE_INFINITY;
+    static double xmax=Double.NEGATIVE_INFINITY;
+    static double ymin=Double.POSITIVE_INFINITY;
+    static double ymax=Double.NEGATIVE_INFINITY;
+    static double zmin=Double.POSITIVE_INFINITY;
+    static double zmax=Double.NEGATIVE_INFINITY;
 
-    public MolaFSLidarPointBoundsCalculator(String inputDirectoryList)
+    public static void main(String[] args) throws IOException
     {
-        super(inputDirectoryList,molaFileExtension);
+        String inputDirectoryListFileString=args[0];
+        System.out.println("Input data directory listing = "+inputDirectoryListFileString);
+        Path inputDirectoryListFile=Paths.get(inputDirectoryListFileString);
+        List<File> fileList=Lists.newArrayList();
+        Scanner scanner=new Scanner(inputDirectoryListFile.toFile());
+        while (scanner.hasNextLine())
+        {
+            File dataDirectory=inputDirectoryListFile.getParent().resolve(scanner.nextLine().trim()).toFile();
+            System.out.println("Searching for .l2 files in "+dataDirectory.toString());
+            Collection<File> fileCollection=FileUtils.listFiles(dataDirectory, new WildcardFileFilter("*.l2"), null);
+            for (File f : fileCollection) {
+                System.out.println("Adding file "+f+" to the processing queue");
+                fileList.add(f);
+            }
+        }
+        scanner.close();
+
+        System.out.println("Processing files...");
+        for (int i=0; i<fileList.size(); i++)
+        {
+            getBounds(fileList.get(i));
+            System.out.println("File "+i+"/"+fileList.size()+":  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
+        }
+
+        System.out.println("Final results:  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
+
     }
 
-    public void checkBounds(File f)
+    public static void getBounds(File f)
     {
         try
-        {
-            String filePathString=f.toString();
-            if (!filePathString.endsWith("."+molaFileExtension))
-                throw new Exception("Incorrect file extension \""+filePathString.substring(filePathString.lastIndexOf('.'))+"\" expected "+molaFileExtension);
-
-
-
-                MolaInputFile file=new MolaInputFile(f.toPath(), 0);
-                while (file.hasNextLine())
-                {
-                    MolaFSHyperPoint point=file.getNextLidarPoint();
-                    if (point==null)
-                        break;
-                    double time=point.getTime();
-                    double tgx=point.getTargetPosition().getX();
-                    double tgy=point.getTargetPosition().getY();
-                    double tgz=point.getTargetPosition().getZ();
-                    if (time>tmax)
-                        tmax=time;
-                    if (time<tmin)
-                        tmin=time;
-                    if (tgx>xmax)
-                        xmax=tgx;
-                    if (tgx<xmin)
-                        xmin=tgx;
-                    if (tgy>ymax)
-                        ymax=tgy;
-                    if (tgy<ymin)
-                        ymin=tgy;
-                    if (tgz>zmax)
-                        zmax=tgz;
-                    if (tgz<zmin)
-                        zmin=tgz;
-                }
-        }
-        catch (Exception e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-/*        try
         {
             String filePathString=f.toString();
             if (!filePathString.endsWith(".l2"))
@@ -135,7 +142,6 @@ public class MolaFSLidarPointBoundsCalculator extends FSLidarPointBoundsCalculat
         } catch (Exception e)
         {
             e.printStackTrace();
-        }*/
+        }
     }
-
 }

@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.test;
+package edu.jhuapl.sbmt.lidar;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -29,7 +29,10 @@ import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
+import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaOctreePoint;
+import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaPointList;
 import edu.jhuapl.sbmt.model.bennu.Bennu;
+
 
 public class FileSystemOctreeGenerator
 {

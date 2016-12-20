@@ -1,4 +1,6 @@
-package edu.jhuapl.sbmt.lidar.test;
+package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
+
+import edu.jhuapl.sbmt.lidar.LidarTrack;
 
 public class OlaLidarTrack extends OlaPointList implements LidarTrack
 {
