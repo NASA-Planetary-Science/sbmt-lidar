@@ -137,8 +137,9 @@ public class FSHyperTreeSkeleton
             while (scanner.hasNextLine())
             {
                 String line=scanner.nextLine();
-                String num=line.split(" ")[0];
-                String path=line.replace(num, "").trim();
+                String[] tokens=line.split(" ");
+                String num=tokens[0];
+                String path=tokens[1];
                 fileMap.put(Integer.valueOf(num), path);
             }
             scanner.close();
