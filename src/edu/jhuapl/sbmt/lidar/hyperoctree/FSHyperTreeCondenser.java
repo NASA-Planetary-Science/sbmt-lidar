@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
+package edu.jhuapl.sbmt.lidar.hyperoctree;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,8 +9,6 @@ import java.nio.file.Paths;
 import com.google.common.base.Stopwatch;
 
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
-import edu.jhuapl.sbmt.lidar.hyperoctree.Dimensioned;
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeNode;
 
 
 public class FSHyperTreeCondenser implements Dimensioned

@@ -57,6 +57,7 @@ public abstract class FSHyperTreeGenerator
     public void addAllPointsFromFile(Path inputPath) throws HyperException, IOException
     {
         RawLidarFile file=openFile(inputPath);
+        fileMap.put(inputPath.getFileName(),file.getFileNumber());
         Iterator<LidarPoint> iterator=file.iterator();
         while (iterator.hasNext())
         {
@@ -280,6 +281,7 @@ public abstract class FSHyperTreeGenerator
 
         System.out.println("Total MB stored = "+generator.convertBytesToMB(generator.countBytes()));
         System.out.println("Total MB initially copied = "+generator.convertBytesToMB(rootFileSizeBytes));
+
 
         Path fileMapPath=outputDirectory.resolve("fileMap.txt");
         System.out.print("Writing file map to "+fileMapPath+"... ");
