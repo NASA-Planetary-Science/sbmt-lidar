@@ -31,7 +31,7 @@ public class LaserRawLidarFile extends RawLidarFile
         SC_POS_Z
     }
 
-    final double scaleFactor=6.371*2.;
+    final double scaleFactor=1e-3;//6.371*2.;
 
     public LaserRawLidarFile(String pathname)
     {
