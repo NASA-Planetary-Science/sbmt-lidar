@@ -53,10 +53,7 @@ public class OlaBruteForceBoundsCalculator
 
         System.out.println("Processing files...");
         for (int i=0; i<fileList.size(); i++)
-        {
             getBounds(fileList.get(i));
-            System.out.println("File "+i+"/"+fileList.size()+":  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
-        }
 
         System.out.println("Final results:  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
 
@@ -114,6 +111,15 @@ public class OlaBruteForceBoundsCalculator
                     throw e;
                 }
 
+                double tmin=Double.POSITIVE_INFINITY;
+                double xmin=Double.POSITIVE_INFINITY;
+                double ymin=Double.POSITIVE_INFINITY;
+                double zmin=Double.POSITIVE_INFINITY;
+
+                double tmax=Double.NEGATIVE_INFINITY;
+                double xmax=Double.NEGATIVE_INFINITY;
+                double ymax=Double.NEGATIVE_INFINITY;
+                double zmax=Double.NEGATIVE_INFINITY;
                 if (!noise)
                 {
                     if (time>tmax)
@@ -136,7 +142,18 @@ public class OlaBruteForceBoundsCalculator
                     if (tgz<zmin)
                         zmin=tgz;
                 }
-            }
+
+                System.out.println("File "+f+":  tmin="+tmin+" tmax="+tmax+"  xmin="+xmin+" xmax="+xmax+"  ymin="+ymin+" ymax="+ymax+"  zmin="+zmin+" zmax="+zmax);
+
+                OlaBruteForceBoundsCalculator.tmin=Math.min(tmin, OlaBruteForceBoundsCalculator.tmin);
+                OlaBruteForceBoundsCalculator.xmin=Math.min(xmin, OlaBruteForceBoundsCalculator.xmin);
+                OlaBruteForceBoundsCalculator.ymin=Math.min(ymin, OlaBruteForceBoundsCalculator.ymin);
+                OlaBruteForceBoundsCalculator.zmin=Math.min(zmin, OlaBruteForceBoundsCalculator.zmin);
+                OlaBruteForceBoundsCalculator.tmax=Math.max(tmax, OlaBruteForceBoundsCalculator.tmax);
+                OlaBruteForceBoundsCalculator.xmax=Math.max(xmax, OlaBruteForceBoundsCalculator.xmax);
+                OlaBruteForceBoundsCalculator.ymax=Math.max(ymax, OlaBruteForceBoundsCalculator.ymax);
+                OlaBruteForceBoundsCalculator.zmax=Math.max(zmax, OlaBruteForceBoundsCalculator.zmax);
+                }
             in.close();
 
         } catch (Exception e)

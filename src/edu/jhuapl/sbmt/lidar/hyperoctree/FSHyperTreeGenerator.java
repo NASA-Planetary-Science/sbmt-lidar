@@ -26,6 +26,7 @@ import edu.jhuapl.sbmt.lidar.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.LidarInstrument;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.RawLidarFile;
+import edu.jhuapl.sbmt.lidar.hyperoctree.laser.LaserFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.nlr.NlrFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeGenerator;
@@ -246,6 +247,9 @@ public abstract class FSHyperTreeGenerator
             break;
         case NLR:
             generator=new NlrFSHyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
+            break;
+        case LASER:
+            generator=new LaserFSHyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         }
 
