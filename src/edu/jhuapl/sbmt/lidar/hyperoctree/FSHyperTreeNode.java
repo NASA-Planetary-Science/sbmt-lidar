@@ -188,7 +188,7 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
     {
         pool.closeStream(getDataFilePath());
         for (int i=0; i<getNumberOfChildren(); i++)
-            children[i]=createNewChild(i);
+            children[i]=createNewChild(i); // this creates a bounding box for where it is in comparison to the root
         DataInputStream instream=new DataInputStream(new BufferedInputStream(new FileInputStream(getDataFilePath().toFile())));
         while (instream.available()>0)
         {
