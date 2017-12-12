@@ -1,6 +1,6 @@
 package edu.jhuapl.sbmt.lidar.hyperoctree;
 
-import edu.jhuapl.sbmt.image.hyperoctree.FSHyperImage;
+import edu.jhuapl.sbmt.image.hyperoctree.HyperBoundedObject;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException.HyperDimensionMismatchException;
 
 public class HyperBox implements Dimensioned
@@ -97,7 +97,7 @@ public class HyperBox implements Dimensioned
 
     // TODO - check if image is contained at all in the hyperbox
     //
-    public boolean contains(FSHyperImage image)
+    public boolean contains(HyperBoundedObject image)
     {
         for (int i=0; i < getDimension(); i++)
             if (image.getCoordinate(i)<min[i] || image.getCoordinate(i)>max[i])
