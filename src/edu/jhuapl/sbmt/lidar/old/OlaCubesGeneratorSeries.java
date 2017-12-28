@@ -1,6 +1,6 @@
 package edu.jhuapl.sbmt.lidar.old;
 
-import edu.jhuapl.saavtk.model.ShapeModelAuthor;
+import edu.jhuapl.saavtk.model.ShapeModelType;
 import edu.jhuapl.saavtk.model.ShapeModelBody;
 import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.sbmt.client.SmallBodyModel;
@@ -39,7 +39,7 @@ public class OlaCubesGeneratorSeries extends LidarCubesGenerator
     {
         if (bennu == null)
         {
-            bennu = new Bennu(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.RQ36, ShapeModelAuthor.GASKELL, "V3 Image"));
+            bennu = new Bennu(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.RQ36, ShapeModelType.GASKELL, "V3 Image"));
         }
 
         return bennu;

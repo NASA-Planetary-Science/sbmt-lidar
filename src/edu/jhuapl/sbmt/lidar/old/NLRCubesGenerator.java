@@ -1,6 +1,6 @@
 package edu.jhuapl.sbmt.lidar.old;
 
-import edu.jhuapl.saavtk.model.ShapeModelAuthor;
+import edu.jhuapl.saavtk.model.ShapeModelType;
 import edu.jhuapl.saavtk.model.ShapeModelBody;
 import edu.jhuapl.sbmt.client.SmallBodyModel;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
@@ -28,7 +28,7 @@ public class NLRCubesGenerator extends LidarCubesGenerator
     {
         if (eros == null)
         {
-            eros = new Eros(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.EROS, ShapeModelAuthor.GASKELL));
+            eros = new Eros(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.EROS, ShapeModelType.GASKELL));
         }
 
         return eros;

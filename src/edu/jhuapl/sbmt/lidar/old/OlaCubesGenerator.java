@@ -12,7 +12,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.io.FilenameUtils;
 
-import edu.jhuapl.saavtk.model.ShapeModelAuthor;
+import edu.jhuapl.saavtk.model.ShapeModelType;
 import edu.jhuapl.saavtk.model.ShapeModelBody;
 import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.saavtk.util.FileUtil;
@@ -60,7 +60,7 @@ public class OlaCubesGenerator //extends LidarCubesGenerator
     {
         if (bennu == null)
         {
-            bennu = new Bennu(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.RQ36, ShapeModelAuthor.GASKELL, "V3 Image"));
+            bennu = new Bennu(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.RQ36, ShapeModelType.GASKELL, "V3 Image"));
         }
 
         return bennu;
