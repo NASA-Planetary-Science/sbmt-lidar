@@ -2,7 +2,7 @@ package edu.jhuapl.sbmt.lidar.old;
 
 import java.io.IOException;
 
-import edu.jhuapl.saavtk.model.ShapeModelAuthor;
+import edu.jhuapl.saavtk.model.ShapeModelType;
 import edu.jhuapl.saavtk.model.ShapeModelBody;
 import edu.jhuapl.sbmt.client.SmallBodyModel;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
@@ -38,7 +38,7 @@ public class HayLidarCubesGenerator extends LidarCubesGenerator
     {
         if (itokawa == null)
         {
-            itokawa = new Itokawa(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.ITOKAWA, ShapeModelAuthor.GASKELL));
+            itokawa = new Itokawa(SmallBodyViewConfig.getSmallBodyConfig(ShapeModelBody.ITOKAWA, ShapeModelType.GASKELL));
 
             try
             {
