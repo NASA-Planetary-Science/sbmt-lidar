@@ -192,7 +192,7 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
         DataInputStream instream=new DataInputStream(new BufferedInputStream(new FileInputStream(getDataFilePath().toFile())));
         while (instream.available()>0)
         {
-            T pt=createNewPoint(instream);
+            T pt = createNewPoint(instream);
             for (int i=0; i<getNumberOfChildren() ; i++)
                 if (children[i].getBoundingBox().contains(pt))
                 {
