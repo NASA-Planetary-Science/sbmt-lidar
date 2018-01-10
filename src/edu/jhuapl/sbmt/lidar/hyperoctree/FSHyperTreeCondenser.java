@@ -8,12 +8,10 @@ import java.nio.file.Paths;
 
 import com.google.common.base.Stopwatch;
 
-import edu.jhuapl.saavtk.util.NativeLibraryLoader;
-
 
 public class FSHyperTreeCondenser implements Dimensioned
 {
-    static { NativeLibraryLoader.loadVtkLibraries(); }
+//    static { NativeLibraryLoader.loadVtkLibraries(); }
 
     Path rootNodePath;
     Path outFilePath;
@@ -169,7 +167,8 @@ public class FSHyperTreeCondenser implements Dimensioned
     public static void main(String[] args)
     {
         Path rootPath=Paths.get(args[0]);
-        Path outFilePath=rootPath.resolve("dataSource.lidar");
+//        Path outFilePath=rootPath.resolve("dataSource.lidar");
+        Path outFilePath=rootPath.resolve("dataSource.image");
         System.out.println("Root path = "+rootPath);
         System.out.println("Output path = "+outFilePath);
         FSHyperTreeCondenser condenser=new FSHyperTreeCondenser(rootPath,outFilePath);
