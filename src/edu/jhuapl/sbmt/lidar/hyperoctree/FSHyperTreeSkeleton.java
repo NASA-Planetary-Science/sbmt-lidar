@@ -1,6 +1,9 @@
 package edu.jhuapl.sbmt.lidar.hyperoctree;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,6 +19,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import edu.jhuapl.saavtk.util.FileCache;
+import edu.jhuapl.sbmt.boudedobject.hyperoctree.BoundedObjectHyperTreeNode;
+import edu.jhuapl.sbmt.boudedobject.hyperoctree.HyperBoundedObject;
 
 public class FSHyperTreeSkeleton
 {
@@ -54,6 +59,10 @@ public class FSHyperTreeSkeleton
         public Path getPath()
         {
             return path;
+        }
+
+        public double[] getBounds() {
+            return bounds;
         }
     }
 
@@ -190,8 +199,35 @@ public class FSHyperTreeSkeleton
 
     private void getLeavesIntersectingBoundingBox(Node node, double[] searchBounds, TreeSet<Integer> pathList)
     {
-        if (node.intersects(searchBounds) && node.isLeaf)
+        if (node.isLeaf) {
+            // for debug purposes
+            Path path = node.getPath();
+            Path dataPath = path.resolve("data");
+            DataInputStream instream;
+            try
+            {
+                instream = new DataInputStream(new BufferedInputStream(new FileInputStream(dataPath.toFile())));
+                HyperBoundedObject obj = BoundedObjectHyperTreeNode.createNewBoundedObject(instream);
+                int fileNum = obj.getFileNum();
+                String file = fileMap.get(fileNum);
+
+                System.out.println("NodeId: " + node.id + ",  image:  " + file);
+                if (node.id == 9) {
+                    int a = 1;
+                }
+            }
+            catch (Exception e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            ////////
+        }
+        if (node.intersects(searchBounds) && node.isLeaf) {
             pathList.add(node.id);
+            System.out.println("Node intersects bbox");
+        }
         for (int i=0; i<16; i++)
             if (node.children[i]!=null)
                 getLeavesIntersectingBoundingBox(node.children[i],searchBounds,pathList);
