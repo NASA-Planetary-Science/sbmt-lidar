@@ -196,7 +196,6 @@ public class FSHyperTreeSkeleton
     {
         if (node.intersects(searchBounds) && node.isLeaf) {
             pathList.add(node.id);
-            System.out.println("Node intersects bbox");
         }
         for (int i=0; i<16; i++)
             if (node.children[i]!=null)
