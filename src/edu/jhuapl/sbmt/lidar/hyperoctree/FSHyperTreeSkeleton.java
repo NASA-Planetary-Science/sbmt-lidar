@@ -69,13 +69,13 @@ public class FSHyperTreeSkeleton
 
     private double[] readBoundsFile(Path path)
     {
-        File f = new File(path.toString());
-//        File f=FileCache.getFileFromServer(path.toString());
+//        File f = new File(path.toString());
+        File f=FileCache.getFileFromServer(path.toString());
         if (f.exists())
             return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
 //        f = new File(path.toString());
         //
-//        f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
+        f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
         if (f.exists())
             return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
 
@@ -97,8 +97,8 @@ public class FSHyperTreeSkeleton
                 e1.printStackTrace();
             }*/
 
-//        File f=FileCache.getFileFromServer(dataSourcePath.toString());
-        File f = new File(dataSourcePath.toString());
+        File f=FileCache.getFileFromServer(dataSourcePath.toString());
+//        File f = new File(dataSourcePath.toString());
         if (!f.exists())
         {
             try
@@ -111,9 +111,9 @@ public class FSHyperTreeSkeleton
                 e.printStackTrace();
             }
         }
-//        f=FileCache.getFileFromServer(dataSourcePath.toString());
-//        if (!f.exists())
-//            f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+dataSourcePath.toString());
+        f=FileCache.getFileFromServer(dataSourcePath.toString());
+        if (!f.exists())
+            f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+dataSourcePath.toString());
         //
         double[] rootBounds=readBoundsFile(basePath.resolve("bounds"));
         rootNode=new Node(rootBounds,basePath,false,idCount); // false -> root is not a leaf
@@ -134,8 +134,8 @@ public class FSHyperTreeSkeleton
 
         //
         Path fileMapPath=dataSourcePath.getParent().resolve("fileMap.txt");
-        f = new File(fileMapPath.toString());
-//        f=FileCache.getFileFromServer(fileMapPath.toString());
+//        f = new File(fileMapPath.toString());
+        f=FileCache.getFileFromServer(fileMapPath.toString());
         if (!f.exists())
             f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+fileMapPath.toString());
         System.out.println("File map = "+f.toString());
