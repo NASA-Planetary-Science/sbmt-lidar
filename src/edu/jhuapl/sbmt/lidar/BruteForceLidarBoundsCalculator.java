@@ -17,7 +17,7 @@ import com.google.common.collect.Lists;
 
 import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
-import edu.jhuapl.sbmt.lidar.hyperoctree.laser.LaserRawLidarFile;
+import edu.jhuapl.sbmt.lidar.hyperoctree.laser.Hayabusa2LaserRawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.nlr.NlrRawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaLidarFile;
 
@@ -49,7 +49,7 @@ public class BruteForceLidarBoundsCalculator
         case NLR:
             return new NlrRawLidarFile(file.toString());
         case LASER:
-            return new LaserRawLidarFile(file.toString());
+            return new Hayabusa2LaserRawLidarFile(file.toString());
         default:
             return null;
         }

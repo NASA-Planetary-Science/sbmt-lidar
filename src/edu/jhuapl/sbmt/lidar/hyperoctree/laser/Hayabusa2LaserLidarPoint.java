@@ -5,19 +5,19 @@ import java.io.IOException;
 
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
 
-public class LaserLidarPoint extends FSHyperPointWithFileTag
+public class Hayabusa2LaserLidarPoint extends FSHyperPointWithFileTag
 {
 
-    public LaserLidarPoint()
+    public Hayabusa2LaserLidarPoint()
     {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public LaserLidarPoint(DataInputStream stream) throws IOException
+    public Hayabusa2LaserLidarPoint(DataInputStream stream) throws IOException
     {
         super(stream);
-        double scaleFactor=6371.*2.;
+        double scaleFactor=1; //6371.*2.;
         data[0]*=scaleFactor;
         data[1]*=scaleFactor;
         data[2]*=scaleFactor;
@@ -26,7 +26,7 @@ public class LaserLidarPoint extends FSHyperPointWithFileTag
         data[6]*=scaleFactor;
     }
 
-    public LaserLidarPoint(double tgx, double tgy, double tgz, double time,
+    public Hayabusa2LaserLidarPoint(double tgx, double tgy, double tgz, double time,
             double scx, double scy, double scz, double intensity, int fileNum)
     {
         super(tgx, tgy, tgz, time, scx, scy, scz, intensity, fileNum);

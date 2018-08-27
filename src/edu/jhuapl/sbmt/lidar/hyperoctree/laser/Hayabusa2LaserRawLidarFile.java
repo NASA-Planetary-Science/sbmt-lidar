@@ -9,17 +9,32 @@ import edu.jhuapl.sbmt.lidar.RawLidarFile;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
 
-public class LaserRawLidarFile extends RawLidarFile
+public class Hayabusa2LaserRawLidarFile extends RawLidarFile
 {
+
+//    public enum Fields
+//    {
+//        TIME,
+//        PACKET_TI,
+//        LASER,
+//        RANGE,
+//        SIG_FAR,
+//        SIG_NEAR,
+//        TOPO_LONGITUDE,
+//        TOPO_LATITUDE,
+//        TOPO_HEIGHT,
+//        TOPO_X,
+//        TOPO_Y,
+//        TOPO_Z,
+//        SC_POS_X,
+//        SC_POS_Y,
+//        SC_POS_Z
+//    }
 
     public enum Fields
     {
-        TIME,
-        PACKET_TI,
-        LASER,
+        SHOT_TIME,
         RANGE,
-        SIG_FAR,
-        SIG_NEAR,
         TOPO_LONGITUDE,
         TOPO_LATITUDE,
         TOPO_HEIGHT,
@@ -31,9 +46,9 @@ public class LaserRawLidarFile extends RawLidarFile
         SC_POS_Z
     }
 
-    final double scaleFactor=1e-3;//6.371*2.;
+    final double scaleFactor= 1.0e-3;//1e-3;//6.371*2.; //vectors here expect km, but xml specifies coordinates in m, so this converts the meters coming in into km
 
-    public LaserRawLidarFile(String pathname)
+    public Hayabusa2LaserRawLidarFile(String pathname)
     {
         super(pathname);
         // TODO Auto-generated constructor stub
@@ -49,7 +64,7 @@ public class LaserRawLidarFile extends RawLidarFile
             {
                 String line=scanner.nextLine();
                 String[] tokens=line.trim().split(",");
-                double time=Double.valueOf(TimeUtil.str2et(tokens[Fields.TIME.ordinal()]));  // s
+                double time=Double.valueOf(TimeUtil.str2et(tokens[Fields.SHOT_TIME.ordinal()]));  // s
                 double tgx=Double.valueOf(tokens[Fields.TOPO_X.ordinal()]);
                 double tgy=Double.valueOf(tokens[Fields.TOPO_Y.ordinal()]);
                 double tgz=Double.valueOf(tokens[Fields.TOPO_Z.ordinal()]);
@@ -58,8 +73,10 @@ public class LaserRawLidarFile extends RawLidarFile
                 double scz=Double.valueOf(tokens[Fields.SC_POS_Z.ordinal()]);
                 Vector3D scpos=new Vector3D(scx,scy,scz).scalarMultiply(scaleFactor);
                 Vector3D tgpos=new Vector3D(tgx,tgy,tgz).scalarMultiply(scaleFactor);
-                double intensity=Double.valueOf(tokens[Fields.SIG_FAR.ordinal()]);
-                points.add(new LaserLidarPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity, getFileNumber()));
+                //L2 data doesn't have intensity.  Just going to set it to some arbitrary value
+                double intensity = 100.0;
+//                double intensity=Double.valueOf(tokens[Fields.SIG_FAR.ordinal()]);
+                points.add(new Hayabusa2LaserLidarPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity, getFileNumber()));
             }
             scanner.close();
         }
