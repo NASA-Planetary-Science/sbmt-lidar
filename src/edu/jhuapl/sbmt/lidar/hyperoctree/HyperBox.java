@@ -95,12 +95,11 @@ public class HyperBox implements Dimensioned
         return out;
     }
 
-    // TODO - check if image is contained at all in the hyperbox
-    //
-    public boolean contains(HyperBoundedObject image)
+    // check if obj is contained at all in the hyperbox
+    public boolean contains(HyperBoundedObject obj)
     {
         for (int i=0; i < getDimension(); i++)
-            if (image.getCoordinate(i)<min[i] || image.getCoordinate(i)>max[i])
+            if (obj.getCoordinate(i)<min[i] || obj.getCoordinate(i)>max[i])
                 return false;
         return true;
     }
