@@ -71,13 +71,17 @@ public class FSHyperTreeSkeleton
     {
 //        File f = new File(path.toString());
         File f=FileCache.getFileFromServer(path.toString());
-        if (f.exists())
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
+        if (f.exists()) {
+            int dim = rootNode.getBounds().length/2;
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), dim);
+        }
 //        f = new File(path.toString());
         //
         f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
-        if (f.exists())
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
+        if (f.exists()) {
+            int dim = rootNode.getBounds().length/2;
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), dim);
+        }
 
         //
         return null;
