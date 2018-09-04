@@ -59,6 +59,11 @@ public class FSHyperTreeSkeleton
         public double[] getBounds() {
             return bounds;
         }
+
+        public Node[] getChildren()
+        {
+            return children;
+        }
     }
 
     public FSHyperTreeSkeleton(Path dataSourcePath)  // data source path defines where the .lidar file representing the tree structure resides; basepath is its parent
@@ -67,23 +72,18 @@ public class FSHyperTreeSkeleton
         this.basePath=dataSourcePath.getParent();
     }
 
-    private double[] readBoundsFile(Path path)
+    public double[] readBoundsFile(Path path)
     {
-//        File f = new File(path.toString());
         File f=FileCache.getFileFromServer(path.toString());
         if (f.exists()) {
-            int dim = rootNode.getBounds().length/2;
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), dim);
-        }
-//        f = new File(path.toString());
-        //
-        f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
-        if (f.exists()) {
-            int dim = rootNode.getBounds().length/2;
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), dim);
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
         }
 
-        //
+        f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
+        if (f.exists()) {
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
+        }
+
         return null;
     }
 
@@ -163,9 +163,15 @@ public class FSHyperTreeSkeleton
         }
     }
 
-    private void readChildren(Scanner scanner, Node node)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
+    public void readChildren(Scanner scanner, Node node)
     {
-        for (int i=0; i<16; i++)
+        // default 4 dimensions: x, y, z, time
+        readChildren(scanner, node, 4);
+    }
+
+    public void readChildren(Scanner scanner, Node node, int dimension)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
+    {
+        for (int i=0; i<(2^dimension); i++)
         {
             String line=scanner.nextLine();
             String[] tokens=line.replace("\n", "").replace("\r", "").split(" ");
@@ -175,8 +181,8 @@ public class FSHyperTreeSkeleton
             if (childInfo.equals("*"))   // child does not exist
                 continue;
             //
-            double[] bounds=new double[8];
-            for (int j=0; j<8; j++)
+            double[] bounds=new double[dimension*2];
+            for (int j=0; j<(dimension*2); j++)
                 bounds[j]=Double.valueOf(tokens[2+j]);
             //
             if(childInfo.equals(">"))  // child exists but is not a leaf (i.e. does not have data)
@@ -186,11 +192,16 @@ public class FSHyperTreeSkeleton
             idCount++;
             nodeMap.put(node.children[i].id, node.children[i]);
         }
-        for (int i=0; i<16; i++)
+        for (int i=0; i<(2^dimension); i++)
             if (node.children[i]!=null && !node.children[i].isLeaf)
             {
                 readChildren(scanner, node.children[i]);
             }
+    }
+
+    public Path getBasePath()
+    {
+        return basePath;
     }
 
     public TreeSet<Integer> getLeavesIntersectingBoundingBox(double[] searchBounds)
@@ -230,7 +241,7 @@ public class FSHyperTreeSkeleton
         if (hbox_this.intersects(hbox_search) && node.isLeaf) {
             pathList.add(node.id);
         }
-        for (int i=0; i<16; i++)
+        for (int i=0; i<(2^dim); i++)
             if (node.children[i]!=null)
                 getLeavesIntersectingBoundingBox(node.children[i],searchBounds,pathList);
     }
@@ -245,5 +256,11 @@ public class FSHyperTreeSkeleton
     {
         return fileMap;
     }
+
+    public int getIdCount()
+    {
+        return idCount;
+    }
+
 
 }
