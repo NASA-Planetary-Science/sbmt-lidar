@@ -46,10 +46,10 @@ public class FSHyperTreeSkeleton
             this.id=id;
         }
 
-        public boolean intersects(double[] bbox)
-        {
-            return bbox[0]<=bounds[1] && bbox[1]>=bounds[0] && bbox[2]<=bounds[3] && bbox[3]>=bounds[2] && bbox[4]<=bounds[5] && bbox[5]>=bounds[4] && bbox[6]<=bounds[7] && bbox[7]>=bounds[6];
-        }
+//        public boolean intersects(double[] bbox)
+//        {
+//            return bbox[0]<=bounds[1] && bbox[1]>=bounds[0] && bbox[2]<=bounds[3] && bbox[3]>=bounds[2] && bbox[4]<=bounds[5] && bbox[5]>=bounds[4] && bbox[6]<=bounds[7] && bbox[7]>=bounds[6];
+//        }
 
         public Path getPath()
         {
@@ -192,13 +192,38 @@ public class FSHyperTreeSkeleton
     public TreeSet<Integer> getLeavesIntersectingBoundingBox(double[] searchBounds)
     {
         TreeSet<Integer> pathList=Sets.newTreeSet();
-        getLeavesIntersectingBoundingBox(rootNode, searchBounds, pathList);
+        try {
+            getLeavesIntersectingBoundingBox(rootNode, searchBounds, pathList);
+        } catch (HyperException e) {
+            e.printStackTrace();
+        }
         return pathList;
     }
 
-    private void getLeavesIntersectingBoundingBox(Node node, double[] searchBounds, TreeSet<Integer> pathList)
+    private void getLeavesIntersectingBoundingBox(Node node, double[] searchBounds, TreeSet<Integer> pathList) throws HyperException
     {
-        if (node.intersects(searchBounds) && node.isLeaf) {
+        // need to separate min and max bounds to create hyperbox
+        double[] bounds = node.getBounds();
+        int dim = bounds.length / 2;
+        double[] min = new double[dim];
+        double[] max = new double[dim];
+        for(int ii = 0; ii < dim; ii++ ) {
+            min[ii] = bounds[ii*2];
+            max[ii] = bounds[ii*2 + 1];
+        }
+        HyperBox hbox_this = new HyperBox(min, max);
+
+        // now create a hyperbox for search bounds
+        dim = searchBounds.length / 2;
+        min = new double[dim];
+        max = new double[dim];
+        for(int ii = 0; ii < dim; ii++ ) {
+            min[ii] = searchBounds[ii*2];
+            max[ii] = searchBounds[ii*2 + 1];
+        }
+        HyperBox hbox_search = new HyperBox(min, max);
+
+        if (hbox_this.intersects(hbox_search) && node.isLeaf) {
             pathList.add(node.id);
         }
         for (int i=0; i<16; i++)

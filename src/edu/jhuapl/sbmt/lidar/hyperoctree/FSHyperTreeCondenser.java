@@ -169,7 +169,6 @@ public class FSHyperTreeCondenser implements Dimensioned
         Path rootPath=Paths.get(args[0]);
         Path outFilePath=rootPath.resolve("dataSource.lidar");
 //        Path outFilePath=rootPath.resolve("dataSource.image");
-//        Path outFilePath=rootPath.resolve("dataSource.spectra");
         System.out.println("Root path = "+rootPath);
         System.out.println("Output path = "+outFilePath);
         FSHyperTreeCondenser condenser=new FSHyperTreeCondenser(rootPath,outFilePath);
