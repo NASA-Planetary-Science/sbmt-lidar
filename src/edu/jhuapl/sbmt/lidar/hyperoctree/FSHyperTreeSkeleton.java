@@ -89,20 +89,8 @@ public class FSHyperTreeSkeleton
 
     public void read()  // cf. OlaFSHyperTreeCondenser for code to write the skeleton file
     {
-/*        File fp=FileCache.getFileFromServer(dataSourcePath.getParent().toString());
-        if (!fp.exists())
-            try
-            {
-                FileUtils.forceMkdir(fp);
-            }
-            catch (IOException e1)
-            {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }*/
 
         File f=FileCache.getFileFromServer(dataSourcePath.toString());
-//        File f = new File(dataSourcePath.toString());
         if (!f.exists())
         {
             try
@@ -138,7 +126,6 @@ public class FSHyperTreeSkeleton
 
         //
         Path fileMapPath=dataSourcePath.getParent().resolve("fileMap.txt");
-//        f = new File(fileMapPath.toString());
         f=FileCache.getFileFromServer(fileMapPath.toString());
         if (!f.exists())
             f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+fileMapPath.toString());
