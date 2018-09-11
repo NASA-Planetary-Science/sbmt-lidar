@@ -40,8 +40,10 @@ public class FSHyperTreeSkeleton
             this.bounds=bounds;
             this.path=path;
             this.isLeaf=isLeaf;
-            children=new Node[16];
-            for (int i=0; i<16; i++)
+            int numDims = bounds.length/2;
+            int numChildren = (int) Math.pow(2, numDims);
+            children=new Node[numChildren];
+            for (int i=0; i<numChildren; i++)
                 children[i]=null;
             this.id=id;
         }
@@ -158,7 +160,7 @@ public class FSHyperTreeSkeleton
 
     public void readChildren(Scanner scanner, Node node, int dimension)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
     {
-        for (int i=0; i<(2^dimension); i++)
+        for (int i=0; i<Math.pow(2, dimension); i++)
         {
             String line=scanner.nextLine();
             String[] tokens=line.replace("\n", "").replace("\r", "").split(" ");
@@ -179,7 +181,7 @@ public class FSHyperTreeSkeleton
             idCount++;
             nodeMap.put(node.children[i].id, node.children[i]);
         }
-        for (int i=0; i<(2^dimension); i++)
+        for (int i=0; i < Math.pow(2, dimension); i++)
             if (node.children[i]!=null && !node.children[i].isLeaf)
             {
                 readChildren(scanner, node.children[i]);
@@ -228,7 +230,7 @@ public class FSHyperTreeSkeleton
         if (hbox_this.intersects(hbox_search) && node.isLeaf) {
             pathList.add(node.id);
         }
-        for (int i=0; i<(2^dim); i++)
+        for (int i=0; i<Math.pow(2, dim); i++)
             if (node.children[i]!=null)
                 getLeavesIntersectingBoundingBox(node.children[i],searchBounds,pathList);
     }
