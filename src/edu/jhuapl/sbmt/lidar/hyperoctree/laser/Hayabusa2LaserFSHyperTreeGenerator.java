@@ -7,10 +7,10 @@ import edu.jhuapl.sbmt.lidar.RawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
 
-public class LaserFSHyperTreeGenerator extends FSHyperTreeGenerator
+public class Hayabusa2LaserFSHyperTreeGenerator extends FSHyperTreeGenerator
 {
 
-    public LaserFSHyperTreeGenerator(Path outputDirectory,
+    public Hayabusa2LaserFSHyperTreeGenerator(Path outputDirectory,
             int maxNumberOfPointsPerLeaf, HyperBox bbox,
             int maxNumberOfOpenOutputFiles, DataOutputStreamPool pool)
     {
@@ -22,7 +22,7 @@ public class LaserFSHyperTreeGenerator extends FSHyperTreeGenerator
     @Override
     public RawLidarFile openFile(Path file)
     {
-        return new LaserRawLidarFile(file.toString());
+        return new Hayabusa2LaserRawLidarFile(file.toString());
     }
 
 
