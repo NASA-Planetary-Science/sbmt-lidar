@@ -13,7 +13,8 @@ import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 
 public class FSHyperTreeCondenser implements Dimensioned
 {
-    static { NativeLibraryLoader.loadVtkLibraries(); }
+    static {
+        NativeLibraryLoader.loadVtkLibrariesHeadless(); }
 
     Path rootNodePath;
     Path outFilePath;
