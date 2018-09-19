@@ -32,6 +32,10 @@ public class BruteForceLidarBoundsCalculator
     double ymax=Double.NEGATIVE_INFINITY;
     double zmin=Double.POSITIVE_INFINITY;
     double zmax=Double.NEGATIVE_INFINITY;
+    double rngmax = Double.NEGATIVE_INFINITY;
+    double rnamin = Double.POSITIVE_INFINITY;
+
+    boolean hasRange = false;
 
     LidarInstrument instrument;
 
@@ -49,6 +53,7 @@ public class BruteForceLidarBoundsCalculator
         case NLR:
             return new NlrRawLidarFile(file.toString());
         case LASER:
+            hasRange = true;
             return new Hayabusa2LaserRawLidarFile(file.toString());
         default:
             return null;

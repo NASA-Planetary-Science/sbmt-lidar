@@ -16,7 +16,6 @@ public class Hayabusa2LaserFSHyperTreeGenerator extends FSHyperTreeGenerator
     {
         super(outputDirectory, maxNumberOfPointsPerLeaf, bbox,
                 maxNumberOfOpenOutputFiles, pool);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
