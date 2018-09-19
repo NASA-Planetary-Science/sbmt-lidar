@@ -39,10 +39,10 @@ public abstract class FSHyperTreeGenerator
     final HyperBox bbox;
     final int maxNumberOfOpenOutputFiles;
     final DataOutputStreamPool pool;
-    FSHyperTreeNode root;
-    long totalPointsWritten=0;
+    private FSHyperTreeNode root;
+    private long totalPointsWritten=0;
 
-    BiMap<Path, Integer> fileMap=HashBiMap.create();
+    private BiMap<Path, Integer> fileMap=HashBiMap.create();
 
     public FSHyperTreeGenerator(Path outputDirectory, int maxNumberOfPointsPerLeaf, HyperBox bbox, int maxNumberOfOpenOutputFiles, DataOutputStreamPool pool)
     {
@@ -51,18 +51,18 @@ public abstract class FSHyperTreeGenerator
         this.maxNumberOfOpenOutputFiles=maxNumberOfOpenOutputFiles;
         this.bbox=bbox;
         this.pool=pool;
-        root=new OlaFSHyperTreeNode(null, outputDirectory, bbox, maxNumberOfPointsPerLeaf,pool);
+        setRoot(new OlaFSHyperTreeNode(null, outputDirectory, bbox, maxNumberOfPointsPerLeaf,pool));
     }
 
     public void addAllPointsFromFile(Path inputPath) throws HyperException, IOException
     {
         RawLidarFile file=openFile(inputPath);
-        fileMap.put(inputPath.getFileName(),file.getFileNumber());
+        getFileMap().put(inputPath.getFileName(),file.getFileNumber());
         Iterator<LidarPoint> iterator=file.iterator();
         while (iterator.hasNext())
         {
-            root.add(FSHyperPointWithFileTag.wrap(iterator.next(),file.getFileNumber()));
-            totalPointsWritten++;
+            getRoot().add(FSHyperPointWithFileTag.wrap(iterator.next(),file.getFileNumber()));
+            setTotalPointsWritten(getTotalPointsWritten() + 1);
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class FSHyperTreeGenerator
 
     public void expand() throws HyperException, IOException
     {
-        expandNode(root);
+        expandNode(getRoot());
     }
 
     public void expandNode(FSHyperTreeNode node) throws HyperException, IOException
@@ -90,7 +90,7 @@ public abstract class FSHyperTreeGenerator
     public void commit() throws IOException
     {
         pool.closeAllStreams();// close any files that are still open
-        finalCommit(root);
+        finalCommit(getRoot());
     }
 
     void finalCommit(FSHyperTreeNode node) throws IOException
@@ -129,7 +129,7 @@ public abstract class FSHyperTreeGenerator
     public List<FSHyperTreeNode> getAllNonEmptyLeafNodes()
     {
         List<FSHyperTreeNode> nodeList=Lists.newArrayList();
-        getAllNonEmptyLeafNodes(root, nodeList);
+        getAllNonEmptyLeafNodes(getRoot(), nodeList);
         return nodeList;
     }
 
@@ -260,13 +260,21 @@ public abstract class FSHyperTreeGenerator
             sw.start();
             Path inputPath=Paths.get(fileList.get(i).toString());
             System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
-  //          generator.addPointsFromL2FileToRoot(inputPath,Integer.MAX_VALUE);
-            generator.addAllPointsFromFile(inputPath);
+
+
+            if (generator instanceof Hayabusa2LaserFSHyperTreeGenerator) {
+                ((Hayabusa2LaserFSHyperTreeGenerator)generator).addAllPointsFromFile(inputPath);
+            }
+            else {
+                generator.addAllPointsFromFile(inputPath);
+            }
+
+
             System.out.println("  Elapsed time = "+sw.elapsedTime(TimeUnit.SECONDS)+" s");
-            System.out.println("  Total points written into master data file = "+generator.totalPointsWritten);// TODO: close down all DataOutputStreams
-            System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.root.getDataFilePath().toFile().length()));
+            System.out.println("  Total points written into master data file = "+generator.getTotalPointsWritten());// TODO: close down all DataOutputStreams
+            System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.getRoot().getDataFilePath().toFile().length()));
         }
-        long rootFileSizeBytes=generator.root.getDataFilePath().toFile().length();
+        long rootFileSizeBytes=generator.getRoot().getDataFilePath().toFile().length();
 
         sw.reset();
         sw.start();
@@ -286,9 +294,39 @@ public abstract class FSHyperTreeGenerator
         Path fileMapPath=outputDirectory.resolve("fileMap.txt");
         System.out.print("Writing file map to "+fileMapPath+"... ");
         FileWriter writer=new FileWriter(fileMapPath.toFile());
-        for (int i : generator.fileMap.inverse().keySet())
-            writer.write(i+" "+generator.fileMap.inverse().get(i)+"\n");
+        for (int i : generator.getFileMap().inverse().keySet())
+            writer.write(i+" "+generator.getFileMap().inverse().get(i)+"\n");
         writer.close();
         System.out.println("Done.");
+    }
+
+    public BiMap<Path, Integer> getFileMap()
+    {
+        return fileMap;
+    }
+
+    public void setFileMap(BiMap<Path, Integer> fileMap)
+    {
+        this.fileMap = fileMap;
+    }
+
+    public FSHyperTreeNode getRoot()
+    {
+        return root;
+    }
+
+    public void setRoot(FSHyperTreeNode root)
+    {
+        this.root = root;
+    }
+
+    public long getTotalPointsWritten()
+    {
+        return totalPointsWritten;
+    }
+
+    public void setTotalPointsWritten(long totalPointsWritten)
+    {
+        this.totalPointsWritten = totalPointsWritten;
     }
 }

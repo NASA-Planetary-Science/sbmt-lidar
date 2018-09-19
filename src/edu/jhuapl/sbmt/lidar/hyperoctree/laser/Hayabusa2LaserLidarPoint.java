@@ -8,6 +8,8 @@ import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
 public class Hayabusa2LaserLidarPoint extends FSHyperPointWithFileTag
 {
 
+    private double range; // range to S/C
+
     public Hayabusa2LaserLidarPoint()
     {
         super();
@@ -27,10 +29,10 @@ public class Hayabusa2LaserLidarPoint extends FSHyperPointWithFileTag
     }
 
     public Hayabusa2LaserLidarPoint(double tgx, double tgy, double tgz, double time,
-            double scx, double scy, double scz, double intensity, int fileNum)
+            double scx, double scy, double scz, double range, double intensity, int fileNum)
     {
         super(tgx, tgy, tgz, time, scx, scy, scz, intensity, fileNum);
-        // TODO Auto-generated constructor stub
+        this.range = range;
     }
 
 }
