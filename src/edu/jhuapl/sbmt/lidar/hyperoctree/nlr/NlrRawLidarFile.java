@@ -90,7 +90,8 @@ public class NlrRawLidarFile extends RawLidarFile
                 Vector3D scpos=new Vector3D(scxyz).scalarMultiply(1e-3);        // km
                 Vector3D tgpos=new Vector3D(tgx,tgy,tgz).scalarMultiply(1e-3);  // km
                 double intensity=Double.valueOf(tokens[Fields.Emission.ordinal()]);
-                points.add(new NlrLidarPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity, getFileNumber()));
+                double range_km = scrad *1e-3;
+                points.add(new NlrLidarPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range_km, intensity, getFileNumber()));
             }
             scanner.close();
         }

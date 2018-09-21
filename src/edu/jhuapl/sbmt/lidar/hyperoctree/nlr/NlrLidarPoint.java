@@ -22,9 +22,9 @@ public class NlrLidarPoint extends FSHyperPointWithFileTag
     }
 
     public NlrLidarPoint(double tgx, double tgy, double tgz, double time,
-            double scx, double scy, double scz, double intensity, int fileNum)
+            double scx, double scy, double scz, double range, double intensity, int fileNum)
     {
-        super(tgx, tgy, tgz, time, scx, scy, scz, intensity, fileNum);
+        super(tgx, tgy, tgz, time, scx, scy, scz, range, intensity, fileNum);
         // TODO Auto-generated constructor stub
     }
 

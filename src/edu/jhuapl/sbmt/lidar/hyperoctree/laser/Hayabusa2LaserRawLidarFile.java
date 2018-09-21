@@ -71,7 +71,7 @@ public class Hayabusa2LaserRawLidarFile extends RawLidarFile
                 double scx=Double.valueOf(tokens[Fields.SC_POS_X.ordinal()]);
                 double scy=Double.valueOf(tokens[Fields.SC_POS_Y.ordinal()]);
                 double scz=Double.valueOf(tokens[Fields.SC_POS_Z.ordinal()]);
-                double rng=Double.valueOf(tokens[Fields.RANGE.ordinal()]);
+                double rng=Double.valueOf(tokens[Fields.RANGE.ordinal()]) * scaleFactor;
                 Vector3D scpos=new Vector3D(scx,scy,scz).scalarMultiply(scaleFactor);
                 Vector3D tgpos=new Vector3D(tgx,tgy,tgz).scalarMultiply(scaleFactor);
                 //L2 data doesn't have intensity.  Just going to set it to some arbitrary value
@@ -93,5 +93,4 @@ public class Hayabusa2LaserRawLidarFile extends RawLidarFile
     {
         return getName().hashCode();
     }
-
 }

@@ -16,7 +16,7 @@ public class OlaOctreePoint extends BasicLidarPoint implements OctreePoint {
 
     public OlaOctreePoint(DataInputStream stream)
     {
-        super(Vector3D.ZERO, Vector3D.ZERO, 0, 0);
+        super(Vector3D.ZERO, Vector3D.ZERO, 0, 0, 0);
         try
         {
             readFromStream(stream);
@@ -30,7 +30,7 @@ public class OlaOctreePoint extends BasicLidarPoint implements OctreePoint {
 
     public OlaOctreePoint(BasicLidarPoint point)
     {
-        super(point.getSourcePosition(), point.getTargetPosition(), point.getTime(), point.getIntensityReceived());
+        super(point.getSourcePosition(), point.getTargetPosition(), point.getTime(), point.getRangeToSC(), point.getIntensityReceived());
     }
 
     @Override

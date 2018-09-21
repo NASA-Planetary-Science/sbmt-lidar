@@ -150,7 +150,8 @@ public class OlaFSHyperTreeStatistics implements Dimensioned
                 {
 //                    root.add(new OlaFSHyperPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity));
 //                    totalPointsWritten++;
-                    OlaFSHyperPoint pt=new OlaFSHyperPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity, -1);    // -1 means don't worry about file number
+                    double range = 0;  // TODO range currently not used for OLA, so set to 0/
+                    OlaFSHyperPoint pt=new OlaFSHyperPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range, intensity, -1);    // -1 means don't worry about file number
                     for (int i=0; i<getDimension(); i++)
                         binCounts[i][getBin(i, pt.getCoordinate(i))]++;
                     cnt++;

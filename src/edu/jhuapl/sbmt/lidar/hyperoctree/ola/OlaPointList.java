@@ -85,6 +85,7 @@ public class OlaPointList implements LidarPointList
                 Vector3D tgpos=null;
                 double time=0;
                 double intensity=0;
+                double range = 0;
                 double x,y,z;
 
                 try
@@ -122,7 +123,7 @@ public class OlaPointList implements LidarPointList
 
                 if (!noise)
                 {
-                    this.points.add(new BasicLidarPoint(scpos, tgpos, time, intensity));
+                    this.points.add(new BasicLidarPoint(scpos, tgpos, time, range, intensity));
                 }
             }
             in.close();

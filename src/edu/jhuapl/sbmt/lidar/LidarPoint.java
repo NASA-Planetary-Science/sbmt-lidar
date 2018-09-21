@@ -8,4 +8,5 @@ public interface LidarPoint extends Comparable<LidarPoint>
     public Vector3D getSourcePosition();
     public Double getIntensityReceived();
     public Double getTime();
+    public double getRangeToSC();
 }

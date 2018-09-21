@@ -79,6 +79,7 @@ public class OlaLidarFile extends RawLidarFile
         boolean isNoise;
         Vector3D tgpos,scpos;
         double intensity=0;
+        double range=0; // TODO calculate range or parse from file.  Currently not used for OLA so set to 0.
 
         public OlaRecord(byte[] recBuf)
         {
@@ -113,7 +114,7 @@ public class OlaLidarFile extends RawLidarFile
 
         public FSHyperPointWithFileTag getAsHyperPoint()
         {
-            return new FSHyperPointWithFileTag(tgpos.getX(),tgpos.getY(),tgpos.getZ(),time,scpos.getX(),scpos.getY(),scpos.getZ(),intensity,getFileNumber());
+            return new FSHyperPointWithFileTag(tgpos.getX(),tgpos.getY(),tgpos.getZ(),time,scpos.getX(),scpos.getY(),scpos.getZ(), range, intensity,getFileNumber());
         }
     }
 
@@ -210,7 +211,7 @@ public class OlaLidarFile extends RawLidarFile
 
                 if (!noise)
                 {
-                    points.add(new FSHyperPointWithFileTag(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity, getFileNumber()));
+                    points.add(new FSHyperPointWithFileTag(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), 0, intensity, getFileNumber()));
                 }
             }
             in.close();

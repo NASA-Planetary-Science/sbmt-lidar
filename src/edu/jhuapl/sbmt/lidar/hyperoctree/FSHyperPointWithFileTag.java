@@ -23,10 +23,10 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
 
     public static FSHyperPointWithFileTag wrap(LidarPoint pt, int filenum)
     {
-        return new FSHyperPointWithFileTag(pt.getTargetPosition().getX(),pt.getTargetPosition().getY(),pt.getTargetPosition().getZ(),pt.getTime(),pt.getSourcePosition().getX(),pt.getSourcePosition().getY(),pt.getSourcePosition().getZ(),pt.getIntensityReceived(),filenum);
+        return new FSHyperPointWithFileTag(pt.getTargetPosition().getX(),pt.getTargetPosition().getY(),pt.getTargetPosition().getZ(),pt.getTime(),pt.getSourcePosition().getX(),pt.getSourcePosition().getY(),pt.getSourcePosition().getZ(),pt.getRangeToSC(), pt.getIntensityReceived(),filenum);
     }
 
-    public FSHyperPointWithFileTag(double tgx, double tgy, double tgz, double time, double scx, double scy, double scz, double intensity, int fileNum)
+    public FSHyperPointWithFileTag(double tgx, double tgy, double tgz, double time, double scx, double scy, double scz, double intensity, double range, int fileNum)
     {
         data[0]=tgx;
         data[1]=tgy;
@@ -36,6 +36,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
         data[5]=scy;
         data[6]=scz;
         data[7]=intensity;
+        data[8]=range;
         this.fileNum=fileNum;
     }
 
@@ -117,6 +118,12 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
     public int getFileNum()
     {
         return fileNum;
+    }
+
+    @Override
+    public double getRangeToSC()
+    {
+        return data[8];
     }
 
 }

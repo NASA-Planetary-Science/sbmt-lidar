@@ -8,21 +8,24 @@ public class BasicLidarPoint implements LidarPoint
     protected Vector3D tgpos;
     protected Double time;
     protected Double intensity;
+    protected Double rangeToSC;
 
-    public BasicLidarPoint(Vector3D scpos, Vector3D tgpos, double time, double intensity)
+    public BasicLidarPoint(Vector3D scpos, Vector3D tgpos, double time, double range, double intensity)
     {
         this.scpos=scpos;
         this.tgpos=tgpos;
         this.time=time;
         this.intensity=intensity;
+        this.rangeToSC = range;
     }
 
-    public BasicLidarPoint(double[] tgpos, double[] scpos, double time, double intensity)
+    public BasicLidarPoint(double[] tgpos, double[] scpos, double time, double range, double intensity)
     {
         this.scpos=new Vector3D(scpos);
         this.tgpos=new Vector3D(tgpos);
         this.time=time;
         this.intensity=new Double(intensity);
+        this.rangeToSC = new Double(range);
     }
 
     public BasicLidarPoint(double[] tgpos, double[] scpos, double time)
@@ -31,6 +34,7 @@ public class BasicLidarPoint implements LidarPoint
         this.tgpos=new Vector3D(tgpos);
         this.time=time;
         this.intensity=new Double(0);
+        this.rangeToSC = new Double(0);
     }
 
     @Override
@@ -61,5 +65,11 @@ public class BasicLidarPoint implements LidarPoint
     public int compareTo(LidarPoint o)
     {
         return time.compareTo(o.getTime());
+    }
+
+    @Override
+    public double getRangeToSC()
+    {
+        return rangeToSC;
     }
 }
