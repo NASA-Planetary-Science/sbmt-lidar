@@ -38,7 +38,8 @@ public class Hayabusa2LaserFSHyperTreeGenerator extends FSHyperTreeGenerator
         Iterator<LidarPoint> iterator=file.iterator();
         while (iterator.hasNext())
         {
-            getRoot().add(Hayabusa2LaserLidarPoint.wrap(iterator.next(), file.getFileNumber()));
+            LidarPoint pt = iterator.next();
+            getRoot().add(Hayabusa2LaserLidarPoint.wrap(pt, file.getFileNumber()));
             setTotalPointsWritten(getTotalPointsWritten() + 1);
         }
     }
