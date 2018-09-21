@@ -137,7 +137,7 @@ public abstract class FSHyperTreeGenerator
     {
         if (!node.isLeaf())
             for (int i=0; i<node.getNumberOfChildren(); i++)
-                getAllNonEmptyLeafNodes((OlaFSHyperTreeNode)node.getChild(i), nodeList);
+                getAllNonEmptyLeafNodes(node.getChild(i), nodeList);
         else if (node.getDataFilePath().toFile().exists())
             nodeList.add(node);
     }
