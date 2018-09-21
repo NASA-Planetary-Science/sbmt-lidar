@@ -132,6 +132,7 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
 
     protected HyperBox getChildBounds(int i) throws HyperDimensionMismatchException
     {
+        System.out.println("child dimensions: " + getDimension());
         double[] min=new double[getDimension()];
         double[] max=new double[getDimension()];
         for (int j=0; j<getDimension(); j++)

@@ -250,6 +250,8 @@ public abstract class FSHyperTreeGenerator
             generator=new NlrFSHyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         case LASER:
+            // add min/max range to the root hyper box  TODO what should original max range be?
+            hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, tmin, 0}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, tmax, 1e10});
             generator=new Hayabusa2LaserFSHyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         }
