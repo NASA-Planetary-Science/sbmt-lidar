@@ -59,11 +59,13 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
 
     public void writeBoundsFile()
     {
+        System.out.println("writing bounds file...");
         try
         {
             DataOutputStream stream=new DataOutputStream(new BufferedOutputStream(new FileOutputStream(getBoundsFilePath().toFile())));
             double[] min=bbox.getMin();
             double[] max=bbox.getMax();
+            System.out.println("dimensions: " + bbox.getDimension());
             for (int i=0; i<bbox.getDimension(); i++)
             {
                 stream.writeDouble(min[i]);

@@ -20,6 +20,7 @@ public class Hayabusa2LaserFSHyperTreeGenerator extends FSHyperTreeGenerator
     {
         super(outputDirectory, maxNumberOfPointsPerLeaf, bbox,
                 maxNumberOfOpenOutputFiles, pool);
+        System.out.println("root bbox dims = "  + bbox.getDimension());
         setRoot(new Hayabusa2LaserHypertreeNode(null, outputDirectory, bbox, maxNumberOfPointsPerLeaf,pool));
     }
 
