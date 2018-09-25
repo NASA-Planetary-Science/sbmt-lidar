@@ -34,14 +34,16 @@ public class FSHyperTreeSkeleton
         boolean isLeaf;
         Node[] children;
         int id;
+        private int dimension;
 
         public Node(double[] bounds, Path path, boolean isLeaf, int id)
         {
             this.bounds=bounds;
             this.path=path;
             this.isLeaf=isLeaf;
-            children=new Node[16];
-            for (int i=0; i<16; i++)
+            this.dimension = (int) Math.pow(2,bounds.length);
+            children=new Node[dimension];
+            for (int i=0; i<dimension; i++)
                 children[i]=null;
             this.id=id;
         }
@@ -54,6 +56,11 @@ public class FSHyperTreeSkeleton
         public Path getPath()
         {
             return path;
+        }
+
+        public int getDimension()
+        {
+            return dimension;
         }
     }
 
@@ -153,7 +160,7 @@ public class FSHyperTreeSkeleton
 
     private void readChildren(Scanner scanner, Node node)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
     {
-        for (int i=0; i<16; i++)
+        for (int i=0; i<Math.pow(2, node.getDimension()); i++)
         {
             String line=scanner.nextLine();
             String[] tokens=line.replace("\n", "").replace("\r", "").split(" ");
@@ -163,8 +170,8 @@ public class FSHyperTreeSkeleton
             if (childInfo.equals("*"))   // child does not exist
                 continue;
             //
-            double[] bounds=new double[8];
-            for (int j=0; j<8; j++)
+            double[] bounds=new double[node.getDimension()+4];
+            for (int j=0; j<bounds.length; j++)
                 bounds[j]=Double.valueOf(tokens[2+j]);
             //
             if(childInfo.equals(">"))  // child exists but is not a leaf (i.e. does not have data)
@@ -174,7 +181,7 @@ public class FSHyperTreeSkeleton
             idCount++;
             nodeMap.put(node.children[i].id, node.children[i]);
         }
-        for (int i=0; i<16; i++)
+        for (int i=0; i<Math.pow(2, node.getDimension()); i++)
             if (node.children[i]!=null && !node.children[i].isLeaf)
             {
                 readChildren(scanner, node.children[i]);
@@ -190,9 +197,11 @@ public class FSHyperTreeSkeleton
 
     private void getLeavesIntersectingBoundingBox(Node node, double[] searchBounds, TreeSet<Integer> pathList)
     {
+
         if (node.intersects(searchBounds) && node.isLeaf)
             pathList.add(node.id);
-        for (int i=0; i<16; i++)
+        int dim = node.getDimension();
+        for (int i=0; i<Math.pow(2, dim); i++)
             if (node.children[i]!=null)
                 getLeavesIntersectingBoundingBox(node.children[i],searchBounds,pathList);
     }
