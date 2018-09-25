@@ -162,8 +162,6 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
             if (isInside(pt)) {
                 pt.write(pool.getStream(getDataFilePath()));
                 numPoints++;
-           //     if (numPoints>maxPoints)
-           //         trySplit();
                 return true;
             }
         }

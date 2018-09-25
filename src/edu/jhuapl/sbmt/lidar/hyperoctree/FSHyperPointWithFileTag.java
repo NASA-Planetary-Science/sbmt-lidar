@@ -12,8 +12,8 @@ import edu.jhuapl.sbmt.lidar.LidarPoint;
 public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
 {
 
-    // there are 8 data values but only 4 are used to define the hyperspace: tgx,tgy,tgz,time
-    protected double[] data=new double[9];    // tgx,tgy,tgz,time,scx,scy,scz,intensity
+    // there are 9 data values but only 5 are used to define the hyperspace: tgx,tgy,tgz,time, range
+    protected double[] data=new double[9];    // tgx,tgy,tgz,time,scx,scy,scz, range,intensity
     int fileNum;
 
     public FSHyperPointWithFileTag()
@@ -66,7 +66,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
     @Override
     public void read(DataInputStream inputStream) throws IOException    // the hyperpoint only has 4 coordinates but we need to write all 8
     {
-        for (int i=0; i<8; i++)
+        for (int i=0; i<data.length; i++)
             data[i]=inputStream.readDouble();
         fileNum=inputStream.readInt();
     }
@@ -74,7 +74,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
     @Override
     public void write(DataOutputStream outputStream) throws IOException
     {
-        for (int i=0; i<8; i++)
+        for (int i=0; i<data.length; i++)
             outputStream.writeDouble(data[i]);
         outputStream.writeInt(fileNum);
     }
