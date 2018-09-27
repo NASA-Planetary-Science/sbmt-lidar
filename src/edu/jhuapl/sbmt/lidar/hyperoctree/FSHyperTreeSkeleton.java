@@ -41,14 +41,14 @@ public class FSHyperTreeSkeleton
             this.bounds=bounds;
             this.path=path;
             this.isLeaf=isLeaf;
-            this.dimension = (int) Math.pow(2,bounds.length);
-            children=new Node[dimension];
+            this.dimension = bounds.length/2;
+            children=new Node[(int)Math.pow(2, dimension)];
             for (int i=0; i<dimension; i++)
                 children[i]=null;
             this.id=id;
         }
 
-        public boolean intersects(double[] bbox)
+        public boolean intersects(double[] bbox) // TODO this depends on size
         {
             return bbox[0]<=bounds[1] && bbox[1]>=bounds[0] && bbox[2]<=bounds[3] && bbox[3]>=bounds[2] && bbox[4]<=bounds[5] && bbox[5]>=bounds[4] && bbox[6]<=bounds[7] && bbox[7]>=bounds[6];
         }
@@ -74,11 +74,11 @@ public class FSHyperTreeSkeleton
     {
         File f=FileCache.getFileFromServer(path.toString());
         if (f.exists())
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 5); // TODO changed these from 4 to 5
         //
         f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
         if (f.exists())
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 5);
 
         //
         return null;
@@ -170,7 +170,7 @@ public class FSHyperTreeSkeleton
             if (childInfo.equals("*"))   // child does not exist
                 continue;
             //
-            double[] bounds=new double[node.getDimension()+4];
+            double[] bounds=new double[node.getDimension()*2];
             for (int j=0; j<bounds.length; j++)
                 bounds[j]=Double.valueOf(tokens[2+j]);
             //

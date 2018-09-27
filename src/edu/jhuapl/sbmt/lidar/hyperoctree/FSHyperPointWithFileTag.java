@@ -60,7 +60,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
     @Override
     public int getDimension()
     { // TODO this should be based on size of data.  Need to make it work like spectra work to have varying data sizes based on search params
-        return 5;
+        return 4;
     }
 
     @Override
