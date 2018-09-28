@@ -28,4 +28,10 @@ public class Hayabusa2LaserLidarPoint extends FSHyperPointWithFileTag
         return new Hayabusa2LaserLidarPoint(pt.getTargetPosition().getX(),pt.getTargetPosition().getY(),pt.getTargetPosition().getZ(),pt.getTime(),pt.getSourcePosition().getX(),pt.getSourcePosition().getY(),pt.getSourcePosition().getZ(), pt.getRangeToSC(), pt.getIntensityReceived(),filenum);
     }
 
+    @Override
+    public int getDimension()
+    {
+        return 5;
+    }
+
 }

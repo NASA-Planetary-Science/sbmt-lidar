@@ -34,33 +34,37 @@ public class FSHyperTreeSkeleton
         boolean isLeaf;
         Node[] children;
         int id;
-        private int dimension;
-
+        
         public Node(double[] bounds, Path path, boolean isLeaf, int id)
         {
             this.bounds=bounds;
             this.path=path;
             this.isLeaf=isLeaf;
-            this.dimension = bounds.length/2;
-            children=new Node[(int)Math.pow(2, dimension)];
-            for (int i=0; i<dimension; i++)
+            int numDims = bounds.length/2;
+            int numChildren = (int) Math.pow(2, numDims);
+            children=new Node[numChildren];
+            for (int i=0; i<numChildren; i++)
                 children[i]=null;
             this.id=id;
         }
 
-        public boolean intersects(double[] bbox) // TODO this depends on size
-        {
-            return bbox[0]<=bounds[1] && bbox[1]>=bounds[0] && bbox[2]<=bounds[3] && bbox[3]>=bounds[2] && bbox[4]<=bounds[5] && bbox[5]>=bounds[4] && bbox[6]<=bounds[7] && bbox[7]>=bounds[6];
-        }
+//        public boolean intersects(double[] bbox) // TODO this depends on size
+//        {
+//            return bbox[0]<=bounds[1] && bbox[1]>=bounds[0] && bbox[2]<=bounds[3] && bbox[3]>=bounds[2] && bbox[4]<=bounds[5] && bbox[5]>=bounds[4] && bbox[6]<=bounds[7] && bbox[7]>=bounds[6];
+//        }
 
         public Path getPath()
         {
             return path;
         }
+        
+        public double[] getBounds() {
+            return bounds;
+        }
 
-        public int getDimension()
+        public Node[] getChildren()
         {
-            return dimension;
+            return children;
         }
     }
 
@@ -70,15 +74,16 @@ public class FSHyperTreeSkeleton
         this.basePath=dataSourcePath.getParent();
     }
 
+// dimension 4 by default. Have to override this if more than 4 dimensions
     private double[] readBoundsFile(Path path)
     {
         File f=FileCache.getFileFromServer(path.toString());
         if (f.exists())
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 5); // TODO changed these from 4 to 5
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
         //
         f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+path.toString());
         if (f.exists())
-            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 5);
+            return FSHyperTreeNode.readBoundsFile(Paths.get(f.getAbsolutePath()), 4);
 
         //
         return null;
@@ -86,17 +91,6 @@ public class FSHyperTreeSkeleton
 
     public void read()  // cf. OlaFSHyperTreeCondenser for code to write the skeleton file
     {
-/*        File fp=FileCache.getFileFromServer(dataSourcePath.getParent().toString());
-        if (!fp.exists())
-            try
-            {
-                FileUtils.forceMkdir(fp);
-            }
-            catch (IOException e1)
-            {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }*/
 
         File f=FileCache.getFileFromServer(dataSourcePath.toString());
         if (!f.exists())
@@ -158,9 +152,15 @@ public class FSHyperTreeSkeleton
         }
     }
 
-    private void readChildren(Scanner scanner, Node node)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
+ 	public void readChildren(Scanner scanner, Node node)
     {
-        for (int i=0; i<Math.pow(2, node.getDimension()); i++)
+        // default 4 dimensions: x, y, z, time
+        readChildren(scanner, node, 4);
+    }
+
+    public void readChildren(Scanner scanner, Node node, int dimension)   // cf. OlaFSHyperTreeCondenser for code to write the skeleton
+    {
+        for (int i=0; i<Math.pow(2, dimension); i++)
         {
             String line=scanner.nextLine();
             String[] tokens=line.replace("\n", "").replace("\r", "").split(" ");
@@ -170,8 +170,8 @@ public class FSHyperTreeSkeleton
             if (childInfo.equals("*"))   // child does not exist
                 continue;
             //
-            double[] bounds=new double[node.getDimension()*2];
-            for (int j=0; j<bounds.length; j++)
+            double[] bounds=new double[dimension*2];
+            for (int j=0; j<(dimension*2); j++)
                 bounds[j]=Double.valueOf(tokens[2+j]);
             //
             if(childInfo.equals(">"))  // child exists but is not a leaf (i.e. does not have data)
@@ -181,26 +181,55 @@ public class FSHyperTreeSkeleton
             idCount++;
             nodeMap.put(node.children[i].id, node.children[i]);
         }
-        for (int i=0; i<Math.pow(2, node.getDimension()); i++)
+        for (int i=0; i < Math.pow(2, dimension); i++)
             if (node.children[i]!=null && !node.children[i].isLeaf)
             {
                 readChildren(scanner, node.children[i]);
             }
     }
 
+       public Path getBasePath()
+    {
+        return basePath;
+    }
+
     public TreeSet<Integer> getLeavesIntersectingBoundingBox(double[] searchBounds)
     {
         TreeSet<Integer> pathList=Sets.newTreeSet();
-        getLeavesIntersectingBoundingBox(rootNode, searchBounds, pathList);
+        try {
+            getLeavesIntersectingBoundingBox(rootNode, searchBounds, pathList);
+        } catch (HyperException e) {
+            e.printStackTrace();
+        }
         return pathList;
     }
 
-    private void getLeavesIntersectingBoundingBox(Node node, double[] searchBounds, TreeSet<Integer> pathList)
+    private void getLeavesIntersectingBoundingBox(Node node, double[] searchBounds, TreeSet<Integer> pathList) throws HyperException
     {
+        // need to separate min and max bounds to create hyperbox
+        double[] bounds = node.getBounds();
+        int dim = bounds.length / 2;
+        double[] min = new double[dim];
+        double[] max = new double[dim];
+        for(int ii = 0; ii < dim; ii++ ) {
+            min[ii] = bounds[ii*2];
+            max[ii] = bounds[ii*2 + 1];
+        }
+        HyperBox hbox_this = new HyperBox(min, max);
 
-        if (node.intersects(searchBounds) && node.isLeaf)
+        // now create a hyperbox for search bounds
+        dim = searchBounds.length / 2;
+        min = new double[dim];
+        max = new double[dim];
+        for(int ii = 0; ii < dim; ii++ ) {
+            min[ii] = searchBounds[ii*2];
+            max[ii] = searchBounds[ii*2 + 1];
+        }
+        HyperBox hbox_search = new HyperBox(min, max);
+
+        if (hbox_this.intersects(hbox_search) && node.isLeaf) {
             pathList.add(node.id);
-        int dim = node.getDimension();
+        }
         for (int i=0; i<Math.pow(2, dim); i++)
             if (node.children[i]!=null)
                 getLeavesIntersectingBoundingBox(node.children[i],searchBounds,pathList);
@@ -210,7 +239,6 @@ public class FSHyperTreeSkeleton
     {
         return nodeMap.get(id);
     }
-
 
     public Map<Integer, String> getFileMap()
     {
