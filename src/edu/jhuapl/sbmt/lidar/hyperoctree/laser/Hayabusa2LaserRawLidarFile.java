@@ -12,24 +12,6 @@ import edu.jhuapl.sbmt.util.TimeUtil;
 public class Hayabusa2LaserRawLidarFile extends RawLidarFile
 {
 
-//    public enum Fields
-//    {
-//        TIME,
-//        PACKET_TI,
-//        LASER,
-//        RANGE,
-//        SIG_FAR,
-//        SIG_NEAR,
-//        TOPO_LONGITUDE,
-//        TOPO_LATITUDE,
-//        TOPO_HEIGHT,
-//        TOPO_X,
-//        TOPO_Y,
-//        TOPO_Z,
-//        SC_POS_X,
-//        SC_POS_Y,
-//        SC_POS_Z
-//    }
 
     public enum Fields
     {

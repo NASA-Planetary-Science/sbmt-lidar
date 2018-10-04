@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.gui.lidar;
+package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,7 @@ import edu.jhuapl.saavtk.model.ModelManager;
 import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.FileCache.UnauthorizedAccessException;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
+import edu.jhuapl.sbmt.gui.lidar.LidarBrowsePanel;
 import edu.jhuapl.sbmt.model.lidar.LidarBrowseDataCollection.LidarDataFileSpec;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
