@@ -34,7 +34,7 @@ public class FSHyperTreeSkeleton
         boolean isLeaf;
         Node[] children;
         int id;
-        
+
         public Node(double[] bounds, Path path, boolean isLeaf, int id)
         {
             this.bounds=bounds;
@@ -57,7 +57,7 @@ public class FSHyperTreeSkeleton
         {
             return path;
         }
-        
+
         public double[] getBounds() {
             return bounds;
         }
@@ -75,7 +75,7 @@ public class FSHyperTreeSkeleton
     }
 
 // dimension 4 by default. Have to override this if more than 4 dimensions
-    private double[] readBoundsFile(Path path)
+    protected double[] readBoundsFile(Path path)
     {
         File f=FileCache.getFileFromServer(path.toString());
         if (f.exists())
@@ -206,7 +206,7 @@ public class FSHyperTreeSkeleton
 
     private void getLeavesIntersectingBoundingBox(Node node, double[] searchBounds, TreeSet<Integer> pathList) throws HyperException
     {
-        // need to separate min and max bounds to create hyperbox
+        // need to separate min and max bounds to create hyperbox  --- NOTE this is extra work because if its not a leaf, we jsut skip it. TODO
         double[] bounds = node.getBounds();
         int dim = bounds.length / 2;
         double[] min = new double[dim];

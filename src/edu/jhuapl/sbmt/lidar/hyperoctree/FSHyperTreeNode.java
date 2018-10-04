@@ -65,7 +65,6 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
             DataOutputStream stream=new DataOutputStream(new BufferedOutputStream(new FileOutputStream(getBoundsFilePath().toFile())));
             double[] min=bbox.getMin();
             double[] max=bbox.getMax();
-            System.out.println("dimensions: " + bbox.getDimension());
             for (int i=0; i<bbox.getDimension(); i++)
             {
                 stream.writeDouble(min[i]);
@@ -134,7 +133,6 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
 
     protected HyperBox getChildBounds(int i) throws HyperDimensionMismatchException
     {
-        System.out.println("child dimensions: " + getDimension());
         double[] min=new double[getDimension()];
         double[] max=new double[getDimension()];
         for (int j=0; j<getDimension(); j++)

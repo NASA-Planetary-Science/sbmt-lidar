@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -100,7 +101,7 @@ public abstract class FSHyperTreeGenerator
         {
             if (dataFile.exists())
                 dataFile.delete();
-            for (int i=0; i<8; i++)
+            for (int i=0; i<node.getNumberOfChildren(); i++)
                 finalCommit((FSHyperTreeNode)node.getChild(i));
         }
         else {
@@ -179,6 +180,7 @@ public abstract class FSHyperTreeGenerator
         System.out.println("Number of files to process = "+nFilesToProcess);
         System.out.println("Instrument = "+instrumentName);
 
+        System.setProperty("java.awt.headless", "true");
         NativeLibraryLoader.loadVtkLibrariesHeadless();
         Path inputDirectoryListFile=Paths.get(inputDirectoryListFileString);
         Path outputDirectory=Paths.get(outputDirectoryString);
@@ -202,7 +204,7 @@ public abstract class FSHyperTreeGenerator
         double newTmin=tmin-tscale;
         double newTmax=tmax+tscale;
         System.out.println("tmin="+tmin+" tmax="+tmax+" are being expanded by a factor of "+bboxSizeIncrease+" to tmin="+newTmin+" tmax="+newTmax);
-        HyperBox hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, tmin}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, tmax});
+        HyperBox hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, newTmin}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, newTmax});
 
         List<File> fileList=Lists.newArrayList();
         Scanner scanner=new Scanner(inputDirectoryListFile.toFile());
@@ -251,7 +253,9 @@ public abstract class FSHyperTreeGenerator
             break;
         case LASER:
             // add min/max range to the root hyper box  TODO what should original max range be?
-            hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, tmin, 0}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, tmax, 1e10});
+            double fiveyears = 86400*365*5;// 5 years,
+            double today = new Date().getTime();
+            hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, newTmin-fiveyears, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, today, 1e7});
             generator=new Hayabusa2LaserFSHyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         }

@@ -48,7 +48,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
     @Override
     public double getCoordinate(int i)
     {
-        return data[i]; // i goes from 0 to 3 so the ordering of tgx,tgy,tgz,time in the beginning of data[] is crucial
+        return data[i];
     }
 
     @Override
