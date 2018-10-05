@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
+package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 
 import java.io.File;
 import java.nio.file.Path;

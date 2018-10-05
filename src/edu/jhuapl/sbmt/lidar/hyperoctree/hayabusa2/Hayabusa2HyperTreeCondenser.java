@@ -1,14 +1,14 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
+package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeCondenser;
 
-public class Hayabusa2LaserFSHyperTreeCondenser extends FSHyperTreeCondenser
+public class Hayabusa2HyperTreeCondenser extends FSHyperTreeCondenser
 {
 
-    public Hayabusa2LaserFSHyperTreeCondenser(Path rootPath, Path outFilePath)
+    public Hayabusa2HyperTreeCondenser(Path rootPath, Path outFilePath)
     {
         super(rootPath, outFilePath);
     }
@@ -21,7 +21,7 @@ public class Hayabusa2LaserFSHyperTreeCondenser extends FSHyperTreeCondenser
         Path outFilePath=rootPath.resolve("dataSource.lidar");
         System.out.println("Root path = "+rootPath);
         System.out.println("Output path = "+outFilePath);
-        Hayabusa2LaserFSHyperTreeCondenser condenser=new Hayabusa2LaserFSHyperTreeCondenser(rootPath,outFilePath);
+        Hayabusa2HyperTreeCondenser condenser=new Hayabusa2HyperTreeCondenser(rootPath,outFilePath);
         condenser.condense();
         System.out.println("Wrote tree structure to "+outFilePath);
     }

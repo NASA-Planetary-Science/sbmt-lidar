@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
+package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -28,15 +28,15 @@ import edu.jhuapl.sbmt.client.SmallBodyModel;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.gui.lidar.LidarPopupMenu;
 import edu.jhuapl.sbmt.gui.lidar.v2.LidarSearchController;
-import edu.jhuapl.sbmt.model.lidar.LaserLidarHyperTreeSearchDataCollection;
+import edu.jhuapl.sbmt.model.lidar.Hayabusa2LidarHyperTreeSearchDataCollection;
 import edu.jhuapl.sbmt.model.lidar.LidarSearchDataCollection;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
-public class Hayabusa2LaserLidarHyperTreeSearchPanel extends LidarSearchController//LidarSearchPanel  // currently implemented only for OLA lidar points, but could be revised to handle any points satisfying the LidarPoint interface.
+public class Hayabusa2LidarHyperTreeSearchPanel extends LidarSearchController//LidarSearchPanel  // currently implemented only for OLA lidar points, but could be revised to handle any points satisfying the LidarPoint interface.
 {
     Renderer renderer;
 
-    public Hayabusa2LaserLidarHyperTreeSearchPanel(SmallBodyViewConfig smallBodyConfig,
+    public Hayabusa2LidarHyperTreeSearchPanel(SmallBodyViewConfig smallBodyConfig,
             ModelManager modelManager, PickManager pickManager,
             Renderer renderer)
     {
@@ -57,7 +57,7 @@ public class Hayabusa2LaserLidarHyperTreeSearchPanel extends LidarSearchControll
         super.updateLidarDatasourceComboBox();
 
         SmallBodyModel smallBodyModel = (SmallBodyModel)modelManager.getModel(ModelNames.SMALL_BODY);
-        LaserLidarHyperTreeSearchDataCollection lidarHyperTreeSearchDataCollection = (LaserLidarHyperTreeSearchDataCollection)modelManager.getModel(ModelNames.LIDAR_HYPERTREE_SEARCH);
+        Hayabusa2LidarHyperTreeSearchDataCollection lidarHyperTreeSearchDataCollection = (Hayabusa2LidarHyperTreeSearchDataCollection)modelManager.getModel(ModelNames.LIDAR_HYPERTREE_SEARCH);
         this.lidarModel = (LidarSearchDataCollection)modelManager.getModel(getLidarModelName());
 
         // clear the skeletons instances (should we try to keep these around to avoid having to load them again? -turnerj1)
@@ -104,9 +104,9 @@ public class Hayabusa2LaserLidarHyperTreeSearchPanel extends LidarSearchControll
         System.out.println("Current Lidar Datasource Path: " + lidarDatasourcePath);
 
         // read in the skeleton, if it hasn't been read in already
-        ((LaserLidarHyperTreeSearchDataCollection)lidarModel).readSkeleton();
+        ((Hayabusa2LidarHyperTreeSearchDataCollection)lidarModel).readSkeleton();
 
-        Hayabusa2LidarHypertreeSkeleton skeleton = ((LaserLidarHyperTreeSearchDataCollection)lidarModel).getCurrentSkeleton();
+        Hayabusa2LidarHypertreeSkeleton skeleton = ((Hayabusa2LidarHyperTreeSearchDataCollection)lidarModel).getCurrentSkeleton();
 
         double[] selectionRegionCenter = null;
         double selectionRegionRadius = 0.0;
@@ -154,7 +154,7 @@ public class Hayabusa2LaserLidarHyperTreeSearchPanel extends LidarSearchControll
 
         double[] bounds = interiorPoly.GetBounds();
         double[] rangeLims = new double[] {Double.parseDouble(((Hayabusa2LidarSearchView)view).getMinSCRange().getText()), Double.parseDouble(((Hayabusa2LidarSearchView)view).getMaxSCRange().getText())};
-        TreeSet<Integer> cubeList=((LaserLidarHyperTreeSearchDataCollection)lidarModel).getLeavesIntersectingBoundingBox(new BoundingBox(bounds), getSelectedTimeLimits(), rangeLims);
+        TreeSet<Integer> cubeList=((Hayabusa2LidarHyperTreeSearchDataCollection)lidarModel).getLeavesIntersectingBoundingBox(new BoundingBox(bounds), getSelectedTimeLimits(), rangeLims);
         System.out.println(cubeList);
         System.out.println("Search Time="+sw.elapsedMillis()+" ms");
         sw.stop();
@@ -162,7 +162,7 @@ public class Hayabusa2LaserLidarHyperTreeSearchPanel extends LidarSearchControll
 
         Picker.setPickingEnabled(false);
 
-        ((LaserLidarHyperTreeSearchDataCollection)lidarModel).setParentForProgressMonitor(view);
+        ((Hayabusa2LidarHyperTreeSearchDataCollection)lidarModel).setParentForProgressMonitor(view);
         showData(cubeList, selectionRegionCenter, selectionRegionRadius);
         view.getRadialOffsetSlider().reset();
 

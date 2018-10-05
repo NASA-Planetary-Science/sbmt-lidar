@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
+package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -9,7 +9,7 @@ import edu.jhuapl.sbmt.lidar.RawLidarFile;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
 
-public class Hayabusa2LaserRawLidarFile extends RawLidarFile
+public class Hayabusa2RawLidarFile extends RawLidarFile
 {
 
 
@@ -30,7 +30,7 @@ public class Hayabusa2LaserRawLidarFile extends RawLidarFile
 
     final double scaleFactor= 1.0e-3;//1e-3;//6.371*2.; //vectors here expect km, but xml specifies coordinates in m, so this converts the meters coming in into km
 
-    public Hayabusa2LaserRawLidarFile(String pathname)
+    public Hayabusa2RawLidarFile(String pathname)
     {
         super(pathname);
         // TODO Auto-generated constructor stub
@@ -59,7 +59,7 @@ public class Hayabusa2LaserRawLidarFile extends RawLidarFile
                 //doesn't have intensity.  Just going to set it to some arbitrary value
                 double intensity = 100.0;
 //                double intensity=Double.valueOf(tokens[Fields.SIG_FAR.ordinal()]);
-                points.add(new Hayabusa2LaserLidarPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range, intensity, getFileNumber()));
+                points.add(new Hayabusa2LidarPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range, intensity, getFileNumber()));
             }
             scanner.close();
         }

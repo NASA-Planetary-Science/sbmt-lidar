@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
+package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;

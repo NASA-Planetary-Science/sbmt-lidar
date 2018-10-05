@@ -27,7 +27,7 @@ import edu.jhuapl.sbmt.lidar.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.LidarInstrument;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.RawLidarFile;
-import edu.jhuapl.sbmt.lidar.hyperoctree.laser.Hayabusa2LaserFSHyperTreeGenerator;
+import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2HyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.nlr.NlrFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeGenerator;
@@ -256,7 +256,7 @@ public abstract class FSHyperTreeGenerator
             double fiveyears = 86400*365*5;// 5 years,
             double today = new Date().getTime();
             hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, newTmin-fiveyears, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, today, 1e7});
-            generator=new Hayabusa2LaserFSHyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
+            generator=new Hayabusa2HyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         }
 
@@ -268,8 +268,8 @@ public abstract class FSHyperTreeGenerator
             System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
 
 
-            if (generator instanceof Hayabusa2LaserFSHyperTreeGenerator) {
-                ((Hayabusa2LaserFSHyperTreeGenerator)generator).addAllPointsFromFile(inputPath);
+            if (generator instanceof Hayabusa2HyperTreeGenerator) {
+                ((Hayabusa2HyperTreeGenerator)generator).addAllPointsFromFile(inputPath);
             }
             else {
                 generator.addAllPointsFromFile(inputPath);

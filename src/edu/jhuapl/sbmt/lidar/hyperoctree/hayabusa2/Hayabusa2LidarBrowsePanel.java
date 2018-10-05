@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
+package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,10 +14,10 @@ import edu.jhuapl.sbmt.gui.lidar.LidarBrowsePanel;
 import edu.jhuapl.sbmt.model.lidar.LidarBrowseDataCollection.LidarDataFileSpec;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
-public class Hayabusa2LaserLidarBrowsePanel extends LidarBrowsePanel
+public class Hayabusa2LidarBrowsePanel extends LidarBrowsePanel
 {
 
-    public Hayabusa2LaserLidarBrowsePanel(ModelManager modelManager, SmallBodyViewConfig smallBodyConfig)
+    public Hayabusa2LidarBrowsePanel(ModelManager modelManager, SmallBodyViewConfig smallBodyConfig)
     {
         super(modelManager);
         String datasourceName="Hayabusa2";

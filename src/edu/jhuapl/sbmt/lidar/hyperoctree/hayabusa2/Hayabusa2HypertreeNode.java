@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar.hyperoctree.laser;
+package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -10,11 +10,11 @@ import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException.HyperDimensionMismatchException;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 
-public class Hayabusa2LaserHypertreeNode extends FSHyperTreeNode<Hayabusa2LaserLidarPoint>
+public class Hayabusa2HypertreeNode extends FSHyperTreeNode<Hayabusa2LidarPoint>
 {
     final long bytesPerPoint=new OlaFSHyperPoint().getSizeInBytes();
 
-    public Hayabusa2LaserHypertreeNode(FSHyperTreeNode<Hayabusa2LaserLidarPoint> parent, Path path,
+    public Hayabusa2HypertreeNode(FSHyperTreeNode<Hayabusa2LidarPoint> parent, Path path,
             HyperBox bbox, int maxPoints, DataOutputStreamPool pool)
     {
         super(parent, path, bbox, maxPoints, pool);
@@ -22,11 +22,11 @@ public class Hayabusa2LaserHypertreeNode extends FSHyperTreeNode<Hayabusa2LaserL
     }
 
     @Override
-    protected Hayabusa2LaserHypertreeNode createNewChild(int i)
+    protected Hayabusa2HypertreeNode createNewChild(int i)
     {
         try
         {
-            return new Hayabusa2LaserHypertreeNode(this, getChildPath(i), getChildBounds(i), maxPoints, pool);
+            return new Hayabusa2HypertreeNode(this, getChildPath(i), getChildBounds(i), maxPoints, pool);
         }
         catch (HyperDimensionMismatchException e)
         {
@@ -36,11 +36,11 @@ public class Hayabusa2LaserHypertreeNode extends FSHyperTreeNode<Hayabusa2LaserL
     }
 
     @Override
-    protected Hayabusa2LaserLidarPoint createNewPoint(DataInputStream stream)
+    protected Hayabusa2LidarPoint createNewPoint(DataInputStream stream)
     {
         try
         {
-            return new Hayabusa2LaserLidarPoint(stream);
+            return new Hayabusa2LidarPoint(stream);
         }
         catch (IOException e)
         {
