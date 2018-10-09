@@ -26,7 +26,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
         return new FSHyperPointWithFileTag(pt.getTargetPosition().getX(),pt.getTargetPosition().getY(),pt.getTargetPosition().getZ(),pt.getTime(),pt.getSourcePosition().getX(),pt.getSourcePosition().getY(),pt.getSourcePosition().getZ(),pt.getRangeToSC(), pt.getIntensityReceived(),filenum);
     }
 
-    public FSHyperPointWithFileTag(double tgx, double tgy, double tgz, double time, double scx, double scy, double scz, double intensity, double range, int fileNum)
+    public FSHyperPointWithFileTag(double tgx, double tgy, double tgz, double time, double scx, double scy, double scz, double range, double intensity, int fileNum)
     {
         data[0]=tgx;
         data[1]=tgy;
