@@ -131,7 +131,7 @@ public class FSHyperTreeSkeleton
         f=FileCache.getFileFromServer(fileMapPath.toString());
         if (!f.exists())
             f=FileCache.getFileFromServer(FileCache.FILE_PREFIX+fileMapPath.toString());
-        System.out.println("File map = "+f.toString());
+//        System.out.println("File map = "+f.toString());
         try
         {
             Scanner scanner=new Scanner(f);
