@@ -62,8 +62,8 @@ public abstract class FSHyperTreeGenerator
         Iterator<LidarPoint> iterator=file.iterator();
         while (iterator.hasNext())
         {
-            getRoot().add(FSHyperPointWithFileTag.wrap(iterator.next(),file.getFileNumber()));
-            setTotalPointsWritten(getTotalPointsWritten() + 1);
+           if( getRoot().add(FSHyperPointWithFileTag.wrap(iterator.next(),file.getFileNumber())) )
+               setTotalPointsWritten(getTotalPointsWritten() + 1);
         }
     }
 
