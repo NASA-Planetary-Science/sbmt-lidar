@@ -42,6 +42,7 @@ public abstract class FSHyperTreeGenerator
     final DataOutputStreamPool pool;
     private FSHyperTreeNode root;
     private long totalPointsWritten=0;
+    private long totalPoints = 0;
 
     private BiMap<Path, Integer> fileMap=HashBiMap.create();
 
@@ -64,6 +65,8 @@ public abstract class FSHyperTreeGenerator
         {
            if( getRoot().add(FSHyperPointWithFileTag.wrap(iterator.next(),file.getFileNumber())) )
                setTotalPointsWritten(getTotalPointsWritten() + 1);
+           totalPoints++; // count all points, whether written or not for debug purposes
+
         }
     }
 
@@ -277,6 +280,7 @@ public abstract class FSHyperTreeGenerator
 
 
             System.out.println("  Elapsed time = "+sw.elapsedTime(TimeUnit.SECONDS)+" s");
+            System.out.println("  Total points from all files = "+generator.getTotalPoints());// TODO: close down all DataOutputStreams
             System.out.println("  Total points written into master data file = "+generator.getTotalPointsWritten());// TODO: close down all DataOutputStreams
             System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.getRoot().getDataFilePath().toFile().length()));
         }
@@ -304,6 +308,12 @@ public abstract class FSHyperTreeGenerator
             writer.write(i+" "+generator.getFileMap().inverse().get(i)+"\n");
         writer.close();
         System.out.println("Done.");
+    }
+
+    private long getTotalPoints()
+    {
+        // TODO Auto-generated method stub
+        return totalPoints;
     }
 
     public BiMap<Path, Integer> getFileMap()
