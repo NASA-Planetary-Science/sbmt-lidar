@@ -99,9 +99,9 @@ public class Hayabusa2LidarHyperTreeSearchPanel extends LidarSearchController//L
         int lidarIndex=-1;
         String lidarDatasourceName="Hayabusa2";
         String lidarDatasourcePath=lidarModel.getLidarDataSourceMap().get(lidarDatasourceName);
-        System.out.println("Current Lidar Datasource Index : " + lidarIndex);
-        System.out.println("Current Lidar Datasource Name: " + lidarDatasourceName);
-        System.out.println("Current Lidar Datasource Path: " + lidarDatasourcePath);
+//        System.out.println("Current Lidar Datasource Index : " + lidarIndex);
+//        System.out.println("Current Lidar Datasource Name: " + lidarDatasourceName);
+//        System.out.println("Current Lidar Datasource Path: " + lidarDatasourcePath);
 
         // read in the skeleton, if it hasn't been read in already
         ((Hayabusa2LidarHyperTreeSearchDataCollection)lidarModel).readSkeleton();
@@ -141,7 +141,7 @@ public class Hayabusa2LidarHyperTreeSearchPanel extends LidarSearchController//L
         }
 
 
-        System.out.println("Found matching lidar data path: "+lidarDatasourcePath);
+//        System.out.println("Found matching lidar data path: "+lidarDatasourcePath);
         lidarModel.addPropertyChangeListener(propertyChangeListener);
         view.getRadialOffsetSlider().setModel(lidarModel);
         view.getRadialOffsetSlider().setOffsetScale(lidarModel.getOffsetScale());
@@ -155,8 +155,8 @@ public class Hayabusa2LidarHyperTreeSearchPanel extends LidarSearchController//L
         double[] bounds = interiorPoly.GetBounds();
         double[] rangeLims = new double[] {Double.parseDouble(((Hayabusa2LidarSearchView)view).getMinSCRange().getText()), Double.parseDouble(((Hayabusa2LidarSearchView)view).getMaxSCRange().getText())};
         TreeSet<Integer> cubeList=((Hayabusa2LidarHyperTreeSearchDataCollection)lidarModel).getLeavesIntersectingBoundingBox(new BoundingBox(bounds), getSelectedTimeLimits(), rangeLims);
-        System.out.println(cubeList);
-        System.out.println("Search Time="+sw.elapsedMillis()+" ms");
+//        System.out.println(cubeList);
+//        System.out.println("Search Time="+sw.elapsedMillis()+" ms");
         sw.stop();
 
 
