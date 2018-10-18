@@ -14,7 +14,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
 
     // there are 9 data values but only 5 are used to define the hyperspace: tgx,tgy,tgz,time, range
     protected double[] data=new double[9];    // tgx,tgy,tgz,time,scx,scy,scz, range,intensity
-    int fileNum;
+    protected int fileNum;
 
     public FSHyperPointWithFileTag()
     {
