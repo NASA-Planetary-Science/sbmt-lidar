@@ -22,7 +22,7 @@ import edu.jhuapl.saavtk.model.PointInCylinderChecker;
 import edu.jhuapl.saavtk.model.structure.AbstractEllipsePolygonModel;
 import edu.jhuapl.saavtk.pick.PickManager;
 import edu.jhuapl.saavtk.pick.PickManager.PickMode;
-import edu.jhuapl.saavtk.pick.Picker;
+import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.sbmt.client.SmallBodyModel;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
@@ -160,14 +160,14 @@ public class Hayabusa2LidarHyperTreeSearchPanel extends LidarSearchController//L
         sw.stop();
 
 
-        Picker.setPickingEnabled(false);
+        PickUtil.setPickingEnabled(false);
 
         ((Hayabusa2LidarHyperTreeSearchDataCollection)lidarModel).setParentForProgressMonitor(view);
         showData(cubeList, selectionRegionCenter, selectionRegionRadius);
         view.getRadialOffsetSlider().reset();
 
 
-        Picker.setPickingEnabled(true);
+        PickUtil.setPickingEnabled(true);
 
     }
 
