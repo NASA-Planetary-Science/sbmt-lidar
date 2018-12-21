@@ -5,9 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -35,6 +33,7 @@ import edu.jhuapl.sbmt.lidar.hyperoctree.nlr.NlrFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeNode;
+import edu.jhuapl.sbmt.util.TimeUtil;
 
 public abstract class FSHyperTreeGenerator
 {
@@ -157,8 +156,8 @@ public abstract class FSHyperTreeGenerator
         System.out.println("  (3) instrument name (options are "
                 + Arrays.toString(LidarInstrument.values())
                 + ")");
-        System.out.println("  (4) start date for tree (yyyyMMdd)");
-        System.out.println("  (5) end date for tree (yyyyMMdd)");
+        System.out.println("  (4) start date for tree (yyyy-MM-ddTHH:mm:ss)");
+        System.out.println("  (5) end date for tree (yyyy-MM-ddTHH:mm:ss)");
 
 
     }
@@ -175,9 +174,8 @@ public abstract class FSHyperTreeGenerator
         String inputDirectoryListFileString = args[0];
         String outputDirectoryString = args[1];
         String instrumentName = args[2];
-        DateFormat df = new SimpleDateFormat("yyyyMMdd");
-        double startDate = df.parse(args[3]).getTime();
-        double stopDate  = df.parse(args[4]).getTime();
+        double startDate = TimeUtil.str2et(args[3]);
+        double stopDate  = TimeUtil.str2et(args[4]);
 
         double dataFileMBLimit = .05;
         int maxNumOpenOutputFiles = 32;
@@ -208,10 +206,8 @@ public abstract class FSHyperTreeGenerator
         System.out.println("Rescaled bounding box = "+bbox);
         System.out.println();
 
-                double tmin = instrument.getTmin();
-                double tmax = instrument.getTmax();
-//        double tmin = startDate;
-//        double tmax = stopDate;
+        double tmin = startDate;
+        double tmax = stopDate;
         double tscale = (tmax - tmin) * bboxSizeIncrease/2.;
         double newTmin = tmin - tscale;
         double newTmax = tmax + tscale;
