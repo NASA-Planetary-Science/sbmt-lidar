@@ -125,8 +125,8 @@ public class OlaLidarFile extends RawLidarFile
         try
         {
             String filePathString=this.toString();
-            if (!filePathString.endsWith(".l2"))
-                throw new Exception("Incorrect file extension \""+filePathString.substring(filePathString.lastIndexOf('.'))+"\" expected .l2");
+//            if (!filePathString.endsWith(".l2"))
+//                throw new Exception("Incorrect file extension \""+filePathString.substring(filePathString.lastIndexOf('.'))+"\" expected .l2");
 
             byte[] buf=new byte[recordLength];
             in = new DataInputStream(new BufferedInputStream(new FileInputStream(this)));

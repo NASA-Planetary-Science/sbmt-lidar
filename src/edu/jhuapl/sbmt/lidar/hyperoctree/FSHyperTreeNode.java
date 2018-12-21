@@ -191,12 +191,14 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
         while (instream.available()>0)
         {
             T pt = createNewPoint(instream);
-            for (int i=0; i<getNumberOfChildren() ; i++)
-                if (children[i].getBoundingBox().contains(pt))
-                {
-                    children[i].add(pt);
-                    break;
-                }
+            if (pt != null) {
+                for (int i=0; i<getNumberOfChildren() ; i++)
+                    if (children[i].getBoundingBox().contains(pt))
+                    {
+                        children[i].add(pt);
+                        break;
+                    }
+            }
         }
         instream.close();
         isLeaf=false;
