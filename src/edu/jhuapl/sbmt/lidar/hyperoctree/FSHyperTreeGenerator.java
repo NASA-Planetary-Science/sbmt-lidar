@@ -268,6 +268,11 @@ public abstract class FSHyperTreeGenerator
             sw.reset();
             sw.start();
             Path inputPath=Paths.get(fileList.get(i).toString());
+
+            // TODO
+            /*
+             * Check if file is in time range
+             */
             System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
 
 
