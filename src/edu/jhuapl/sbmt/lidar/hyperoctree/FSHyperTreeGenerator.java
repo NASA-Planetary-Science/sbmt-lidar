@@ -207,11 +207,8 @@ public abstract class FSHyperTreeGenerator
 
         double tmin = startDate;
         double tmax = stopDate;
-        double tscale = (tmax - tmin) * bboxSizeIncrease/2.;
-        double newTmin = tmin - tscale;
-        double newTmax = tmax + tscale;
-        System.out.println("tmin = " + tmin + " tmax= " + tmax + " are being expanded by a factor of " + bboxSizeIncrease + " to tmin = " + newTmin + " tmax = " + newTmax);
-        HyperBox hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, newTmin}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, newTmax});
+        System.out.println("tmin = " + tmin + " tmax= " + tmax + " are being expanded by a factor of " + bboxSizeIncrease + " to tmin = " + tmin + " tmax = " + tmax);
+        HyperBox hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, tmin}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, tmax});
 
         List<File> fileList=Lists.newArrayList();
         Scanner scanner=new Scanner(inputDirectoryListFile.toFile());
@@ -255,7 +252,7 @@ public abstract class FSHyperTreeGenerator
             break;
         case LASER:
             // add min/max range to the root hyper box  TODO what should original max range be?
-            hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, newTmin, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, newTmax, 1e7});
+            hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, tmin, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, tmax, 1e7});
             generator=new Hayabusa2HyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         }
@@ -319,6 +316,7 @@ public abstract class FSHyperTreeGenerator
             writer.write(i+" "+generator.getFileMap().inverse().get(i)+"\n");
         writer.close();
         System.out.println("Done.");
+
     }
 
     private long getTotalPoints()
