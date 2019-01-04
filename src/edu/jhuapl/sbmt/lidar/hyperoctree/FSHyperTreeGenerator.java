@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -156,8 +155,8 @@ public abstract class FSHyperTreeGenerator
         System.out.println("  (3) instrument name (options are "
                 + Arrays.toString(LidarInstrument.values())
                 + ")");
-        System.out.println("  (4) start date for tree (yyyy-MM-ddTHH:mm:ss)");
-        System.out.println("  (5) end date for tree (yyyy-MM-ddTHH:mm:ss)");
+        System.out.println("  (4) start date for tree (yyyy-MM-ddTHH:mm:ss.000)");
+        System.out.println("  (5) end date for tree (yyyy-MM-ddTHH:mm:ss.000)");
 
 
     }
@@ -256,9 +255,7 @@ public abstract class FSHyperTreeGenerator
             break;
         case LASER:
             // add min/max range to the root hyper box  TODO what should original max range be?
-            double fiveyears = 86400*365*5;// 5 years,
-            double today = new Date().getTime();
-            hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, newTmin-fiveyears, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, today, 1e7});
+            hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, newTmin, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, newTmax, 1e7});
             generator=new Hayabusa2HyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         }
@@ -269,26 +266,35 @@ public abstract class FSHyperTreeGenerator
             sw.start();
             Path inputPath=Paths.get(fileList.get(i).toString());
 
-            // TODO
             /*
              * Check if file is in time range
              */
-            System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
+            if (instrument == LidarInstrument.OLA) {
+                try {
+                    String filename = inputPath.getFileName().toString();
+                    String[] toks = filename.split("_");
+                    String date = toks[0];
+                    String strDate = String.format("20%s-%s-%sT00:00:00.000", date.substring(0,2), date.substring(2,4), date.substring(4,6));
+                    double et = TimeUtil.str2et(strDate);
+                    if (et >= tmin && et <= tmax) {
+                        System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
+                        generator.addAllPointsFromFile(inputPath);
+                    }
 
-
-            if (generator instanceof Hayabusa2HyperTreeGenerator) {
-                ((Hayabusa2HyperTreeGenerator)generator).addAllPointsFromFile(inputPath);
-            }
-            else {
+                } catch (Exception e) {
+                    System.out.println("Filename not formatted as expected (i.e. 181216_ola_scil2id01007.dat) so unable to parse date from filename.");
+                }
+            } else {
+                // for other instruments, just add all points without checking filename for now
                 generator.addAllPointsFromFile(inputPath);
             }
-
-
-            System.out.println("  Elapsed time = "+sw.elapsedTime(TimeUnit.SECONDS)+" s");
-            System.out.println("  Total points from all files = "+generator.getTotalPoints());// TODO: close down all DataOutputStreams
-            System.out.println("  Total points written into master data file = "+generator.getTotalPointsWritten());// TODO: close down all DataOutputStreams
-            System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.getRoot().getDataFilePath().toFile().length()));
         }
+
+        System.out.println("  Elapsed time = "+sw.elapsedTime(TimeUnit.SECONDS)+" s");
+        System.out.println("  Total points from all files = "+generator.getTotalPoints());
+        System.out.println("  Total points written into master data file = "+generator.getTotalPointsWritten());
+        System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.getRoot().getDataFilePath().toFile().length()));
+
         long rootFileSizeBytes = generator.getRoot().getDataFilePath().toFile().length();
 
         sw.reset();
