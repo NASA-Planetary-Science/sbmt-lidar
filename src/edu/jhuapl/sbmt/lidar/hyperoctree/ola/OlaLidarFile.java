@@ -103,6 +103,10 @@ public class OlaLidarFile extends RawLidarFile
                 rawTgpos[rawTgpos.length-1-i]=buf.get();
             ByteBuffer tgposBuf=ByteBuffer.wrap(rawTgpos);
             tgpos=new Vector3D(tgposBuf.getDouble(),tgposBuf.getDouble(),tgposBuf.getDouble()).scalarMultiply(1e-3);
+            double x = tgpos.getX();
+            double y = tgpos.getY();
+            double z = tgpos.getZ();
+            tgpos=new Vector3D(z, y, x);
             //
             byte[] rawScpos=new byte[Double.BYTES*3];
             buf.position(scposOffset);
@@ -125,8 +129,8 @@ public class OlaLidarFile extends RawLidarFile
         try
         {
             String filePathString=this.toString();
-//            if (!filePathString.endsWith(".l2"))
-//                throw new Exception("Incorrect file extension \""+filePathString.substring(filePathString.lastIndexOf('.'))+"\" expected .l2");
+            if (!(filePathString.endsWith(".l2") || filePathString.endsWith(".dat")))
+                throw new Exception("Incorrect file extension \""+filePathString.substring(filePathString.lastIndexOf('.'))+"\" expected .l2");
 
             byte[] buf=new byte[recordLength];
             in = new DataInputStream(new BufferedInputStream(new FileInputStream(this)));

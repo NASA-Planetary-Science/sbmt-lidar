@@ -60,6 +60,7 @@ public abstract class FSHyperTreeGenerator
     public void addAllPointsFromFile(Path inputPath) throws HyperException, IOException
     {
         RawLidarFile file=openFile(inputPath);
+//        LidarDataPerUnit lidarData = new LidarDataPerUnit(inputPath, bodyConfig, );
         getFileMap().put(inputPath.getFileName(),file.getFileNumber());
         Iterator<LidarPoint> iterator=file.iterator();
         while (iterator.hasNext())
