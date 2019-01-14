@@ -100,18 +100,14 @@ public class OlaLidarFile extends RawLidarFile
             byte[] rawTgpos=new byte[Double.BYTES*3];
             buf.position(tgposOffset);
             for (int i=0; i<rawTgpos.length; i++)
-                rawTgpos[rawTgpos.length-1-i]=buf.get();
+                rawTgpos[i]=buf.get();
             ByteBuffer tgposBuf=ByteBuffer.wrap(rawTgpos);
             tgpos=new Vector3D(tgposBuf.getDouble(),tgposBuf.getDouble(),tgposBuf.getDouble()).scalarMultiply(1e-3);
-            double x = tgpos.getX();
-            double y = tgpos.getY();
-            double z = tgpos.getZ();
-            tgpos=new Vector3D(z, y, x);
             //
             byte[] rawScpos=new byte[Double.BYTES*3];
             buf.position(scposOffset);
             for (int i=0; i<rawScpos.length; i++)
-                rawScpos[rawScpos.length-1-i]=buf.get();
+                rawScpos[i]=buf.get();
             ByteBuffer scposBuf=ByteBuffer.wrap(rawScpos);
             scpos=new Vector3D(scposBuf.getDouble(),scposBuf.getDouble(),scposBuf.getDouble()).scalarMultiply(1e-3);
         }
