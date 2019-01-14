@@ -114,6 +114,7 @@ public class OlaLidarFile extends RawLidarFile
 
         public FSHyperPointWithFileTag getAsHyperPoint()
         {
+        	// switch x and z because they are read in the incorrect oreder.  TODO fix the reader so that x and z are read correctly???
             return new FSHyperPointWithFileTag(tgpos.getZ(),tgpos.getY(),tgpos.getX(),time,scpos.getZ(),scpos.getY(),scpos.getX(), range, intensity,getFileNumber());
         }
     }
