@@ -100,21 +100,21 @@ public class OlaLidarFile extends RawLidarFile
             byte[] rawTgpos=new byte[Double.BYTES*3];
             buf.position(tgposOffset);
             for (int i=0; i<rawTgpos.length; i++)
-                rawTgpos[i]=buf.get();
+                rawTgpos[rawTgpos.length-1-i]=buf.get();
             ByteBuffer tgposBuf=ByteBuffer.wrap(rawTgpos);
             tgpos=new Vector3D(tgposBuf.getDouble(),tgposBuf.getDouble(),tgposBuf.getDouble()).scalarMultiply(1e-3);
             //
             byte[] rawScpos=new byte[Double.BYTES*3];
             buf.position(scposOffset);
             for (int i=0; i<rawScpos.length; i++)
-                rawScpos[i]=buf.get();
+                rawScpos[rawScpos.length-1-i]=buf.get();
             ByteBuffer scposBuf=ByteBuffer.wrap(rawScpos);
             scpos=new Vector3D(scposBuf.getDouble(),scposBuf.getDouble(),scposBuf.getDouble()).scalarMultiply(1e-3);
         }
 
         public FSHyperPointWithFileTag getAsHyperPoint()
         {
-            return new FSHyperPointWithFileTag(tgpos.getX(),tgpos.getY(),tgpos.getZ(),time,scpos.getX(),scpos.getY(),scpos.getZ(), range, intensity,getFileNumber());
+            return new FSHyperPointWithFileTag(tgpos.getZ(),tgpos.getY(),tgpos.getX(),time,scpos.getZ(),scpos.getY(),scpos.getX(), range, intensity,getFileNumber());
         }
     }
 
