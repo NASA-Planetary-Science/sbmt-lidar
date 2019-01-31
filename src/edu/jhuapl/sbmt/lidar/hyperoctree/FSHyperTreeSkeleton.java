@@ -16,6 +16,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import edu.jhuapl.saavtk.util.FileCache;
+import edu.jhuapl.saavtk.util.FileCache.NonexistentRemoteFile;
 
 public class FSHyperTreeSkeleton
 {
@@ -89,7 +90,7 @@ public class FSHyperTreeSkeleton
         return null;
     }
 
-    public void read()  // cf. OlaFSHyperTreeCondenser for code to write the skeleton file
+    public void read() throws NonexistentRemoteFile // cf. OlaFSHyperTreeCondenser for code to write the skeleton file
     {
 
         File f=FileCache.getFileFromServer(dataSourcePath.toString());

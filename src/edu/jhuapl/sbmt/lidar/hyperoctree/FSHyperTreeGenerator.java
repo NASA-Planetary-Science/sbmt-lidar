@@ -5,9 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -32,6 +32,7 @@ import edu.jhuapl.sbmt.lidar.hyperoctree.nlr.NlrFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeNode;
+import edu.jhuapl.sbmt.util.TimeUtil;
 
 public abstract class FSHyperTreeGenerator
 {
@@ -42,6 +43,7 @@ public abstract class FSHyperTreeGenerator
     final DataOutputStreamPool pool;
     private FSHyperTreeNode root;
     private long totalPointsWritten=0;
+    private long totalPoints = 0;
 
     private BiMap<Path, Integer> fileMap=HashBiMap.create();
 
@@ -58,12 +60,15 @@ public abstract class FSHyperTreeGenerator
     public void addAllPointsFromFile(Path inputPath) throws HyperException, IOException
     {
         RawLidarFile file=openFile(inputPath);
+//        LidarDataPerUnit lidarData = new LidarDataPerUnit(inputPath, bodyConfig, );
         getFileMap().put(inputPath.getFileName(),file.getFileNumber());
         Iterator<LidarPoint> iterator=file.iterator();
         while (iterator.hasNext())
         {
-            getRoot().add(FSHyperPointWithFileTag.wrap(iterator.next(),file.getFileNumber()));
-            setTotalPointsWritten(getTotalPointsWritten() + 1);
+            if( getRoot().add(FSHyperPointWithFileTag.wrap(iterator.next(),file.getFileNumber())) )
+                setTotalPointsWritten(getTotalPointsWritten() + 1);
+            totalPoints++; // count all points, whether written or not for debug purposes
+
         }
     }
 
@@ -148,49 +153,52 @@ public abstract class FSHyperTreeGenerator
         System.out.println("Arguments:");
         System.out.println("  (1) file containing list of input directories, each separated by newline");
         System.out.println("  (2) output directory to build the search tree in");
-        System.out.println("  (3) data file MB limit");
-        System.out.println("  (4) max number of open output files");
-        System.out.println("  (5) total number of files in the list to process (-1 for all)");
-        System.out.println("  (6) instrument name (options are "
+        System.out.println("  (3) instrument name (options are "
                 + Arrays.toString(LidarInstrument.values())
                 + ")");
+        System.out.println("  (4) start date for tree (yyyy-MM-ddTHH:mm:ss.000)");
+        System.out.println("  (5) end date for tree (yyyy-MM-ddTHH:mm:ss.000)");
+
+
     }
 
 
-    public static void main(String[] args) throws IOException, HyperException
+    public static void main(String[] args) throws IOException, HyperException, ParseException
     {
-        if (args.length!=6)
+        if (args.length != 5)
         {
             printUsage();
             return;
         }
 
-        //String inputDirectoryString=args[0];    // "/Volumes/dumbledore/sbmt/OLA"
-        String inputDirectoryListFileString=args[0];
-        String outputDirectoryString=args[1];   // "/Volumes/dumbledore/sbmt/ola_hypertree"
-        double dataFileMBLimit=Double.valueOf(args[2]); // 1
-        int maxNumOpenOutputFiles=Integer.valueOf(args[3]);   // 32
-        int nFilesToProcess=Integer.valueOf(args[4]);
-        String instrumentName=args[5];
+        String inputDirectoryListFileString = args[0];
+        String outputDirectoryString = args[1];
+        String instrumentName = args[2];
+        double startDate = TimeUtil.str2et(args[3]);
+        double stopDate  = TimeUtil.str2et(args[4]);
+
+        double dataFileMBLimit = .05;
+        int maxNumOpenOutputFiles = 32;
+
 
         System.out.println("Input data directory listing = "+inputDirectoryListFileString);
         System.out.println("Output tree location = "+outputDirectoryString);
         System.out.println("Data file MB limit = "+dataFileMBLimit);
         System.out.println("Max # open output files = "+maxNumOpenOutputFiles);
-        System.out.println("Number of files to process = "+nFilesToProcess);
         System.out.println("Instrument = "+instrumentName);
 
+        // set up environment
         System.setProperty("java.awt.headless", "true");
         NativeLibraryLoader.loadVtkLibrariesHeadless();
         Path inputDirectoryListFile=Paths.get(inputDirectoryListFileString);
         Path outputDirectory=Paths.get(outputDirectoryString);
 
-        int dataFileByteLimit=(int)(dataFileMBLimit*1024*1024);
-        int maxPointsPerLeaf=dataFileByteLimit/new OlaFSHyperPoint().getSizeInBytes();   // three doubles for scpos, three doubles for tgpos, one double for time, and one double for intensity
-        DataOutputStreamPool pool=new DataOutputStreamPool(maxNumOpenOutputFiles);
+        int dataFileByteLimit = (int)(dataFileMBLimit*1024*1024);
+        int maxPointsPerLeaf = dataFileByteLimit/new OlaFSHyperPoint().getSizeInBytes();
+        DataOutputStreamPool pool = new DataOutputStreamPool(maxNumOpenOutputFiles);
 
-        LidarInstrument instrument=LidarInstrument.valueOf(instrumentName);
-        BoundingBox bbox=instrument.getBoundingBox();
+        LidarInstrument instrument = LidarInstrument.valueOf(instrumentName);
+        BoundingBox bbox = instrument.getBoundingBox();
         System.out.println("Original bounding box = "+bbox);
         double bboxSizeIncrease=0.05;
         bbox.increaseSize(bboxSizeIncrease);
@@ -198,35 +206,27 @@ public abstract class FSHyperTreeGenerator
         System.out.println("Rescaled bounding box = "+bbox);
         System.out.println();
 
-        double tmin=instrument.getTmin();
-        double tmax=instrument.getTmax();
-        double tscale=(tmax-tmin)*bboxSizeIncrease/2.;
-        double newTmin=tmin-tscale;
-        double newTmax=tmax+tscale;
-        System.out.println("tmin="+tmin+" tmax="+tmax+" are being expanded by a factor of "+bboxSizeIncrease+" to tmin="+newTmin+" tmax="+newTmax);
-        HyperBox hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, newTmin}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, newTmax});
+        double tmin = startDate;
+        double tmax = stopDate;
+        System.out.println("tmin = " + tmin + " tmax= " + tmax + " are being expanded by a factor of " + bboxSizeIncrease + " to tmin = " + tmin + " tmax = " + tmax);
+        HyperBox hbox=new HyperBox(new double[]{bbox.xmin, bbox.ymin, bbox.zmin, tmin}, new double[]{bbox.xmax, bbox.ymax, bbox.zmax, tmax});
 
         List<File> fileList=Lists.newArrayList();
         Scanner scanner=new Scanner(inputDirectoryListFile.toFile());
         while (scanner.hasNextLine())
         {
-            File dataDirectory=inputDirectoryListFile.getParent().resolve(scanner.nextLine().trim()).toFile();
-            System.out.println(dataDirectory+" "+dataDirectory.isDirectory()+" "+dataDirectory.getName());
-            System.out.println("Searching for ."+instrument.getRawFileExtension()+" files in "+dataDirectory.toString());
-            Collection<File> fileCollection=FileUtils.listFiles(dataDirectory, new WildcardFileFilter("*."+instrument.getRawFileExtension()), null);
+            File dataDirectory = inputDirectoryListFile.getParent().resolve(scanner.nextLine().trim()).toFile();
+            System.out.println(dataDirectory + " " + dataDirectory.isDirectory() + " " + dataDirectory.getName());
+            System.out.println("Searching for ." + instrument.getRawFileExtension() + " files in " + dataDirectory.toString());
+            Collection<File> fileCollection = FileUtils.listFiles(dataDirectory, new WildcardFileFilter("*."+instrument.getRawFileExtension()), null);
             for (File f : fileCollection) {
                 System.out.println("Adding file "+f+" to the processing queue");
                 fileList.add(f);
             }
         }
         scanner.close();
-        int numFiles=fileList.size();
+        int numFiles = fileList.size();
 
-        if (nFilesToProcess>-1)
-            numFiles=nFilesToProcess;
-
-        //FileUtils.deleteDirectory(outputDirectory.toFile());
-        //FileUtils.forceMkdir(outputDirectory.toFile());
         if (!outputDirectory.toFile().exists())
         {
             System.out.println("Error: Output directory \""+outputDirectory.toString()+"\" does not exist");
@@ -253,9 +253,7 @@ public abstract class FSHyperTreeGenerator
             break;
         case LASER:
             // add min/max range to the root hyper box  TODO what should original max range be?
-            double fiveyears = 86400*365*5;// 5 years,
-            double today = new Date().getTime();
-            hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, newTmin-fiveyears, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, today, 1e7});
+            hbox=new HyperBox(new double[]{bbox.xmin * 1e-3, bbox.ymin* 1e-3, bbox.zmin* 1e-3, tmin, 0}, new double[]{bbox.xmax* 1e-3, bbox.ymax* 1e-3, bbox.zmax* 1e-3, tmax, 1e7});
             generator=new Hayabusa2HyperTreeGenerator(outputDirectory, maxPointsPerLeaf, hbox, maxNumOpenOutputFiles, pool);
             break;
         }
@@ -265,22 +263,37 @@ public abstract class FSHyperTreeGenerator
             sw.reset();
             sw.start();
             Path inputPath=Paths.get(fileList.get(i).toString());
-            System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
 
+            /*
+             * Check if file is in time range
+             */
+            if (instrument == LidarInstrument.OLA) {
+                try {
+                    String filename = inputPath.getFileName().toString();
+                    String[] toks = filename.split("_");
+                    String date = toks[0];
+                    String strDate = String.format("20%s-%s-%sT00:00:00.000", date.substring(0,2), date.substring(2,4), date.substring(4,6));
+                    double et = TimeUtil.str2et(strDate);
+                    if (et >= tmin && et <= tmax) {
+                        System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
+                        generator.addAllPointsFromFile(inputPath);
+                    }
 
-            if (generator instanceof Hayabusa2HyperTreeGenerator) {
-                ((Hayabusa2HyperTreeGenerator)generator).addAllPointsFromFile(inputPath);
-            }
-            else {
+                } catch (Exception e) {
+                    System.out.println("Filename not formatted as expected (i.e. 181216_ola_scil2id01007.dat) so unable to parse date from filename.");
+                }
+            } else {
+                // for other instruments, just add all points without checking filename for now
                 generator.addAllPointsFromFile(inputPath);
             }
-
-
-            System.out.println("  Elapsed time = "+sw.elapsedTime(TimeUnit.SECONDS)+" s");
-            System.out.println("  Total points written into master data file = "+generator.getTotalPointsWritten());// TODO: close down all DataOutputStreams
-            System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.getRoot().getDataFilePath().toFile().length()));
         }
-        long rootFileSizeBytes=generator.getRoot().getDataFilePath().toFile().length();
+
+        System.out.println("  Elapsed time = "+sw.elapsedTime(TimeUnit.SECONDS)+" s");
+        System.out.println("  Total points from all files = "+generator.getTotalPoints());
+        System.out.println("  Total points written into master data file = "+generator.getTotalPointsWritten());
+        System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.getRoot().getDataFilePath().toFile().length()));
+
+        long rootFileSizeBytes = generator.getRoot().getDataFilePath().toFile().length();
 
         sw.reset();
         sw.start();
@@ -304,6 +317,13 @@ public abstract class FSHyperTreeGenerator
             writer.write(i+" "+generator.getFileMap().inverse().get(i)+"\n");
         writer.close();
         System.out.println("Done.");
+
+    }
+
+    private long getTotalPoints()
+    {
+        // TODO Auto-generated method stub
+        return totalPoints;
     }
 
     public BiMap<Path, Integer> getFileMap()

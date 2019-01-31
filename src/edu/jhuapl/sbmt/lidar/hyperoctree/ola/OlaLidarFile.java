@@ -114,7 +114,8 @@ public class OlaLidarFile extends RawLidarFile
 
         public FSHyperPointWithFileTag getAsHyperPoint()
         {
-            return new FSHyperPointWithFileTag(tgpos.getX(),tgpos.getY(),tgpos.getZ(),time,scpos.getX(),scpos.getY(),scpos.getZ(), range, intensity,getFileNumber());
+        	// switch x and z because they are read in the incorrect oreder.  TODO fix the reader so that x and z are read correctly???
+            return new FSHyperPointWithFileTag(tgpos.getZ(),tgpos.getY(),tgpos.getX(),time,scpos.getZ(),scpos.getY(),scpos.getX(), range, intensity,getFileNumber());
         }
     }
 
@@ -125,7 +126,7 @@ public class OlaLidarFile extends RawLidarFile
         try
         {
             String filePathString=this.toString();
-            if (!filePathString.endsWith(".l2"))
+            if (!(filePathString.endsWith(".l2") || filePathString.endsWith(".dat")))
                 throw new Exception("Incorrect file extension \""+filePathString.substring(filePathString.lastIndexOf('.'))+"\" expected .l2");
 
             byte[] buf=new byte[recordLength];

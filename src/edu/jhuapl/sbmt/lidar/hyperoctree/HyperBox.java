@@ -70,7 +70,7 @@ public class HyperBox implements Dimensioned
     {
         if (value.getDimension()!=this.getDimension())
             throw new HyperDimensionMismatchException(value.getDimension(),this.getDimension());
-        for (int i=0; i<getDimension(); i++) // checks 0 through 4, but the order is not correct (this checks time v range?)
+        for (int i=0; i<getDimension(); i++) // checks 0 through 4 -> [x, y, z, time, range]
             if (value.getCoordinate(i)<min[i] || value.getCoordinate(i)>max[i])
                 return false;
         return true;

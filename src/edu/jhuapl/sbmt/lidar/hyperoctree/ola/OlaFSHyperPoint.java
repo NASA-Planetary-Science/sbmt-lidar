@@ -27,5 +27,13 @@ public class OlaFSHyperPoint extends FSHyperPointWithFileTag
         // TODO Auto-generated constructor stub
     }
 
+    @Override
+    public void read(DataInputStream inputStream) throws IOException   // the hyperpoint only has 4 coordinates but we need to write all 8
+    {
+        for (int i=0; i<data.length; i++)
+            data[i]=inputStream.readDouble();
+        fileNum=inputStream.readInt();
+    }
+
 
 }
