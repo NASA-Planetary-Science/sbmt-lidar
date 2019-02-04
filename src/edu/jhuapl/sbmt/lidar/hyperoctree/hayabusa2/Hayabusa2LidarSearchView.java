@@ -7,17 +7,21 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import edu.jhuapl.sbmt.gui.lidar.v2.LidarSearchView;
+import edu.jhuapl.saavtk.gui.render.Renderer;
+import edu.jhuapl.saavtk.model.ModelManager;
+import edu.jhuapl.saavtk.pick.PickManager;
+import edu.jhuapl.sbmt.gui.lidar.LidarSearchPanel;
+import edu.jhuapl.sbmt.gui.lidar.v2.LidarSearchModel;
 
-public class Hayabusa2LidarSearchView extends LidarSearchView
+public class Hayabusa2LidarSearchView extends LidarSearchPanel
 {
 
     JPanel scRangePanel = new JPanel();
     protected JFormattedTextField minSCRange;
     protected JFormattedTextField maxSCRange;
 
-    public Hayabusa2LidarSearchView() {
-        super();
+    public Hayabusa2LidarSearchView(ModelManager aModelManager, LidarSearchModel aModel, PickManager aPickManager, Renderer aRenderer) {
+        super(aModelManager, aModel, aPickManager, aRenderer);
 
         JLabel lblSpacecraftRange = new JLabel("Spacecraft Range:");
         GridBagConstraints gbc_lblSpacecraftRange = new GridBagConstraints();
