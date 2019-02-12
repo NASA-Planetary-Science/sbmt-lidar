@@ -21,7 +21,7 @@ import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 import edu.jhuapl.sbmt.client.SmallBodyModel;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.model.bennu.Bennu;
-import edu.jhuapl.sbmt.model.lidar.LidarSearchDataCollection.TrackFileType;
+import edu.jhuapl.sbmt.model.lidar.TrackFileType;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
 /**
