@@ -7,7 +7,7 @@ import edu.jhuapl.sbmt.client.SmallBodyModel;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.lidar.old.LidarCubesGenerator.LidarDataType;
 import edu.jhuapl.sbmt.model.bennu.Bennu;
-import edu.jhuapl.sbmt.model.lidar.LidarSearchDataCollection.TrackFileType;
+import edu.jhuapl.sbmt.model.lidar.TrackFileType;
 
 /**
  * This program goes through all the OLA L2 data and divides the data
