@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 import edu.jhuapl.saavtk.model.ModelManager;
+import edu.jhuapl.saavtk.util.DownloadableFileInfo.DownloadableFileState;
 import edu.jhuapl.saavtk.util.FileCache;
-import edu.jhuapl.saavtk.util.FileCache.UnauthorizedAccessException;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.gui.lidar.LidarBrowsePanel;
 import edu.jhuapl.sbmt.model.lidar.LidarBrowseDataCollection.LidarDataFileSpec;
@@ -29,9 +29,9 @@ public class Hayabusa2LidarBrowsePanel extends LidarBrowsePanel
     {
         lidarResultListModel.clear();
 
-        try
+        DownloadableFileState state = getDataState();
+        if (state.isAccessible())
         {
-            isDataGettable();
             File listFile=FileCache.getFileFromServer(browseFileList);
             try
             {
@@ -64,7 +64,7 @@ public class Hayabusa2LidarBrowsePanel extends LidarBrowsePanel
 
             resultsLabel.setText("Available Files: "+datasourceName);
         }
-        catch (UnauthorizedAccessException e)
+        else if (state.isUrlUnauthorized())
         {
             resultsLabel.setText("No Results Available: Access Not Authorized");
         }
