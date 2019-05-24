@@ -8,6 +8,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import edu.jhuapl.saavtk.util.LatLon;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.sbmt.lidar.RawLidarFile;
+import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
 
 
 public class NlrRawLidarFile extends RawLidarFile
@@ -91,7 +92,7 @@ public class NlrRawLidarFile extends RawLidarFile
                 Vector3D tgpos=new Vector3D(tgx,tgy,tgz).scalarMultiply(1e-3);  // km
                 double intensity=Double.valueOf(tokens[Fields.Emission.ordinal()]);
                 double range_km = scrad *1e-3;
-                points.add(new NlrLidarPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range_km, intensity, getFileNumber()));
+                points.add(new FSHyperPointWithFileTag(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range_km, intensity, getFileNumber()));
             }
             scanner.close();
         }

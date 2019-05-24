@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import edu.jhuapl.sbmt.lidar.DataOutputStreamPool;
+import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeNode;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException.HyperDimensionMismatchException;
-import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 
 public class Hayabusa2HypertreeNode extends FSHyperTreeNode<Hayabusa2LidarPoint>
 {
-    final long bytesPerPoint=new OlaFSHyperPoint().getSizeInBytes();
+    final long bytesPerPoint=new FSHyperPointWithFileTag().getSizeInBytes();
 
     public Hayabusa2HypertreeNode(FSHyperTreeNode<Hayabusa2LidarPoint> parent, Path path,
             HyperBox bbox, int maxPoints, DataOutputStreamPool pool)
