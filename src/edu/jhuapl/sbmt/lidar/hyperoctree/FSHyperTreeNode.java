@@ -35,6 +35,16 @@ public abstract class FSHyperTreeNode<T extends FSHyperPoint> implements Dimensi
         for (int i=0; i<children.length; i++)
             children[i]=null;
         path.toFile().mkdir();
+        try
+		{
+			getDataFilePath().toFile().createNewFile();
+	        getBoundsFilePath().toFile().createNewFile();
+		}
+        catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     public Path getPath()
