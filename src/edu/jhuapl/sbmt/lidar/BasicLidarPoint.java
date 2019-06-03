@@ -2,74 +2,64 @@ package edu.jhuapl.sbmt.lidar;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
+/**
+ * Immutable class that defines a LidarPoint.
+ */
 public class BasicLidarPoint implements LidarPoint
 {
-    protected Vector3D scpos;
-    protected Vector3D tgpos;
-    protected Double time;
-    protected Double intensity;
-    protected Double rangeToSC;
+	private final Vector3D scpos;
+	private final Vector3D tgpos;
+	private final double time;
+	private final double intensity;
+	private final double rangeToSC;
 
-    public BasicLidarPoint(Vector3D scpos, Vector3D tgpos, double time, double range, double intensity)
-    {
-        this.scpos=scpos;
-        this.tgpos=tgpos;
-        this.time=time;
-        this.intensity=intensity;
-        this.rangeToSC = range;
-    }
+	public BasicLidarPoint(Vector3D scpos, Vector3D tgpos, double time, double range, double intensity)
+	{
+		this.scpos = scpos;
+		this.tgpos = tgpos;
+		this.time = time;
+		this.intensity = intensity;
+		this.rangeToSC = range;
+	}
 
-    public BasicLidarPoint(double[] tgpos, double[] scpos, double time, double range, double intensity)
-    {
-        this.scpos=new Vector3D(scpos);
-        this.tgpos=new Vector3D(tgpos);
-        this.time=time;
-        this.intensity=new Double(intensity);
-        this.rangeToSC = new Double(range);
-    }
+	public BasicLidarPoint(double[] tgpos, double[] scpos, double time, double range, double intensity)
+	{
+		this(new Vector3D(scpos), new Vector3D(tgpos), time, range, intensity);
+	}
 
-    public BasicLidarPoint(double[] tgpos, double[] scpos, double time)
-    {
-        this.scpos=new Vector3D(scpos);
-        this.tgpos=new Vector3D(tgpos);
-        this.time=time;
-        this.intensity=new Double(0);
-        this.rangeToSC = new Double(0);
-    }
+	@Override
+	public Vector3D getTargetPosition()
+	{
+		return tgpos;
+	}
 
-    @Override
-    public Vector3D getTargetPosition()
-    {
-        return tgpos;
-    }
+	@Override
+	public Vector3D getSourcePosition()
+	{
+		return scpos;
+	}
 
-    @Override
-    public Vector3D getSourcePosition()
-    {
-        return scpos;
-    }
+	@Override
+	public double getIntensityReceived()
+	{
+		return intensity;
+	}
 
-    @Override
-    public Double getIntensityReceived()
-    {
-        return intensity;
-    }
+	@Override
+	public double getTime()
+	{
+		return time;
+	}
 
-    @Override
-    public Double getTime()
-    {
-        return time;
-    }
+	@Override
+	public int compareTo(LidarPoint o)
+	{
+		return Double.compare(time, o.getTime());
+	}
 
-    @Override
-    public int compareTo(LidarPoint o)
-    {
-        return time.compareTo(o.getTime());
-    }
-
-    @Override
-    public double getRangeToSC()
-    {
-        return rangeToSC;
-    }
+	@Override
+	public double getRangeToSC()
+	{
+		return rangeToSC;
+	}
 }

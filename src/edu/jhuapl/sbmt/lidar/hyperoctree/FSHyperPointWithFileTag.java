@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import edu.jhuapl.sbmt.lidar.LidarPoint;
-import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperPoint;
 
 
 public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
@@ -84,7 +83,7 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
     @Override
     public int compareTo(LidarPoint o)
     {
-        return getTime().compareTo(o.getTime());
+        return Double.compare(getTime(), o.getTime());
     }
 
     @Override
@@ -100,13 +99,13 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
     }
 
     @Override
-    public Double getIntensityReceived()
+    public double getIntensityReceived()
     {
         return data[7];
     }
 
     @Override
-    public Double getTime()
+    public double getTime()
     {
         return data[3];
     }
@@ -137,10 +136,10 @@ public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof OlaFSHyperPoint)) {
+		if (!(obj instanceof FSHyperPointWithFileTag)) {
 			return false;
 		}
-		final OlaFSHyperPoint other = (OlaFSHyperPoint) obj;
+		final FSHyperPointWithFileTag other = (FSHyperPointWithFileTag) obj;
 		if (data != other.data) {
 			return false;
 		}

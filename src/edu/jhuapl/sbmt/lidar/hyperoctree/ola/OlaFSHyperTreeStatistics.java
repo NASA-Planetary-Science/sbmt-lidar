@@ -24,6 +24,7 @@ import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 import edu.jhuapl.sbmt.lidar.hyperoctree.Dimensioned;
+import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException;
 
@@ -150,7 +151,7 @@ public class OlaFSHyperTreeStatistics implements Dimensioned
 //                    root.add(new OlaFSHyperPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), intensity));
 //                    totalPointsWritten++;
                     double range = 0;  // TODO range currently not used for OLA, so set to 0/
-                    OlaFSHyperPoint pt=new OlaFSHyperPoint(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range, intensity, -1);    // -1 means don't worry about file number
+                    FSHyperPointWithFileTag pt=new FSHyperPointWithFileTag(tgpos.getX(), tgpos.getY(), tgpos.getZ(), time, scpos.getX(), scpos.getY(), scpos.getZ(), range, intensity, -1);    // -1 means don't worry about file number
                     for (int i=0; i<getDimension(); i++)
                         binCounts[i][getBin(i, pt.getCoordinate(i))]++;
                     cnt++;
