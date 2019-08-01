@@ -6,7 +6,7 @@ import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.sbmt.client.SmallBodyModel;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.lidar.old.LidarCubesGenerator.LidarDataType;
-import edu.jhuapl.sbmt.model.bennu.Bennu;
+import edu.jhuapl.sbmt.model.bennu.shapeModel.Bennu;
 import edu.jhuapl.sbmt.model.lidar.TrackFileType;
 
 /**

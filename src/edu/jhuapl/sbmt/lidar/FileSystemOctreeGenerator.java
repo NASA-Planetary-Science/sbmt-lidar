@@ -30,7 +30,7 @@ import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaPointList;
-import edu.jhuapl.sbmt.model.bennu.Bennu;
+import edu.jhuapl.sbmt.model.bennu.shapeModel.Bennu;
 
 public class FileSystemOctreeGenerator
 {
