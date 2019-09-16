@@ -12,7 +12,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaStreamUtil;
 
-class FileSystemOctreeNode extends BoundingBox
+public class FileSystemOctreeNode extends BoundingBox
 {
 	final Path selfPath;
 	boolean isLeaf = true;
@@ -65,7 +65,7 @@ class FileSystemOctreeNode extends BoundingBox
 	/**
 	 * Constructor used to create a child Node
 	 */
-	FileSystemOctreeNode(FileSystemOctreeNode parent, int whichChild, int maxPoints, DataOutputStreamPool streamPool)
+	public FileSystemOctreeNode(FileSystemOctreeNode parent, int whichChild, int maxPoints, DataOutputStreamPool streamPool)
 			throws IOException
 	{
 		super(createBoundingBox(parent, whichChild).getBounds());
@@ -76,13 +76,13 @@ class FileSystemOctreeNode extends BoundingBox
 		this.streamPool = streamPool;
 	}
 
-	boolean isInside(LidarPoint aLP)
+	public boolean isInside(LidarPoint aLP)
 	{
 		Vector3D vec = aLP.getTargetPosition();
 		return contains(new double[] { vec.getX(), vec.getY(), vec.getZ() });
 	}
 
-	boolean addPoint(LidarPoint aLP) throws IOException
+	public boolean addPoint(LidarPoint aLP) throws IOException
 	{
 		if (!isLeaf)
 		{
@@ -104,7 +104,7 @@ class FileSystemOctreeNode extends BoundingBox
 		return false;
 	}
 
-	Path getSelfPath()
+	public Path getSelfPath()
 	{
 		return selfPath;
 	}
@@ -113,12 +113,12 @@ class FileSystemOctreeNode extends BoundingBox
  * Path getChildPath(int i) { return selfPath.resolve(String.valueOf(i)); }
  */
 
-	Path getBoundsFilePath()
+	public Path getBoundsFilePath()
 	{
 		return getSelfPath().resolve("bounds");
 	}
 
-	void writeBounds() throws IOException
+	public void writeBounds() throws IOException
 	{
 		// System.out.println(getBoundsFilePath());
 		DataOutputStream stream = new DataOutputStream(new FileOutputStream(getBoundsFilePath().toFile()));
@@ -141,12 +141,12 @@ class FileSystemOctreeNode extends BoundingBox
 		return bounds;
 	}
 
-	Path getDataFilePath()
+	public Path getDataFilePath()
 	{
 		return getSelfPath().resolve("data");
 	}
 
-	void split() throws IOException
+	public void split() throws IOException
 	{
 		streamPool.closeStream(getDataFilePath());
 		for (int i = 0; i < 8; i++)
@@ -177,12 +177,12 @@ class FileSystemOctreeNode extends BoundingBox
 		deleteDataFile();
 	}
 
-	void deleteDataFile()
+	public void deleteDataFile()
 	{
 		getDataFilePath().toFile().delete();
 	}
 
-	static BoundingBox createBoundingBox(BoundingBox parent, int whichChild)
+	public static BoundingBox createBoundingBox(BoundingBox parent, int whichChild)
 	{
 		BoundingBox bbox = new BoundingBox(parent.getBounds());
 		double xmid = bbox.getCenterPoint()[0];
@@ -233,6 +233,21 @@ class FileSystemOctreeNode extends BoundingBox
 		}
 		// System.out.println(bbox);
 		return bbox;
+	}
+
+	public FileSystemOctreeNode[] getChildren()
+	{
+		return children;
+	}
+
+	public int getNumPoints()
+	{
+		return numPoints;
+	}
+
+	public boolean isLeaf()
+	{
+		return isLeaf;
 	}
 
 }
