@@ -188,7 +188,7 @@ public abstract class FSHyperTreeGenerator
 
         // set up environment
         System.setProperty("java.awt.headless", "true");
-        NativeLibraryLoader.loadVtkLibrariesHeadless();
+        NativeLibraryLoader.loadHeadlessVtkLibraries();
         Path inputDirectoryListFile=Paths.get(inputDirectoryListFileString);
         Path outputDirectory=Paths.get(outputDirectoryString);
 

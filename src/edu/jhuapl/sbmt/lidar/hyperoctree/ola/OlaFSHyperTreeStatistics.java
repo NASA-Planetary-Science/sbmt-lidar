@@ -189,7 +189,7 @@ public class OlaFSHyperTreeStatistics implements Dimensioned
         System.out.println("Input data directory listing = "+inputDirectoryListFileString);
         System.out.println("Output tree location = "+outputDirectoryString);
 
-        NativeLibraryLoader.loadVtkLibrariesHeadless();
+        NativeLibraryLoader.loadHeadlessVtkLibraries();
         Path inputDirectoryListFile=Paths.get(inputDirectoryListFileString);
         Path outputDirectory=Paths.get(outputDirectoryString);
 

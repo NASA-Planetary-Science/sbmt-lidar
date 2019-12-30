@@ -69,7 +69,7 @@ public class BruteForceLidarBoundsCalculator
 
     public static void main(String[] args) throws FileNotFoundException
     {
-        NativeLibraryLoader.loadVtkLibrariesHeadless();
+        NativeLibraryLoader.loadHeadlessVtkLibraries();
         Configuration.setAPLVersion(true);
 
         String inputDirectoryListFileString=args[0];
