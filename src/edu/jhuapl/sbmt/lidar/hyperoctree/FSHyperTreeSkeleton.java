@@ -17,6 +17,7 @@ import com.google.common.collect.Sets;
 
 import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.FileCache.NonexistentRemoteFile;
+import edu.jhuapl.saavtk.util.FileCache.UnauthorizedAccessException;
 
 public class FSHyperTreeSkeleton
 {
@@ -90,7 +91,7 @@ public class FSHyperTreeSkeleton
         return null;
     }
 
-    public void read() throws NonexistentRemoteFile // cf. OlaFSHyperTreeCondenser for code to write the skeleton file
+    public void read() throws NonexistentRemoteFile, UnauthorizedAccessException // cf. OlaFSHyperTreeCondenser for code to write the skeleton file
     {
 
         File f=FileCache.getFileFromServer(dataSourcePath.toString());
