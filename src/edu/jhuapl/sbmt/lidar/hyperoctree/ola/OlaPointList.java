@@ -16,7 +16,7 @@ import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.sbmt.lidar.BasicLidarPoint;
-import edu.jhuapl.sbmt.lidar.LidarPointList;
+import edu.jhuapl.sbmt.lidar.misc.LidarPointList;
 
 public class OlaPointList implements LidarPointList
 {

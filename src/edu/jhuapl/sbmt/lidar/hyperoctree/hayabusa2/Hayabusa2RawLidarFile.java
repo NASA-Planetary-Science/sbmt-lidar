@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import edu.jhuapl.sbmt.lidar.RawLidarFile;
+import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
 

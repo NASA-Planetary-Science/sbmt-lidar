@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar;
+package edu.jhuapl.sbmt.lidar.misc;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import edu.jhuapl.saavtk.util.BoundingBox;
+import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaStreamUtil;
 
 class FileSystemOctreeNode extends BoundingBox

@@ -7,8 +7,8 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import edu.jhuapl.saavtk.util.LatLon;
 import edu.jhuapl.saavtk.util.MathUtil;
-import edu.jhuapl.sbmt.lidar.RawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
+import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
 
 
 public class NlrRawLidarFile extends RawLidarFile

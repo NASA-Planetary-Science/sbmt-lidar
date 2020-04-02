@@ -1,10 +1,12 @@
-package edu.jhuapl.sbmt.lidar;
+package edu.jhuapl.sbmt.lidar.misc;
 
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+
+import edu.jhuapl.sbmt.lidar.LidarPoint;
 
 public abstract class RawLidarFile extends File implements Iterable<LidarPoint>
 {

@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
 
-import edu.jhuapl.sbmt.lidar.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
-import edu.jhuapl.sbmt.lidar.RawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException;
+import edu.jhuapl.sbmt.lidar.misc.DataOutputStreamPool;
+import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
 
 public class Hayabusa2HyperTreeGenerator extends FSHyperTreeGenerator
 {

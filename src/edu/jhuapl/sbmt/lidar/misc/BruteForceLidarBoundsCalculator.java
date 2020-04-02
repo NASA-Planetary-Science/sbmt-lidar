@@ -1,4 +1,4 @@
-package edu.jhuapl.sbmt.lidar;
+package edu.jhuapl.sbmt.lidar.misc;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 
 import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
+import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2RawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.nlr.NlrRawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaLidarFile;

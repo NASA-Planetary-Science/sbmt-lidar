@@ -2,10 +2,10 @@ package edu.jhuapl.sbmt.lidar.hyperoctree.nlr;
 
 import java.nio.file.Path;
 
-import edu.jhuapl.sbmt.lidar.DataOutputStreamPool;
-import edu.jhuapl.sbmt.lidar.RawLidarFile;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
+import edu.jhuapl.sbmt.lidar.misc.DataOutputStreamPool;
+import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
 
 public class NlrFSHyperTreeGenerator extends FSHyperTreeGenerator
 {
