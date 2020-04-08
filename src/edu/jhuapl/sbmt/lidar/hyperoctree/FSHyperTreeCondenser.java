@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Stopwatch;
-
-import edu.jhuapl.saavtk.util.NativeLibraryLoader;
 
 
 public class FSHyperTreeCondenser implements Dimensioned
@@ -28,8 +27,7 @@ public class FSHyperTreeCondenser implements Dimensioned
 
     public void condense()
     {
-        sw=new Stopwatch();
-        sw.start();
+        sw=Stopwatch.createStarted();
         try
         {
             writer=new FileWriter(outFilePath.toFile());
@@ -45,7 +43,7 @@ public class FSHyperTreeCondenser implements Dimensioned
 
     private void condense(Path nodePath) throws IOException
     {
-        if (sw.elapsedMillis()>4000)
+        if (sw.elapsed(TimeUnit.MILLISECONDS)>4000)
         {
             System.out.println(nodePath);
             sw.reset();

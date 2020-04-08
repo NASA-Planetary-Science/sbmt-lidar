@@ -213,8 +213,7 @@ public class LidarQueryUtil
 			@Override
 			protected Void doInBackground() throws Exception
 			{
-				Stopwatch sw = new Stopwatch();
-				sw.start();
+				Stopwatch sw = Stopwatch.createStarted();
 
 				int cnt = 0;
 				for (Integer cidx : cubeSet)

@@ -257,7 +257,7 @@ public abstract class FSHyperTreeGenerator
             break;
         }
 
-        Stopwatch sw=new Stopwatch();
+        Stopwatch sw=Stopwatch.createUnstarted();
         for (int i=0; i<numFiles; i++) {
             sw.reset();
             sw.start();
@@ -287,7 +287,7 @@ public abstract class FSHyperTreeGenerator
             }
         }
 
-        System.out.println("  Elapsed time = "+sw.elapsedTime(TimeUnit.SECONDS)+" s");
+        System.out.println("  Elapsed time = "+sw.elapsed(TimeUnit.SECONDS)+" s");
         System.out.println("  Total points from all files = "+generator.getTotalPoints());
         System.out.println("  Total points written into master data file = "+generator.getTotalPointsWritten());
         System.out.println("  Total MB written into master data file = "+generator.convertBytesToMB(generator.getRoot().getDataFilePath().toFile().length()));
@@ -300,7 +300,7 @@ public abstract class FSHyperTreeGenerator
         System.out.println("Max # pts per leaf="+maxPointsPerLeaf);
         System.out.println("   ... equivalent to "+dataFileMBLimit+" MB max per file");
         generator.expand();
-        System.out.println("Done expanding tree. Time elapsed="+sw.elapsedTime(TimeUnit.SECONDS)+" s");
+        System.out.println("Done expanding tree. Time elapsed="+sw.elapsed(TimeUnit.SECONDS)+" s");
         System.out.println("Cleaning up.");
         System.out.println();
         generator.commit(); // clean up any empty or open data files

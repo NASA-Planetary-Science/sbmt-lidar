@@ -129,8 +129,7 @@ public class LidarHyperTreeSearchPanel extends LidarSearchPanel
 		double[] rangeLims = getSpaceCraftRangeConstraint();
 		double[] timeLims = getTimeConstraint();
 
-		Stopwatch sw = new Stopwatch();
-		sw.start();
+		Stopwatch sw = Stopwatch.createStarted();
 		TreeSet<Integer> cubeList = getLeavesIntersectingBoundingBox(tmpSkeleton, new BoundingBox(bounds), timeLims,
 				rangeLims);
 //		System.out.println(cubeList);

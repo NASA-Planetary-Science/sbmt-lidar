@@ -271,7 +271,7 @@ public class OlaFSHyperTreeStatistics implements Dimensioned
         FileUtils.forceMkdir(outputDirectory.toFile());
         OlaFSHyperTreeStatistics statistics=new OlaFSHyperTreeStatistics(64,hbox.getBounds());
 
-        Stopwatch sw=new Stopwatch();
+        Stopwatch sw=Stopwatch.createUnstarted();
         for (int i=0; i<numFiles; i++) {
             sw.reset();
             sw.start();
