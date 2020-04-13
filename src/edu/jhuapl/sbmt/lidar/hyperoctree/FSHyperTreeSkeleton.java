@@ -16,8 +16,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import edu.jhuapl.saavtk.util.FileCache;
-import edu.jhuapl.saavtk.util.FileCache.NonexistentRemoteFile;
-import edu.jhuapl.saavtk.util.FileCache.UnauthorizedAccessException;
+import edu.jhuapl.saavtk.util.NonexistentRemoteFile;
+import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
 
 public class FSHyperTreeSkeleton
 {
