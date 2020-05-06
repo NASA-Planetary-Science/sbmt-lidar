@@ -16,6 +16,7 @@ import vtk.vtkPolyDataMapper;
 import vtk.vtkProp;
 import vtk.vtkUnsignedCharArray;
 
+import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.util.SaavtkLODActor;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarManager;
@@ -114,9 +115,10 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 	}
 
 	@Override
-	public String getDisplayInfo(int aCellId)
+	public String getDisplayInfo(PickTarget aPickTarget)
 	{
-		aCellId = vTargetGF.GetPointMinimum() + aCellId;
+		int cellId = aPickTarget.getCellId();
+		cellId = vTargetGF.GetPointMinimum() + cellId;
 
 		// Get the header
 		String headStr = "";
@@ -125,10 +127,10 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 		else if (refItem instanceof LidarFileSpec)
 			headStr = String.format("%s: ", ((LidarFileSpec) refItem).getName());
 
-		double timeVal = timeFA.getValAt(aCellId);
+		double timeVal = timeFA.getValAt(cellId);
 		String timeStr = TimeUtil.et2str(timeVal);
 
-		double rangeVal = rangeFA.getValAt(aCellId) * 1000;
+		double rangeVal = rangeFA.getValAt(cellId) * 1000;
 
 		return String.format("%s Lidar point acquired at %s, ET = %f, unmodified range = %f m", headStr, timeStr, timeVal,
 				rangeVal);

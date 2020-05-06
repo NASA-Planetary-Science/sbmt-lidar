@@ -17,6 +17,7 @@ import edu.jhuapl.saavtk.model.ModelManager;
 import edu.jhuapl.saavtk.model.PolyhedralModel;
 import edu.jhuapl.saavtk.pick.EditMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
+import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.pick.PickUtilEx;
 import edu.jhuapl.saavtk.pick.Picker;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
@@ -110,13 +111,13 @@ public class LidarShiftPicker extends Picker implements ItemEventListener
 			return;
 
 		// Bail if we failed to pick something
-		int pickSucceeded = doPick(aEvent, smallBodyPicker, refRenWin);
-		if (pickSucceeded != 1)
+		boolean isPicked = PickUtil.isPicked(smallBodyPicker, refRenWin, aEvent, getTolerance());
+		if (isPicked == false)
 			return;
 
 		// Bail if we fail to pick something via our pointPicker
-		pickSucceeded = doPick(aEvent, pointPicker, refRenWin);
-		if (pickSucceeded != 1)
+		isPicked = PickUtil.isPicked(pointPicker, refRenWin, aEvent, getTolerance());
+		if (isPicked == false)
 			return;
 
 		// Retrieve the position of the selected LidarPoint
@@ -149,8 +150,8 @@ public class LidarShiftPicker extends Picker implements ItemEventListener
 			return;
 
 		// Bail if we failed to pick something
-		int pickSucceeded = doPick(aEvent, smallBodyPicker, refRenWin);
-		if (pickSucceeded != 1)
+		boolean isPicked = PickUtil.isPicked(smallBodyPicker, refRenWin, aEvent, getTolerance());
+		if (isPicked == false)
 			return;
 
 		vtkActor pickedActor = smallBodyPicker.GetActor();
@@ -168,8 +169,8 @@ public class LidarShiftPicker extends Picker implements ItemEventListener
 	@Override
 	public void mouseMoved(MouseEvent aEvent)
 	{
-		int pickSucceeded = doPick(aEvent, pointPicker, refRenWin);
-		if (pickSucceeded == 1)
+		boolean isPicked = PickUtil.isPicked(pointPicker, refRenWin, aEvent, getTolerance());
+		if (isPicked == true)
 			currEditMode = EditMode.DRAGGABLE;
 		else
 			currEditMode = EditMode.CLICKABLE;
