@@ -271,7 +271,7 @@ public abstract class FSHyperTreeGenerator
                     String filename = inputPath.getFileName().toString();
                     String[] toks = filename.split("_");
                     String date = toks[0];
-                    String strDate = String.format("20%s-%s-%sT00:00:00.000", date.substring(0,2), date.substring(2,4), date.substring(4,6));
+                    String strDate = String.format("20%s-%s-%sT00:00:00.000", date.substring(2,4), date.substring(4,6), date.substring(6,8));
                     double et = TimeUtil.str2et(strDate);
                     if (et >= tmin && et <= tmax) {
                         System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
