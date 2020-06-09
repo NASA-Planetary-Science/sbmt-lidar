@@ -82,11 +82,12 @@ public abstract class FSHyperTreeGenerator
     {
         if (node.getNumberOfPoints()>maxNumberOfPointsPerLeaf)
         {
+        	System.out.println("FSHyperTreeGenerator: expandNode: splitting, max num  "  + maxNumberOfPointsPerLeaf + " and this node has " + node.getNumberOfPoints());
             node.split();
             for (int i=0; i<node.getNumberOfChildren(); i++)
                 if (node.childExists(i))
                 {
-                    System.out.println(node.getChild(i).getPath());
+                    System.out.println("Expanding node: " + node.getChild(i).getPath());
                     expandNode((FSHyperTreeNode)node.getChild(i));
                 }
         }
@@ -176,7 +177,7 @@ public abstract class FSHyperTreeGenerator
         double startDate = TimeUtil.str2et(args[3]);
         double stopDate  = TimeUtil.str2et(args[4]);
 
-        double dataFileMBLimit = .05;
+        double dataFileMBLimit = 1; //.05;
         int maxNumOpenOutputFiles = 32;
 
 
@@ -271,7 +272,7 @@ public abstract class FSHyperTreeGenerator
                     String filename = inputPath.getFileName().toString();
                     String[] toks = filename.split("_");
                     String date = toks[0];
-                    String strDate = String.format("20%s-%s-%sT00:00:00.000", date.substring(0,2), date.substring(2,4), date.substring(4,6));
+                    String strDate = String.format("20%s-%s-%sT00:00:00.000", date.substring(2,4), date.substring(4,6), date.substring(6,8));
                     double et = TimeUtil.str2et(strDate);
                     if (et >= tmin && et <= tmax) {
                         System.out.println("Searching for valid lidar points in file "+(i+1)+"/"+numFiles+" : "+inputPath);
