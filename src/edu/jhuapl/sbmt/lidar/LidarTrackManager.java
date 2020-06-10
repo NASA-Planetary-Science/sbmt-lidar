@@ -22,7 +22,6 @@ import edu.jhuapl.saavtk.pick.HookUtil;
 import edu.jhuapl.saavtk.pick.PickListener;
 import edu.jhuapl.saavtk.pick.PickMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
-import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.Properties;
 import edu.jhuapl.saavtk.util.SaavtkLODActor;
 import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
@@ -158,9 +157,9 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 		{
 			Vector3D targetV = aLP.getTargetPosition();
 
-			double[] ptLidarArr = LidarGeoUtil.transformTarget(tmpVect, radialOffset, targetV).toArray();
-			double[] ptClosest = refSmallBody.findClosestPoint(ptLidarArr);
-			tmpErr += MathUtil.distance2Between(ptLidarArr, ptClosest);
+			Vector3D ptLidar = LidarGeoUtil.transformTarget(tmpVect, radialOffset, targetV);
+			Vector3D ptClosest = refSmallBody.findClosestPoint(ptLidar);
+			tmpErr += ptLidar.distanceSq(ptClosest);
 		}
 
 		// Update the cache and return the error
