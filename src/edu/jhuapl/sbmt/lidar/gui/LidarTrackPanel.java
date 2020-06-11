@@ -39,7 +39,6 @@ import edu.jhuapl.saavtk.pick.PickMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.pick.Picker;
-import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.gui.table.ColorProviderCellEditor;
 import edu.jhuapl.sbmt.gui.table.ColorProviderCellRenderer;
 import edu.jhuapl.sbmt.gui.table.EphemerisTimeRenderer;
@@ -119,7 +118,7 @@ public class LidarTrackPanel extends JPanel
 	 * Standard Constructor
 	 */
 	public LidarTrackPanel(LidarTrackManager aTrackManager, PickManager aPickManager, Renderer aRenderer,
-			ModelManager aModelManager, SmallBodyViewConfig aBodyViewConfig)
+			ModelManager aModelManager)
 	{
 		refTrackManager = aTrackManager;
 		refPickManager = aPickManager;
