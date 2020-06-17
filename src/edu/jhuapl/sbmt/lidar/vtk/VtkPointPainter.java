@@ -12,7 +12,9 @@ import vtk.vtkPolyData;
 import vtk.vtkPolyDataMapper;
 import vtk.vtkUnsignedCharArray;
 
-import edu.jhuapl.saavtk.util.SaavtkLODActor;
+import edu.jhuapl.saavtk.view.lod.LodMode;
+import edu.jhuapl.saavtk.view.lod.LodUtil;
+import edu.jhuapl.saavtk.view.lod.VtkLodActor;
 import edu.jhuapl.saavtk.vtk.VtkResource;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
@@ -46,9 +48,9 @@ public class VtkPointPainter<G1> implements ItemEventListener, VtkResource
 	private boolean isStale;
 
 	// VTK vars
-	private vtkActor vActor;
+	private VtkLodActor vActor;
 	private vtkPolyData vPolydata;
-	private vtkPolyDataMapper vPointsMapper;
+	private vtkPolyDataMapper vPointsRegPDM;
 
 	/**
 	 * Standard Constructor
@@ -67,12 +69,15 @@ public class VtkPointPainter<G1> implements ItemEventListener, VtkResource
 		vPolydata = new vtkPolyData();
 		VtkUtil.clearPolyData(vPolydata);
 
-		vPointsMapper = new vtkPolyDataMapper();
-		vPointsMapper.SetInputData(vPolydata);
+		vPointsRegPDM = new vtkPolyDataMapper();
+		vPointsRegPDM.SetInputData(vPolydata);
 
-		vActor = new SaavtkLODActor();
-		vActor.SetMapper(vPointsMapper);
-		((SaavtkLODActor) vActor).setQuadricDecimatedLODMapper(vPolydata);
+		vActor = new VtkLodActor(null);
+		vActor.setDefaultMapper(vPointsRegPDM);
+		vActor.setLodMapper(LodMode.MaxQuality, vPointsRegPDM);
+
+		vtkPolyDataMapper vPointsDecPDM = LodUtil.createQuadricDecimatedMapper(vPolydata);
+		vActor.setLodMapper(LodMode.MaxSpeed, vPointsDecPDM);
 		vActor.GetProperty().SetColor(pointColor.getRed() / 255.0, pointColor.getGreen() / 255.0,
 				pointColor.getBlue() / 255.0);
 		vActor.GetProperty().SetPointSize(1.0);
@@ -143,7 +148,7 @@ public class VtkPointPainter<G1> implements ItemEventListener, VtkResource
 	{
 		vActor.Delete();
 		vPolydata.Delete();
-		vPointsMapper.Delete();
+		vPointsRegPDM.Delete();
 	}
 
 	@Override

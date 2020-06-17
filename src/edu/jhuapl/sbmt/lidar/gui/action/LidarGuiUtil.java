@@ -9,7 +9,7 @@ import vtk.vtkProp;
 import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.structure.StructureManager;
 import edu.jhuapl.saavtk.util.Configuration;
-import edu.jhuapl.saavtk.util.SaavtkLODActor;
+import edu.jhuapl.saavtk.view.AssocActor;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
 import edu.jhuapl.sbmt.lidar.LidarManager;
@@ -71,11 +71,11 @@ public class LidarGuiUtil
 	{
 		// Bail if the actor is not the right type
 		vtkProp tmpProp = aPickTarget.getActor();
-		if (tmpProp instanceof SaavtkLODActor == false)
+		if (tmpProp instanceof AssocActor == false)
 			return false;
 
 		// Bail if tmpProp is not associated with the LidarManager
-		VtkLidarPainter<?> tmpPainter = ((SaavtkLODActor) tmpProp).getAssocModel(VtkLidarPainter.class);
+		VtkLidarPainter<?> tmpPainter = ((AssocActor) tmpProp).getAssocModel(VtkLidarPainter.class);
 		if (tmpPainter == null || tmpPainter.getManager() != aManager)
 			return false;
 

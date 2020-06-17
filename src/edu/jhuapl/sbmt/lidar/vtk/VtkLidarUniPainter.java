@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import vtk.vtkActor;
 import vtk.vtkCellArray;
 import vtk.vtkGeometryFilter;
 import vtk.vtkPoints;
@@ -17,7 +16,9 @@ import vtk.vtkProp;
 import vtk.vtkUnsignedCharArray;
 
 import edu.jhuapl.saavtk.pick.PickTarget;
-import edu.jhuapl.saavtk.util.SaavtkLODActor;
+import edu.jhuapl.saavtk.view.lod.LodMode;
+import edu.jhuapl.saavtk.view.lod.LodUtil;
+import edu.jhuapl.saavtk.view.lod.VtkLodActor;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
@@ -76,8 +77,8 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 	private vtkCellArray vSourceCA;
 	private vtkCellArray vTargetCA;
 	private vtkUnsignedCharArray vColorUCA;
-	private vtkActor vSourceA;
-	private vtkActor vTargetA;
+	private VtkLodActor vSourceA;
+	private VtkLodActor vTargetA;
 
 	/**
 	 * Standard Constructor
@@ -309,12 +310,15 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 		int numPts = getNumberOfPoints();
 		vSourceGF = VtkUtil.formGeometryFilter(vSourcePD, numPts);
 
-		vtkPolyDataMapper pointsMapperSource = new vtkPolyDataMapper();
-		pointsMapperSource.SetInputConnection(vSourceGF.GetOutputPort());
+		vtkPolyDataMapper vSourceRegPDM = new vtkPolyDataMapper();
+		vSourceRegPDM.SetInputConnection(vSourceGF.GetOutputPort());
 
-		vSourceA = new SaavtkLODActor(this);
-		vSourceA.SetMapper(pointsMapperSource);
-		((SaavtkLODActor) vSourceA).setQuadricDecimatedLODMapper(vSourceGF.GetOutputPort());
+		vSourceA = new VtkLodActor(this);
+		vSourceA.setDefaultMapper(vSourceRegPDM);
+		vSourceA.setLodMapper(LodMode.MaxQuality, vSourceRegPDM);
+
+		vtkPolyDataMapper vSourceDecPDM = LodUtil.createQuadricDecimatedMapper(vSourceGF.GetOutputPort());
+		vSourceA.setLodMapper(LodMode.MaxSpeed, vSourceDecPDM);
 
 		Color tmpColorA = cSourceCP.getColor(0.0, 1.0, 0.5);
 		double r = tmpColorA.getRed() / 255.0;
@@ -343,13 +347,16 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 
 		vTargetGF = VtkUtil.formGeometryFilter(vTargetPD, numPts);
 
-		vtkPolyDataMapper pointsMapperTarget = new vtkPolyDataMapper();
-		pointsMapperTarget.SetScalarModeToUseCellData();
-		pointsMapperTarget.SetInputConnection(vTargetGF.GetOutputPort());
+		vtkPolyDataMapper vTargetRegPDM = new vtkPolyDataMapper();
+		vTargetRegPDM.SetScalarModeToUseCellData();
+		vTargetRegPDM.SetInputConnection(vTargetGF.GetOutputPort());
 
-		vTargetA = new SaavtkLODActor(this);
-		vTargetA.SetMapper(pointsMapperTarget);
-		((SaavtkLODActor) vTargetA).setQuadricDecimatedLODMapper(vTargetGF.GetOutputPort());
+		vTargetA = new VtkLodActor(this);
+		vTargetA.setDefaultMapper(vTargetRegPDM);
+		vTargetA.setLodMapper(LodMode.MaxQuality, vTargetRegPDM);
+
+		vtkPolyDataMapper vTargetDecPDM = LodUtil.createQuadricDecimatedMapper(vTargetGF.GetOutputPort());
+		vTargetA.setLodMapper(LodMode.MaxSpeed, vTargetDecPDM);
 
 		vTargetA.GetProperty().SetPointSize(2.0);
 	}

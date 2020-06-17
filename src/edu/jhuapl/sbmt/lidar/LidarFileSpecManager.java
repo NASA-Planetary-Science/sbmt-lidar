@@ -21,7 +21,7 @@ import edu.jhuapl.saavtk.pick.HookUtil;
 import edu.jhuapl.saavtk.pick.PickListener;
 import edu.jhuapl.saavtk.pick.PickMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
-import edu.jhuapl.saavtk.util.SaavtkLODActor;
+import edu.jhuapl.saavtk.view.AssocActor;
 import edu.jhuapl.sbmt.client.BodyViewConfig;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
@@ -529,11 +529,11 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 	{
 		// Bail if tmpProp is not the right type
 		vtkProp tmpProp = aPickTarg.getActor();
-		if (tmpProp instanceof SaavtkLODActor == false)
+		if (tmpProp instanceof AssocActor == false)
 			return null;
 
 		// Retrieve the painter and return it if we are the associated manager
-		VtkLidarPainter<?> tmpPainter = ((SaavtkLODActor) tmpProp).getAssocModel(VtkLidarPainter.class);
+		VtkLidarPainter<?> tmpPainter = ((AssocActor) tmpProp).getAssocModel(VtkLidarPainter.class);
 		if (tmpPainter != null && tmpPainter.getManager() == this)
 			return (VtkLidarPainter<LidarFileSpec>) tmpPainter;
 
