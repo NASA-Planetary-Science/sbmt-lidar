@@ -21,6 +21,10 @@ import javax.swing.JTable;
 
 import com.google.common.collect.Range;
 
+import edu.jhuapl.saavtk.color.gui.ColorProviderCellEditor;
+import edu.jhuapl.saavtk.color.gui.ColorProviderCellRenderer;
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
+import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
 import edu.jhuapl.saavtk.gui.dialog.DirectoryChooser;
 import edu.jhuapl.saavtk.gui.render.Renderer;
 import edu.jhuapl.saavtk.gui.util.IconUtil;
@@ -34,16 +38,12 @@ import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
-import edu.jhuapl.sbmt.gui.table.ColorProviderCellEditor;
-import edu.jhuapl.sbmt.gui.table.ColorProviderCellRenderer;
 import edu.jhuapl.sbmt.gui.table.EphemerisTimeRenderer;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.gui.color.ColorConfigPanel;
 import edu.jhuapl.sbmt.lidar.gui.color.ColorMode;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.GroupColorProvider;
 import edu.jhuapl.sbmt.lidar.util.LidarBrowseUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarFileSpecLoadUtil;
 

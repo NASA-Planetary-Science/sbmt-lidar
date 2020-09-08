@@ -19,6 +19,9 @@ import vtk.vtkDoubleArray;
 import vtk.vtkIdList;
 import vtk.vtkPoints;
 
+import edu.jhuapl.saavtk.feature.FeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureAttrBuilder;
+import edu.jhuapl.saavtk.feature.VtkFeatureAttr;
 import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.LatLon;
 import edu.jhuapl.saavtk.util.MathUtil;
@@ -26,9 +29,6 @@ import edu.jhuapl.saavtk.util.SafeURLPaths;
 import edu.jhuapl.sbmt.client.BodyViewConfig;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
-import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
-import edu.jhuapl.sbmt.lidar.feature.FeatureAttrBuilder;
-import edu.jhuapl.sbmt.lidar.feature.VtkFeatureAttr;
 import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2RawLidarFile;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPointProvider;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarStruct;
@@ -86,6 +86,7 @@ class BinaryDataTask extends SwingWorker<Void, Void> implements PropertyChangeLi
 		refManager.markLidarLoadComplete(refFileSpec, workLPP, workPainter);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent evt)
 	{
 		if ("progress" == evt.getPropertyName())

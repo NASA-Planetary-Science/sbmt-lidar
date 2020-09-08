@@ -1,17 +1,22 @@
 package edu.jhuapl.sbmt.lidar.gui.color;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import com.google.common.collect.Range;
 
-import edu.jhuapl.saavtk.colormap.Colorbar;
-import edu.jhuapl.saavtk.colormap.Colormap;
-import edu.jhuapl.saavtk.colormap.Colormaps;
+import edu.jhuapl.saavtk.color.gui.ColorBarPanel;
+import edu.jhuapl.saavtk.color.gui.EditGroupColorPanel;
+import edu.jhuapl.saavtk.color.painter.ColorBarPainter;
+import edu.jhuapl.saavtk.color.provider.ColorBarColorProvider;
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
+import edu.jhuapl.saavtk.color.provider.ConstGroupColorProvider;
+import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
+import edu.jhuapl.saavtk.color.table.ColorMapAttr;
+import edu.jhuapl.saavtk.feature.FeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureType;
 import edu.jhuapl.saavtk.gui.render.Renderer;
+import edu.jhuapl.sbmt.lidar.LidarFeatureType;
 import edu.jhuapl.sbmt.lidar.LidarManager;
-import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
-import edu.jhuapl.sbmt.lidar.feature.FeatureType;
 
 import glum.item.ItemEventListener;
 import glum.item.ItemEventType;
@@ -21,54 +26,41 @@ import glum.item.ItemEventType;
  *
  * @author lopeznr1
  */
-public class LidarColorBarPanel<G1> extends ColorBarPanel<FeatureType>
-		implements ItemEventListener, LidarColorConfigPanel
+public class LidarColorBarPanel<G1> extends ColorBarPanel implements ItemEventListener, EditGroupColorPanel
 {
 	// Ref vars
 	private final LidarManager<G1> refManager;
 	private final Renderer refRenderer;
 
 	// State vars
-	private Colorbar colorBar;
-	private boolean isActive;
+	private ColorBarPainter workCBP;
 
-	/**
-	 * Standard Constructor
-	 */
+	/** Standard Constructor */
 	public LidarColorBarPanel(ActionListener aListener, LidarManager<G1> aManager, Renderer aRenderer)
 	{
 		refManager = aManager;
 		refRenderer = aRenderer;
 
-		colorBar = null;
-		isActive = false;
+		workCBP = new ColorBarPainter(refRenderer);
 
-		addFeatureType(FeatureType.Intensity, "Intensity");
-		addFeatureType(FeatureType.Radius, "Radius");
-		addFeatureType(FeatureType.Range, "Spacecraft Range");
-		addFeatureType(FeatureType.Time, "Time");
-		setFeatureType(FeatureType.Range);
+		// Register lidar specific FeatureTypes
+		addFeatureType(LidarFeatureType.Intensity, "Intensity");
+		addFeatureType(LidarFeatureType.Radius, "Radius");
+		addFeatureType(LidarFeatureType.Range, "Spacecraft Range");
+		addFeatureType(LidarFeatureType.Time, "Time");
+		setFeatureType(LidarFeatureType.Range);
 
 		// Auto register the provided ActionListener
 		addActionListener(aListener);
 
 		// Register for events of interest
+		addActionListener((aEvent) -> updateColorBar());
 		refManager.addListener(this);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent aEvent)
-	{
-		updateColorBar();
-
-		super.actionPerformed(aEvent);
 	}
 
 	@Override
 	public void activate(boolean aIsActive)
 	{
-		isActive = aIsActive;
-
 		// Ensure our default range is in sync
 		updateDefaultRange();
 
@@ -80,18 +72,18 @@ public class LidarColorBarPanel<G1> extends ColorBarPanel<FeatureType>
 		// Force an update to the color map
 		updateColorMapArea();
 
+		// Update the color bar
 		updateColorBar();
+
+		// Update the renderer to reflect the ColorBarPainter
+		if (aIsActive == true)
+			refRenderer.addVtkPropProvider(workCBP);
+		else
+			refRenderer.delVtkPropProvider(workCBP);
 	}
 
 	@Override
-	public GroupColorProvider getSourceGroupColorProvider()
-	{
-		ColorProvider tmpCP = new ColorBarColorProvider(getColorMapAttr(), getFeatureType());
-		return new ConstGroupColorProvider(tmpCP);
-	}
-
-	@Override
-	public GroupColorProvider getTargetGroupColorProvider()
+	public GroupColorProvider getGroupColorProvider()
 	{
 		ColorProvider tmpCP = new ColorBarColorProvider(getColorMapAttr(), getFeatureType());
 		return new ConstGroupColorProvider(tmpCP);
@@ -137,42 +129,16 @@ public class LidarColorBarPanel<G1> extends ColorBarPanel<FeatureType>
 	}
 
 	/**
-	 * Helper method that keeps the color bar synchronized with the gui.
-	 * <P>
-	 * A {@link Colorbar} will be shown whenever this panel has been activated.
+	 * Helper method that keeps the {@link ColorBarPainter} synchronized with the
+	 * gui.
 	 */
 	private void updateColorBar()
 	{
-		// Show the SAAVTK Colorbar whenever the ColorBarPanel has been selected
-		boolean isVisible = isActive;
-		if (isVisible == true)
-		{
-			// Lazy init
-			if (colorBar == null)
-				colorBar = new Colorbar(refRenderer);
+		ColorMapAttr tmpCMA = getColorMapAttr();
+		workCBP.setColorMapAttr(tmpCMA);
 
-			ColorMapAttr tmpCMA = getColorMapAttr();
-			Colormap tmpColorMap = Colormaps.getNewInstanceOfBuiltInColormap(tmpCMA.getName());
-			tmpColorMap.setLogScale(tmpCMA.getIsLogScale());
-			tmpColorMap.setNumberOfLevels(tmpCMA.getNumLevels());
-			tmpColorMap.setRangeMin(tmpCMA.getMinVal());
-			tmpColorMap.setRangeMax(tmpCMA.getMaxVal());
-			colorBar.setColormap(tmpColorMap);
-
-			FeatureType tmpFT = getFeatureType();
-			String title = "" + tmpFT;
-			if (tmpFT == FeatureType.Range)
-				title = "Spacecraft " + title;
-
-			colorBar.setTitle(title);
-
-			// Ensure the color bar is showing
-			if (refRenderer.getRenderWindowPanel().getRenderer().HasViewProp(colorBar.getActor()) == 0)
-				refRenderer.getRenderWindowPanel().getRenderer().AddActor(colorBar.getActor());
-		}
-
-		if (colorBar != null)
-			colorBar.setVisible(isVisible);
+		FeatureType tmpFT = getFeatureType();
+		workCBP.setTitle(tmpFT.getName());
 	}
 
 	/**
