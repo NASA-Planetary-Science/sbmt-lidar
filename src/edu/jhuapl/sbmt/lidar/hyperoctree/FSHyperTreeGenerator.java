@@ -165,7 +165,7 @@ public abstract class FSHyperTreeGenerator
 
     public static void main(String[] args) throws IOException, HyperException, ParseException
     {
-        if (args.length != 5)
+    	if (args.length < 5 || args.length > 6)
         {
             printUsage();
             return;
@@ -178,6 +178,8 @@ public abstract class FSHyperTreeGenerator
         double stopDate  = TimeUtil.str2et(args[4]);
 
         double dataFileMBLimit = 1; //.05;
+        if (args.length == 6)
+        	dataFileMBLimit = Double.parseDouble(args[5]);
         int maxNumOpenOutputFiles = 32;
 
 
