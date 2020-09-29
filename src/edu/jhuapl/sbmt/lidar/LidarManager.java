@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
-import edu.jhuapl.sbmt.lidar.feature.FeatureType;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.GroupColorProvider;
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
+import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
+import edu.jhuapl.saavtk.feature.FeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureType;
 
 import glum.item.ItemManager;
 

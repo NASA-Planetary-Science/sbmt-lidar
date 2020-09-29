@@ -15,6 +15,11 @@ import com.google.common.collect.ImmutableList;
 
 import vtk.vtkProp;
 
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
+import edu.jhuapl.saavtk.color.provider.ColorWheelGroupColorProvider;
+import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
+import edu.jhuapl.saavtk.feature.FeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureType;
 import edu.jhuapl.saavtk.gui.render.SceneChangeNotifier;
 import edu.jhuapl.saavtk.gui.render.VtkPropProvider;
 import edu.jhuapl.saavtk.model.PolyhedralModel;
@@ -24,11 +29,6 @@ import edu.jhuapl.saavtk.pick.PickMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.util.Properties;
 import edu.jhuapl.saavtk.view.AssocActor;
-import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
-import edu.jhuapl.sbmt.lidar.feature.FeatureType;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorWheelGroupColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.GroupColorProvider;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarStruct;

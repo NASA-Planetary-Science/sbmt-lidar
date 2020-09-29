@@ -10,14 +10,23 @@ import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.jhuapl.saavtk.color.gui.EditGroupColorPanel;
+import edu.jhuapl.saavtk.color.provider.ConstGroupColorProvider;
+import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
+import edu.jhuapl.saavtk.color.provider.SimpleColorProvider;
 import edu.jhuapl.saavtk.util.ColorIcon;
 
 import glum.gui.GuiUtil;
 import net.miginfocom.swing.MigLayout;
 
 /**
- * {@link LidarColorConfigPanel} that provides simplistic configuration of lidar
+ * {@link EditGroupColorPanel} that provides simplistic configuration of lidar
  * data.
+ * <P>
+ * Please note that the method {@link #getGroupColorProvider()} should never be
+ * called but rather the more specific {@link #getGroupColorProviderSource()} or
+ * {@link #getGroupColorProviderTarget()}. Calling
+ * {@link #getGroupColorProvider()} will result in a {@link RuntimeException}.
  * <P>
  * The configuration options are:
  * <UL>
@@ -27,7 +36,7 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author lopeznr1
  */
-public class SimplePanel extends JPanel implements ActionListener, LidarColorConfigPanel
+public class SimplePanel extends JPanel implements ActionListener, EditGroupColorPanel
 {
 	// Reference vars
 	private final ActionListener refListener;
@@ -40,9 +49,7 @@ public class SimplePanel extends JPanel implements ActionListener, LidarColorCon
 	private Color srcColor;
 	private Color tgtColor;
 
-	/**
-	 * Standard Constructor
-	 */
+	/** Standard Constructor */
 	public SimplePanel(ActionListener aListener, Color aSrcColor, Color aTgtColor)
 	{
 		refListener = aListener;
@@ -60,6 +67,35 @@ public class SimplePanel extends JPanel implements ActionListener, LidarColorCon
 		add(tgtColorL, "sg g1");
 		add(tgtColorB, "sg g2");
 
+		srcColor = aSrcColor;
+		tgtColor = aTgtColor;
+
+		updateGui();
+	}
+
+	/**
+	 * Returns the {@link GroupColorProvider} that should be used to color lidar
+	 * data points associated with the source (spacecraft).
+	 */
+	public GroupColorProvider getGroupColorProviderSource()
+	{
+		return new ConstGroupColorProvider(new SimpleColorProvider(srcColor));
+	}
+
+	/**
+	 * Returns the {@link GroupColorProvider} that should be used to color lidar
+	 * data points associated with the target.
+	 */
+	public GroupColorProvider getGroupColorProviderTarget()
+	{
+		return new ConstGroupColorProvider(new SimpleColorProvider(tgtColor));
+	}
+
+	/**
+	 * Sets in the installed colors.
+	 */
+	public void setInstalledColors(Color aSrcColor, Color aTgtColor)
+	{
 		srcColor = aSrcColor;
 		tgtColor = aTgtColor;
 
@@ -86,27 +122,12 @@ public class SimplePanel extends JPanel implements ActionListener, LidarColorCon
 		updateGui();
 	}
 
-	/**
-	 * Sets in the installed colors.
-	 */
-	public void setInstalledColors(Color aSrcColor, Color aTgtColor)
-	{
-		srcColor = aSrcColor;
-		tgtColor = aTgtColor;
-
-		updateGui();
-	}
-
 	@Override
-	public GroupColorProvider getSourceGroupColorProvider()
+	public GroupColorProvider getGroupColorProvider()
 	{
-		return new ConstGroupColorProvider(new SimpleColorProvider(srcColor));
-	}
-
-	@Override
-	public GroupColorProvider getTargetGroupColorProvider()
-	{
-		return new ConstGroupColorProvider(new SimpleColorProvider(tgtColor));
+		// Logic error: A more specific method should have been called.
+		throw new RuntimeException(
+				"Please call a more specific method: getGroupColorProviderSource() or getGroupColorProviderTarget()");
 	}
 
 	/**

@@ -15,6 +15,12 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import vtk.vtkProp;
 
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
+import edu.jhuapl.saavtk.color.provider.ConstColorProvider;
+import edu.jhuapl.saavtk.color.provider.ConstGroupColorProvider;
+import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
+import edu.jhuapl.saavtk.feature.FeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureType;
 import edu.jhuapl.saavtk.gui.render.SceneChangeNotifier;
 import edu.jhuapl.saavtk.gui.render.VtkPropProvider;
 import edu.jhuapl.saavtk.pick.HookUtil;
@@ -24,12 +30,6 @@ import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.view.AssocActor;
 import edu.jhuapl.sbmt.client.BodyViewConfig;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
-import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
-import edu.jhuapl.sbmt.lidar.feature.FeatureType;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.ConstColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.ConstGroupColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.GroupColorProvider;
 import edu.jhuapl.sbmt.lidar.util.LidarFileSpecLoadUtil;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPointProvider;

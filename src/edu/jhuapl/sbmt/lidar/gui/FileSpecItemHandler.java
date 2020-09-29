@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorProvider;
 
 import glum.gui.panel.itemList.BasicItemHandler;
 import glum.gui.panel.itemList.query.QueryComposer;
