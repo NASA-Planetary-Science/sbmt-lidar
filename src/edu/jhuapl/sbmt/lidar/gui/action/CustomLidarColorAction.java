@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.List;
 
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
+import edu.jhuapl.saavtk.color.provider.ConstColorProvider;
 import edu.jhuapl.saavtk.gui.dialog.ColorChooser;
 import edu.jhuapl.sbmt.lidar.LidarManager;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorProvider;
-import edu.jhuapl.sbmt.lidar.gui.color.ConstColorProvider;
 
 import glum.gui.action.PopAction;
 

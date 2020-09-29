@@ -15,18 +15,19 @@ import vtk.vtkPolyDataMapper;
 import vtk.vtkProp;
 import vtk.vtkUnsignedCharArray;
 
+import edu.jhuapl.saavtk.color.provider.ColorProvider;
+import edu.jhuapl.saavtk.feature.ConstFeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureType;
 import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.view.lod.LodMode;
 import edu.jhuapl.saavtk.view.lod.LodUtil;
 import edu.jhuapl.saavtk.view.lod.VtkLodActor;
+import edu.jhuapl.sbmt.lidar.LidarFeatureType;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
-import edu.jhuapl.sbmt.lidar.feature.ConstFeatureAttr;
-import edu.jhuapl.sbmt.lidar.feature.FeatureAttr;
-import edu.jhuapl.sbmt.lidar.feature.FeatureType;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorProvider;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
 import edu.jhuapl.sbmt.util.TimeUtil;
 
@@ -140,13 +141,13 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 	@Override
 	public FeatureAttr getFeatureAttrFor(FeatureType aFeatureType)
 	{
-		if (aFeatureType == FeatureType.Time)
+		if (aFeatureType == LidarFeatureType.Time)
 			return timeFA;
-		else if (aFeatureType == FeatureType.Radius)
+		else if (aFeatureType == LidarFeatureType.Radius)
 			return radiusFA;
-		else if (aFeatureType == FeatureType.Range)
+		else if (aFeatureType == LidarFeatureType.Range)
 			return rangeFA;
-		else if (aFeatureType == FeatureType.Intensity)
+		else if (aFeatureType == LidarFeatureType.Intensity)
 			return intensityFA;
 		else if (aFeatureType == null)
 			return new ConstFeatureAttr(getNumberOfPoints(), 0.0, 1.0, 0.5);

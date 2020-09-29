@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import edu.jhuapl.saavtk.color.gui.AutoColorPanel;
+import edu.jhuapl.saavtk.color.gui.EditGroupColorPanel;
+import edu.jhuapl.saavtk.color.gui.RandomizePanel;
+import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
 import edu.jhuapl.saavtk.gui.render.Renderer;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 
@@ -28,7 +32,7 @@ public class ColorConfigPanel<G1> extends JPanel implements ActionListener
 
 	// GUI vars
 	private LidarColorBarPanel<G1> colorMapPanel;
-	private CardPanel<LidarColorConfigPanel> colorPanel;
+	private CardPanel<EditGroupColorPanel> colorPanel;
 	private GComboBox<ColorMode> colorModeBox;
 
 	/**
@@ -67,7 +71,11 @@ public class ColorConfigPanel<G1> extends JPanel implements ActionListener
 	 */
 	public GroupColorProvider getSourceGroupColorProvider()
 	{
-		return colorPanel.getActiveCard().getSourceGroupColorProvider();
+		EditGroupColorPanel tmpPanel = colorPanel.getActiveCard();
+		if (tmpPanel instanceof SimplePanel)
+			return ((SimplePanel) tmpPanel).getGroupColorProviderSource();
+
+		return tmpPanel.getGroupColorProvider();
 	}
 
 	/**
@@ -76,7 +84,11 @@ public class ColorConfigPanel<G1> extends JPanel implements ActionListener
 	 */
 	public GroupColorProvider getTargetGroupColorProvider()
 	{
-		return colorPanel.getActiveCard().getTargetGroupColorProvider();
+		EditGroupColorPanel tmpPanel = colorPanel.getActiveCard();
+		if (tmpPanel instanceof SimplePanel)
+			return ((SimplePanel) tmpPanel).getGroupColorProviderTarget();
+
+		return tmpPanel.getGroupColorProvider();
 	}
 
 	/**
