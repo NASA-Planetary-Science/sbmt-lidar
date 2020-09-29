@@ -214,7 +214,7 @@ public class LidarQueryUtil
 			protected Void doInBackground() throws Exception
 			{
 				Stopwatch sw = Stopwatch.createStarted();
-				updateCompletionTimeEstimate(cubeSet.size()*3);
+
 				int cnt = 0;
 				for (Integer cidx : cubeSet)
 				{
@@ -257,7 +257,7 @@ public class LidarQueryUtil
 					//
 					cnt++;
 					double progressPercentage = ((double) cnt / (double) cubeSet.size() * 100);
-					updateProgressDialog((int) progressPercentage);
+					setProgress((int) progressPercentage);
 					if (isCancelled())
 						break;
 				}
