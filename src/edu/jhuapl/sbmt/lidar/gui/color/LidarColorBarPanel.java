@@ -31,17 +31,17 @@ public class LidarColorBarPanel<G1> extends ColorBarPanel implements ItemEventLi
 	// Ref vars
 	private final LidarManager<G1> refManager;
 	private final Renderer refRenderer;
-
-	// State vars
-	private ColorBarPainter workCBP;
+	private final ColorBarPainter refColorBarPainter;
 
 	/** Standard Constructor */
-	public LidarColorBarPanel(ActionListener aListener, LidarManager<G1> aManager, Renderer aRenderer)
+	public LidarColorBarPanel(ActionListener aListener, LidarManager<G1> aManager, Renderer aRenderer,
+			ColorBarPainter aColorBarPainter)
 	{
+		super(aColorBarPainter, true);
+
 		refManager = aManager;
 		refRenderer = aRenderer;
-
-		workCBP = new ColorBarPainter(refRenderer);
+		refColorBarPainter = aColorBarPainter;
 
 		// Register lidar specific FeatureTypes
 		addFeatureType(LidarFeatureType.Intensity, "Intensity");
@@ -64,22 +64,30 @@ public class LidarColorBarPanel<G1> extends ColorBarPanel implements ItemEventLi
 		// Ensure our default range is in sync
 		updateDefaultRange();
 
-		// Reset the current range to the defaults
-		double tmpMin = getDefaultMinValue();
-		double tmpMax = getDefaultMaxValue();
-		setCurrentMinMax(tmpMin, tmpMax);
+		// Force install the ColorMapAttr with the default (reset) range
+		ColorMapAttr tmpCMA = getColorMapAttr();
 
-		// Force an update to the color map
-		updateColorMapArea();
+		double minVal = Double.NaN;
+		double maxVal = Double.NaN;
+		FeatureType tmpFT = getFeatureType();
+		Range<Double> tmpRange = getResetRange(tmpFT);
+		if (tmpRange != null)
+		{
+			minVal = tmpRange.lowerEndpoint();
+			maxVal = tmpRange.upperEndpoint();
+		}
+
+		tmpCMA = new ColorMapAttr(tmpCMA.getColorTable(), minVal, maxVal, tmpCMA.getNumLevels(), tmpCMA.getIsLogScale());
+		setColorMapAttr(tmpCMA);
 
 		// Update the color bar
 		updateColorBar();
 
 		// Update the renderer to reflect the ColorBarPainter
 		if (aIsActive == true)
-			refRenderer.addVtkPropProvider(workCBP);
+			refRenderer.addVtkPropProvider(refColorBarPainter);
 		else
-			refRenderer.delVtkPropProvider(workCBP);
+			refRenderer.delVtkPropProvider(refColorBarPainter);
 	}
 
 	@Override
@@ -97,15 +105,12 @@ public class LidarColorBarPanel<G1> extends ColorBarPanel implements ItemEventLi
 			updateDefaultRange();
 	}
 
-	@Override
-	protected void updateDefaultRange()
+	/**
+	 * Helper method to calculate the range of values for the specified
+	 * {@link FeatureType}.
+	 */
+	private Range<Double> calcRangeForFeature(FeatureType aFeatureType)
 	{
-		// Bail if we are not visible. Maintenance of default range
-		// synchronization is relevant only when the panel is visible.
-		if (isShowing() == false)
-			return;
-
-		FeatureType tmpFT = getFeatureType();
 		Range<Double> fullRange = null;
 		for (G1 aItem : refManager.getAllItems())
 		{
@@ -113,19 +118,28 @@ public class LidarColorBarPanel<G1> extends ColorBarPanel implements ItemEventLi
 			if (refManager.getIsVisible(aItem) == false)
 				continue;
 
-			fullRange = updateRange(aItem, tmpFT, fullRange);
+			fullRange = updateRange(aItem, aFeatureType, fullRange);
 		}
 
-		// Update our (internal) default range
-		double minVal = Double.NaN;
-		double maxVal = Double.NaN;
-		if (fullRange != null)
+		return fullRange;
+	}
+
+	/**
+	 * Helper method that updates the default range for all of the lidar
+	 * {@link FeatureType}s.
+	 */
+	private void updateDefaultRange()
+	{
+		// Bail if we are not visible. Maintenance of default range
+		// synchronization is relevant only when the panel is visible.
+		if (isShowing() == false)
+			return;
+
+		for (FeatureType aFeatureType : LidarFeatureType.FullSet)
 		{
-			minVal = fullRange.lowerEndpoint();
-			maxVal = fullRange.upperEndpoint();
+			Range<Double> tmpRange = calcRangeForFeature(aFeatureType);
+			setResetRange(aFeatureType, tmpRange);
 		}
-
-		setDefaultRange(minVal, maxVal);
 	}
 
 	/**
@@ -135,10 +149,10 @@ public class LidarColorBarPanel<G1> extends ColorBarPanel implements ItemEventLi
 	private void updateColorBar()
 	{
 		ColorMapAttr tmpCMA = getColorMapAttr();
-		workCBP.setColorMapAttr(tmpCMA);
+		refColorBarPainter.setColorMapAttr(tmpCMA);
 
 		FeatureType tmpFT = getFeatureType();
-		workCBP.setTitle(tmpFT.getName());
+		refColorBarPainter.setTitle(tmpFT.getName());
 	}
 
 	/**
