@@ -273,6 +273,7 @@ public class LidarQueryUtil
 			}
 
 		};
+
 		dataLoader.executeDialog();
 		// System.out.println("Hayabusa2LidarSearchDataCollection: setLidarData:
 		// before while loop");

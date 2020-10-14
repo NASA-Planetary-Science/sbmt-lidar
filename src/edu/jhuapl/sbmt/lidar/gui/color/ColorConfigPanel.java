@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import edu.jhuapl.saavtk.color.gui.AutoColorPanel;
 import edu.jhuapl.saavtk.color.gui.EditGroupColorPanel;
 import edu.jhuapl.saavtk.color.gui.RandomizePanel;
+import edu.jhuapl.saavtk.color.painter.ColorBarPainter;
 import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
 import edu.jhuapl.saavtk.gui.render.Renderer;
 import edu.jhuapl.sbmt.lidar.LidarManager;
@@ -49,7 +50,8 @@ public class ColorConfigPanel<G1> extends JPanel implements ActionListener
 		add(tmpL);
 		add(colorModeBox, "growx,wrap 2");
 
-		colorMapPanel = new LidarColorBarPanel<>(this, aManager, aRenderer);
+		ColorBarPainter tmpCBP = new ColorBarPainter(aRenderer);
+		colorMapPanel = new LidarColorBarPanel<>(this, aManager, aRenderer, tmpCBP);
 		colorPanel = new CardPanel<>();
 		colorPanel.addCard(ColorMode.AutoHue, new AutoColorPanel(this));
 		colorPanel.addCard(ColorMode.ColorMap, colorMapPanel);

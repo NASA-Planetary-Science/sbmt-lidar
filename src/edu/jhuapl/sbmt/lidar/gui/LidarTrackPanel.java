@@ -32,7 +32,6 @@ import edu.jhuapl.saavtk.color.gui.ColorProviderCellRenderer;
 import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.saavtk.color.provider.ConstColorProvider;
 import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
-import edu.jhuapl.saavtk.colormap.SigFigNumberFormat;
 import edu.jhuapl.saavtk.gui.render.Renderer;
 import edu.jhuapl.saavtk.gui.util.IconUtil;
 import edu.jhuapl.saavtk.gui.util.ToolTipUtil;
@@ -68,6 +67,7 @@ import glum.item.ItemEventListener;
 import glum.item.ItemEventType;
 import glum.item.ItemGroup;
 import glum.item.ItemManagerUtil;
+import glum.text.SigFigNumberFormat;
 import net.miginfocom.swing.MigLayout;
 
 /**
