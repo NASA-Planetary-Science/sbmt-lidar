@@ -27,6 +27,7 @@ import javax.swing.table.TableCellRenderer;
 
 import com.google.common.collect.Range;
 
+import edu.jhuapl.saavtk.color.gui.ColorMode;
 import edu.jhuapl.saavtk.color.gui.ColorProviderCellEditor;
 import edu.jhuapl.saavtk.color.gui.ColorProviderCellRenderer;
 import edu.jhuapl.saavtk.color.provider.ColorProvider;
@@ -48,7 +49,6 @@ import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.gui.color.ColorConfigPanel;
-import edu.jhuapl.sbmt.lidar.gui.color.ColorMode;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
 
 import glum.gui.GuiUtil;
