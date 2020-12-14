@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.jhuapl.saavtk.color.gui.AutoColorPanel;
+import edu.jhuapl.saavtk.color.gui.ColorMode;
 import edu.jhuapl.saavtk.color.gui.EditGroupColorPanel;
 import edu.jhuapl.saavtk.color.gui.RandomizePanel;
 import edu.jhuapl.saavtk.color.painter.ColorBarPainter;
@@ -32,13 +33,10 @@ public class ColorConfigPanel<G1> extends JPanel implements ActionListener
 	private final ActionListener refListener;
 
 	// GUI vars
-	private LidarColorBarPanel<G1> colorMapPanel;
 	private CardPanel<EditGroupColorPanel> colorPanel;
 	private GComboBox<ColorMode> colorModeBox;
 
-	/**
-	 * Standard Constructor
-	 */
+	/** Standard Constructor */
 	public ColorConfigPanel(ActionListener aListener, LidarManager<G1> aManager, Renderer aRenderer)
 	{
 		refListener = aListener;
@@ -51,10 +49,9 @@ public class ColorConfigPanel<G1> extends JPanel implements ActionListener
 		add(colorModeBox, "growx,wrap 2");
 
 		ColorBarPainter tmpCBP = new ColorBarPainter(aRenderer);
-		colorMapPanel = new LidarColorBarPanel<>(this, aManager, aRenderer, tmpCBP);
 		colorPanel = new CardPanel<>();
 		colorPanel.addCard(ColorMode.AutoHue, new AutoColorPanel(this));
-		colorPanel.addCard(ColorMode.ColorMap, colorMapPanel);
+		colorPanel.addCard(ColorMode.ColorMap, new LidarColorBarPanel<>(this, aManager, aRenderer, tmpCBP));
 		colorPanel.addCard(ColorMode.Randomize, new RandomizePanel(this, 0));
 		colorPanel.addCard(ColorMode.Simple, new SimplePanel(this, Color.GREEN, Color.BLUE));
 
