@@ -275,7 +275,7 @@ public class LidarSearchPanel extends JPanel
 	private void doActionClearRegion()
 	{
 		AbstractEllipsePolygonModel selectionModel = (AbstractEllipsePolygonModel) refModelManager
-				.getModel(ModelNames.CIRCLE_SELECTION);
+				.getModel(ModelNames.CIRCLE_SELECTION).get(0);
 		selectionModel.removeAllStructures();
 	}
 
@@ -314,7 +314,7 @@ public class LidarSearchPanel extends JPanel
 		refPickManager.setActivePicker(null);
 
 		AbstractEllipsePolygonModel selectionRegion = (AbstractEllipsePolygonModel) refModelManager
-				.getModel(ModelNames.CIRCLE_SELECTION);
+				.getModel(ModelNames.CIRCLE_SELECTION).get(0);
 		// Delegate actual query submission
 		handleActionSubmit(aDataSource, selectionRegion);
 	}
