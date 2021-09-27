@@ -27,8 +27,12 @@ import edu.jhuapl.saavtk.pick.HookUtil;
 import edu.jhuapl.saavtk.pick.PickListener;
 import edu.jhuapl.saavtk.pick.PickMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
+import edu.jhuapl.saavtk.pick.PickUtil;
+import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.saavtk.util.Properties;
 import edu.jhuapl.saavtk.view.AssocActor;
+import edu.jhuapl.sbmt.dem.LoadListener;
+import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarStruct;
@@ -41,19 +45,19 @@ import glum.item.ItemEventType;
 
 /**
  * Class that provides management logic for a collection of lidar Tracks.
- * <P>
+ * <p>
  * The following features are supported:
- * <UL>
- * <LI>Event handling
- * <LI>Management to collection of LidarTracks
- * <LI>Support for LidarTrack selection
- * <LI>Configuration of associated rendering properties
- * <LI>Track offset translation
- * <LI>Track error calculation
- * <LI>Support to apply a radial offset to all items.
- * <LI>Support to specify the point size to rendered items.
- * </UL>
- * <P>
+ * <ul>
+ * <li>Event handling
+ * <li>Management to collection of LidarTracks
+ * <li>Support for LidarTrack selection
+ * <li>Configuration of associated rendering properties
+ * <li>Track offset translation
+ * <li>Track error calculation
+ * <li>Support to apply a radial offset to all items.
+ * <li>Support to specify the point size to rendered items.
+ * </ul>
+ * <p>
  * Currently (VTK) rendering of Tracks is supported, however that capability
  * should eventually be moved and placed in a separate class/module.
  *
@@ -64,9 +68,11 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 {
 	// Reference vars
 	private final SceneChangeNotifier refSceneChangeNotifier;
+	private final StatusNotifier refStatusNotifier;
 	protected final PolyhedralModel refSmallBody;
 
 	// State vars
+	private List<LoadListener<LidarTrack>> loadListenerL;
 	private Map<LidarTrack, RenderProp> propM;
 	private GroupColorProvider sourceGCP;
 	private GroupColorProvider targetGCP;
@@ -83,11 +89,14 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 	 *
 	 * @param aSmallBody
 	 */
-	public LidarTrackManager(SceneChangeNotifier aSceneChangeNotifier, PolyhedralModel aSmallBody)
+	public LidarTrackManager(SceneChangeNotifier aSceneChangeNotifier, StatusNotifier aStatusNotifier,
+			PolyhedralModel aSmallBody)
 	{
 		refSceneChangeNotifier = aSceneChangeNotifier;
+		refStatusNotifier = aStatusNotifier;
 		refSmallBody = aSmallBody;
 
+		loadListenerL = new ArrayList<>();
 		propM = new HashMap<>();
 		sourceGCP = ColorWheelGroupColorProvider.Instance;
 		targetGCP = ColorWheelGroupColorProvider.Instance;
@@ -183,7 +192,7 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 		// Send out the appropriate notifications
 		notifyListeners(this, ItemEventType.ItemsMutated);
 
-		notifyVtkStateChange();
+		refSceneChangeNotifier.notifySceneChange();
 	}
 
 	/**
@@ -201,6 +210,18 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 		if (aItem != null)
 			tmpItemL = ImmutableList.of(aItem);
 		updateVtkVars(tmpItemL);
+	}
+
+	@Override
+	public void addLoadListener(LoadListener<LidarTrack> aListener)
+	{
+		loadListenerL.add(aListener);
+	}
+
+	@Override
+	public void delLoadListener(LoadListener<LidarTrack> aListener)
+	{
+		loadListenerL.remove(aListener);
 	}
 
 	@Override
@@ -363,11 +384,11 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 	}
 
 	@Override
-	public void setIsVisible(List<LidarTrack> aItemL, boolean aBool)
+	public void setIsVisible(Collection<LidarTrack> aItemC, boolean aBool)
 	{
-		for (LidarTrack aItem : aItemL)
+		for (var aItem : aItemC)
 		{
-			RenderProp tmpProp = propM.get(aItem);
+			var tmpProp = propM.get(aItem);
 			if (tmpProp == null)
 				continue;
 
@@ -375,27 +396,33 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 		}
 
 		notifyListeners(this, ItemEventType.ItemsMutated);
-		updateVtkVars(aItemL);
+		updateVtkVars(aItemC);
+
+		// Force a "load" update whenever the visibility of any item changes
+		notifyLoadListeners(aItemC);
 	}
 
 	@Override
-	public void setOthersHiddenExcept(List<LidarTrack> aItemL)
+	public void setOthersHiddenExcept(Collection<LidarTrack> aItemC)
 	{
-		Set<LidarTrack> tmpItemS = new HashSet<>(aItemL);
+		var tmpItemS = new HashSet<>(aItemC);
 
 		// Update the visibility flag on each item
-		for (LidarTrack aItem : getAllItems())
+		for (var aItem : getAllItems())
 		{
-			RenderProp tmpProp = propM.get(aItem);
+			var tmpProp = propM.get(aItem);
 			if (tmpProp == null)
 				continue;
 
-			boolean isVisible = tmpItemS.contains(aItem);
+			var isVisible = tmpItemS.contains(aItem);
 			tmpProp.isVisible = isVisible;
 		}
 
 		notifyListeners(this, ItemEventType.ItemsMutated);
-		updateVtkVars(aItemL);
+		updateVtkVars(aItemC);
+
+		// Force a "load" update whenever the visibility of any item changes
+		notifyLoadListeners(aItemC);
 	}
 
 	@Override
@@ -462,7 +489,7 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 
 		List<LidarTrack> tmpL = ImmutableList.of();
 		updateVtkVars(tmpL);
-		notifyVtkStateChange();
+		notifyLoadListeners(aItemC);
 	}
 
 	@Override
@@ -517,7 +544,9 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 		super.setAllItems(aItemC);
 
 		updateVtkVars(aItemC);
-		notifyVtkStateChange();
+
+		// Force a "load" update (since by default items are visible)
+		notifyLoadListeners(aItemC);
 	}
 
 	@Override
@@ -528,12 +557,14 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 		// Selected items will be rendered with a different point size.
 		// Force the painters to "update" their point size
 		setPointSize(pointSize);
+
+		updateStatus(aItemC);
 	}
 
 	@Override
 	public List<vtkProp> getProps()
 	{
-		List<vtkProp> retL = new ArrayList<>();
+		var retPropL = new ArrayList<vtkProp>();
 
 		for (LidarTrack aItem : getAllItems())
 		{
@@ -547,12 +578,11 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 			if (tmpPainter == null)
 				continue;
 
-			retL.addAll(tmpPainter.getProps());
+			retPropL.addAll(tmpPainter.getProps());
 		}
 
-		retL.add(vPointPainter.getActor());
-
-		return retL;
+		retPropL.add(vPointPainter.getActor());
+		return retPropL;
 	}
 
 	@Override
@@ -560,6 +590,10 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 	{
 		// Respond only to primary actions
 		if (aMode != PickMode.ActivePri)
+			return;
+
+		// Bail if popup trigger
+		if (PickUtil.isPopupTrigger(aEvent) == true)
 			return;
 
 		// Retrieve the selected item (and corresponding point)
@@ -619,12 +653,22 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 	}
 
 	/**
-	 * Helper method that notifies the system that our internal VTK state has
-	 * been changed.
+	 * Helper method to send out notification when a load has been completed.
 	 */
-	private void notifyVtkStateChange()
+	private void notifyLoadListeners(Collection<LidarTrack> aItemC)
 	{
-		refSceneChangeNotifier.notifySceneChange();
+		for (var aListener : loadListenerL)
+			aListener.handleLoadEvent(this, aItemC);
+	}
+
+	/**
+	 * Helper method that updates the {@link StatusNotifier} with the selected
+	 * items.
+	 */
+	private void updateStatus(Collection<LidarTrack> aItemC)
+	{
+		// Delegate
+		LidarGuiUtil.updateStatusNotifier(refStatusNotifier, aItemC, vPointPainter);
 	}
 
 	/**
@@ -646,7 +690,7 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 			tmpPainter.vtkUpdateState();
 		}
 
-		notifyVtkStateChange();
+		refSceneChangeNotifier.notifySceneChange();
 	}
 
 }

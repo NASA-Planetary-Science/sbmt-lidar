@@ -19,29 +19,26 @@ import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.saavtk.feature.ConstFeatureAttr;
 import edu.jhuapl.saavtk.feature.FeatureAttr;
 import edu.jhuapl.saavtk.feature.FeatureType;
-import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.view.lod.LodMode;
 import edu.jhuapl.saavtk.view.lod.LodUtil;
 import edu.jhuapl.saavtk.view.lod.VtkLodActor;
+import edu.jhuapl.sbmt.lidar.BasicLidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarFeatureType;
-import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
-import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
-import edu.jhuapl.sbmt.util.TimeUtil;
 
 /**
  * Class used to render a single lidar data object and the corresponding points
  * via the VTK framework.
- * <P>
+ * <p>
  * This class supports the following configurable state:
- * <UL>
- * <LI>Source / Target ColorProviders
- * <LI>Translation vector
- * <LI>Point size
- * <LI>Range of start / stop percent (TODO: Not intuitive)
- * </UL>
+ * <ul>
+ * <li>Source / Target ColorProviders
+ * <li>Translation vector
+ * <li>Point size
+ * <li>Range of start / stop percent (TODO: Not intuitive)
+ * </ul>
  *
  * @author lopeznr1
  */
@@ -117,28 +114,6 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 	}
 
 	@Override
-	public String getDisplayInfo(PickTarget aPickTarget)
-	{
-		int cellId = aPickTarget.getCellId();
-		cellId = vTargetGF.GetPointMinimum() + cellId;
-
-		// Get the header
-		String headStr = "";
-		if (refItem instanceof LidarTrack)
-			headStr = String.format("Trk %d: ", ((LidarTrack) refItem).getId());
-		else if (refItem instanceof LidarFileSpec)
-			headStr = String.format("%s: ", ((LidarFileSpec) refItem).getName());
-
-		double timeVal = timeFA.getValAt(cellId);
-		String timeStr = TimeUtil.et2str(timeVal);
-
-		double rangeVal = rangeFA.getValAt(cellId) * 1000;
-
-		return String.format("%s Lidar point acquired at %s, ET = %f, unmodified range = %f m", headStr, timeStr, timeVal,
-				rangeVal);
-	}
-
-	@Override
 	public FeatureAttr getFeatureAttrFor(FeatureType aFeatureType)
 	{
 		if (aFeatureType == LidarFeatureType.Time)
@@ -164,7 +139,13 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 	@Override
 	public LidarPoint getLidarPointForCell(int aCellId)
 	{
-		return refManager.getLidarPointAt(refItem, aCellId);
+		var cellId = vTargetGF.GetPointMinimum() + aCellId;
+		var srcPtArr = vSourceP.GetPoint(cellId);
+		var tgtPtArr = vTargetP.GetPoint(cellId);
+		var timeVal = timeFA.getValAt(cellId);
+		var rangeVal = rangeFA.getValAt(cellId);
+		var intensityVal = intensityFA.getValAt(cellId);
+		return new BasicLidarPoint(tgtPtArr, srcPtArr, timeVal, rangeVal, intensityVal);
 	}
 
 	@Override
