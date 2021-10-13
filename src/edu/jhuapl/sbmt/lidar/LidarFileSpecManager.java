@@ -27,9 +27,13 @@ import edu.jhuapl.saavtk.pick.HookUtil;
 import edu.jhuapl.saavtk.pick.PickListener;
 import edu.jhuapl.saavtk.pick.PickMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
+import edu.jhuapl.saavtk.pick.PickUtil;
+import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.saavtk.view.AssocActor;
 import edu.jhuapl.sbmt.client.BodyViewConfig;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
+import edu.jhuapl.sbmt.dem.LoadListener;
+import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarFileSpecLoadUtil;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPointProvider;
@@ -40,17 +44,17 @@ import glum.item.ItemEventType;
 
 /**
  * Class that provides management logic for a collection of lidar FileSpecs.
- * <P>
+ * <p>
  * The following features are supported:
- * <UL>
- * <LI>Event handling
- * <LI>Management of collection of FileSpecs.
- * <LI>Support for LidarFileSpec selection
- * <LI>Configuration of associated rendering properties.
- * <LI>Support to apply a radial offset to all items.
- * <LI>Support to specify the point size to rendered items.
- * </UL>
- * <P>
+ * <ul>
+ * <li>Event handling
+ * <li>Management of collection of FileSpecs.
+ * <li>Support for LidarFileSpec selection
+ * <li>Configuration of associated rendering properties.
+ * <li>Support to apply a radial offset to all items.
+ * <li>Support to specify the point size to rendered items.
+ * </ul>
+ * <p>
  * Currently (VTK) rendering of FileSpecs is supported, however that capability
  * should eventually be moved and placed in a separate class/module.
  *
@@ -61,9 +65,11 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 {
 	// Reference vars
 	private final SceneChangeNotifier refSceneChangeNotifier;
+	private final StatusNotifier refStatusNotifier;
 	private final BodyViewConfig refBodyViewConfig;
 
 	// State vars
+	private List<LoadListener<LidarFileSpec>> loadListenerL;
 	private Map<LidarFileSpec, RenderProp> propM;
 	private GroupColorProvider sourceGCP;
 	private GroupColorProvider targetGCP;
@@ -81,12 +87,15 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 	/**
 	 * Standard Constructor
 	 */
-	public LidarFileSpecManager(SceneChangeNotifier aSceneChangeNotifier, SmallBodyViewConfig aBodyViewConfig)
+	public LidarFileSpecManager(SceneChangeNotifier aSceneChangeNotifier, StatusNotifier aStatusNotifier,
+			SmallBodyViewConfig aBodyViewConfig)
 	{
 		// TODO: Just pass the needed args
 		refSceneChangeNotifier = aSceneChangeNotifier;
+		refStatusNotifier = aStatusNotifier;
 		refBodyViewConfig = aBodyViewConfig;
 
+		loadListenerL = new ArrayList<>();
 		propM = new HashMap<>();
 		sourceGCP = new ConstGroupColorProvider(new ConstColorProvider(Color.GREEN));
 		targetGCP = new ConstGroupColorProvider(new ConstColorProvider(Color.BLUE));
@@ -143,7 +152,19 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 		for (VtkLidarPainter<?> aPainter : vPainterM.values())
 			aPainter.setPointSize(pointSize);
 
-		notifyVtkStateChange();
+		refSceneChangeNotifier.notifySceneChange();
+	}
+
+	@Override
+	public void addLoadListener(LoadListener<LidarFileSpec> aListener)
+	{
+		loadListenerL.add(aListener);
+	}
+
+	@Override
+	public void delLoadListener(LoadListener<LidarFileSpec> aListener)
+	{
+		loadListenerL.remove(aListener);
 	}
 
 	@Override
@@ -306,11 +327,11 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 	}
 
 	@Override
-	public void setIsVisible(List<LidarFileSpec> aItemL, boolean aBool)
+	public void setIsVisible(Collection<LidarFileSpec> aItemC, boolean aBool)
 	{
-		for (LidarFileSpec aItem : aItemL)
+		for (var aItem : aItemC)
 		{
-			RenderProp tmpProp = propM.get(aItem);
+			var tmpProp = propM.get(aItem);
 			if (tmpProp == null)
 				continue;
 
@@ -321,22 +342,25 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 		}
 
 		notifyListeners(this, ItemEventType.ItemsMutated);
-		updateVtkVars(aItemL);
+		updateVtkVars(aItemC);
+
+		// Force a "load" update whenever the visibility of any item changes
+		notifyLoadListeners(aItemC);
 	}
 
 	@Override
-	public void setOthersHiddenExcept(List<LidarFileSpec> aItemL)
+	public void setOthersHiddenExcept(Collection<LidarFileSpec> aItemC)
 	{
-		Set<LidarFileSpec> tmpItemS = new HashSet<>(aItemL);
+		var tmpItemS = new HashSet<>(aItemC);
 
 		// Update the visibility flag on each item
-		for (LidarFileSpec aItem : getAllItems())
+		for (var aItem : getAllItems())
 		{
-			RenderProp tmpProp = propM.get(aItem);
+			var tmpProp = propM.get(aItem);
 			if (tmpProp == null)
 				continue;
 
-			boolean isVisible = tmpItemS.contains(aItem);
+			var isVisible = tmpItemS.contains(aItem);
 			tmpProp.isVisible = isVisible;
 
 			if (isVisible == true)
@@ -345,6 +369,9 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 
 		notifyListeners(this, ItemEventType.ItemsMutated);
 		updateVtkVars(getAllItems());
+
+		// Force a "load" update whenever the visibility of any item changes
+		notifyLoadListeners(aItemC);
 	}
 
 	@Override
@@ -408,6 +435,8 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 		// Selected items will be rendered with a different point size.
 		// Force the painters to "update" their point size
 		setPointSize(pointSize);
+
+		updateStatus(aItemC);
 	}
 
 	// TODO: Add javadoc
@@ -452,6 +481,10 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 	{
 		// Respond only to primary actions
 		if (aMode != PickMode.ActivePri)
+			return;
+
+		// Bail if popup trigger
+		if (PickUtil.isPopupTrigger(aEvent) == true)
 			return;
 
 		// Retrieve the selected item (and corresponding point)
@@ -516,7 +549,7 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 		aPainter.setPercentageShown(begPercent, endPercent);
 
 		notifyListeners(this, ItemEventType.ItemsMutated);
-		notifyVtkStateChange();
+		refSceneChangeNotifier.notifySceneChange();
 	}
 
 	/**
@@ -563,12 +596,22 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 	}
 
 	/**
-	 * Helper method that notifies the system that our internal VTK state has
-	 * been changed.
+	 * Helper method to send out notification when a load has been completed.
 	 */
-	private void notifyVtkStateChange()
+	private void notifyLoadListeners(Collection<LidarFileSpec> aItemC)
 	{
-		refSceneChangeNotifier.notifySceneChange();
+		for (var aListener : loadListenerL)
+			aListener.handleLoadEvent(this, aItemC);
+	}
+
+	/**
+	 * Helper method that updates the {@link StatusNotifier} with the selected
+	 * items.
+	 */
+	private void updateStatus(Collection<LidarFileSpec> aItemC)
+	{
+		// Delegate
+		LidarGuiUtil.updateStatusNotifier(refStatusNotifier, aItemC, vPointPainter);
 	}
 
 	/**
@@ -590,7 +633,7 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 		for (VtkLidarPainter<?> aPainter : vPainterM.values())
 			aPainter.vtkUpdateState();
 
-		notifyVtkStateChange();
+		refSceneChangeNotifier.notifySceneChange();
 	}
 
 }

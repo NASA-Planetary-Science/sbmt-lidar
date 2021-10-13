@@ -1,15 +1,21 @@
 package edu.jhuapl.sbmt.lidar.gui;
 
+import java.util.Collection;
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import edu.jhuapl.saavtk.gui.render.Renderer;
-import edu.jhuapl.saavtk.gui.render.SceneChangeNotifier;
+import edu.jhuapl.saavtk.gui.render.VtkPropProvider;
 import edu.jhuapl.saavtk.model.ModelManager;
 import edu.jhuapl.saavtk.model.PolyhedralModel;
 import edu.jhuapl.saavtk.pick.PickManager;
+import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
+import edu.jhuapl.sbmt.dem.Dem;
+import edu.jhuapl.sbmt.dem.vtk.VtkDemPainter;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
+import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil.DataType;
 import edu.jhuapl.sbmt.model.image.Instrument;
@@ -18,24 +24,22 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  * UI component that holds 3 sub panels:
- * <UL>
- * <LI>Browse panel: Provides UI to browse fixed list of lidar data products
- * <LI>Custom panel: Provides UI to browse custom list of lidar data products
- * <LI>Search panel: Provides UI to allow user to query for list of lidar tracks
- * </UL>
+ * <ul>
+ * <li>Browse panel: Provides UI to browse fixed list of lidar data products
+ * <li>Custom panel: Provides UI to browse custom list of lidar data products
+ * <li>Search panel: Provides UI to allow user to query for list of lidar tracks
+ * </ul>
  *
  * @author lopeznr1
  */
 public class LidarPanel extends JTabbedPane
 {
-	/**
-	 * Standard Constructor
-	 */
-	public LidarPanel(ModelManager aModelManager, PickManager aPickManager, Renderer aRenderer,
-			SmallBodyViewConfig aBodyViewConfig)
+	/** Standard Constructor */
+	public LidarPanel(Renderer aRenderer, StatusNotifier aStatusNotifier, PickManager aPickManager,
+			SmallBodyViewConfig aBodyViewConfig, PolyhedralModel aSmallBody, ModelManager aModelManager)
 	{
 		// Custom panel
-		JPanel customPanel = formCustomPanel(aModelManager, aPickManager, aRenderer);
+		var customPanel = formCustomPanel(aRenderer, aStatusNotifier, aPickManager, aSmallBody);
 		addTab("Custom", customPanel);
 
 		// Bail if there is not (instrument) specific lidar data
@@ -43,11 +47,12 @@ public class LidarPanel extends JTabbedPane
 			return;
 
 		// Browse panel
-		JPanel browsePanel = formBrowsePanel(aModelManager, aPickManager, aRenderer, aBodyViewConfig);
+		var browsePanel = formBrowsePanel(aRenderer, aStatusNotifier, aPickManager, aSmallBody, aBodyViewConfig);
 		addTab("Browse", browsePanel);
 
 		// Search panel
-		JPanel searchPanel = formSearchPanel(aModelManager, aPickManager, aRenderer, aBodyViewConfig);
+		var searchPanel = formSearchPanel(aRenderer, aStatusNotifier, aPickManager, aSmallBody, aBodyViewConfig,
+				aModelManager);
 		if (searchPanel != null)
 			addTab("Search", searchPanel);
 
@@ -58,8 +63,8 @@ public class LidarPanel extends JTabbedPane
 	/**
 	 * Helper utility method that forms the 'browse' tabbed panel.
 	 */
-	private static JPanel formBrowsePanel(SceneChangeNotifier aSceneChangeNotifier, PickManager aPickManager,
-			Renderer aRenderer, SmallBodyViewConfig aBodyViewConfig)
+	private static JPanel formBrowsePanel(Renderer aRenderer, StatusNotifier aStatusNotifier, PickManager aPickManager,
+			PolyhedralModel aSmallBody, SmallBodyViewConfig aBodyViewConfig)
 	{
 		// Determine the proper data source name
 		Instrument tmpInstrument = aBodyViewConfig.lidarInstrumentName;
@@ -70,38 +75,39 @@ public class LidarPanel extends JTabbedPane
 			dataSourceName = "Default";
 
 		// Form the LidarFileSpecManager
-		LidarFileSpecManager tmpFileSpecManager = new LidarFileSpecManager(aSceneChangeNotifier, aBodyViewConfig);
-		aRenderer.addVtkPropProvider(tmpFileSpecManager);
+		var tmpItemManager = new LidarFileSpecManager(aRenderer, aStatusNotifier, aBodyViewConfig);
+		aRenderer.addVtkPropProvider(tmpItemManager);
 
 		// Manually register for events of interest
-		aPickManager.getDefaultPicker().addListener(tmpFileSpecManager);
-		aPickManager.getDefaultPicker().addPropProvider(tmpFileSpecManager);
+		aPickManager.getDefaultPicker().addListener(tmpItemManager);
+		aPickManager.getDefaultPicker().addPropProvider(tmpItemManager);
+		tmpItemManager.addLoadListener((aSource, aItemC) -> handleLoadChange(tmpItemManager, aItemC, aPickManager));
 
 		// Form the "browse" panel
-		LidarFileSpecPanel retPanel = new LidarFileSpecPanel(tmpFileSpecManager, aPickManager, aRenderer, aBodyViewConfig,
-				dataSourceName);
+		var retPanel = new LidarFileSpecPanel(tmpItemManager, aPickManager, aRenderer, aBodyViewConfig, dataSourceName);
 		return retPanel;
 	}
 
 	/**
 	 * Helper utility method that forms the 'custom' tabbed panel.
 	 */
-	private static JPanel formCustomPanel(ModelManager aModelManager, PickManager aPickManager, Renderer aRenderer)
+	private static JPanel formCustomPanel(Renderer aRenderer, StatusNotifier aStatusNotifier, PickManager aPickManager,
+			PolyhedralModel aSmallBody)
 	{
 		// Form the LidarTrackManager
-		PolyhedralModel tmpSmallBody = aModelManager.getPolyhedralModel();
-		LidarTrackManager tmpTrackManager = new LidarTrackManager(aModelManager, tmpSmallBody);
-		aRenderer.addVtkPropProvider(tmpTrackManager);
+		var tmpItemManager = new LidarTrackManager(aRenderer, aStatusNotifier, aSmallBody);
+		aRenderer.addVtkPropProvider(tmpItemManager);
 
 		// Manually register for events of interest
-		aPickManager.getDefaultPicker().addListener(tmpTrackManager);
-		aPickManager.getDefaultPicker().addPropProvider(tmpTrackManager);
+		aPickManager.getDefaultPicker().addListener(tmpItemManager);
+		aPickManager.getDefaultPicker().addPropProvider(tmpItemManager);
+		tmpItemManager.addLoadListener((aSource, aItemC) -> handleLoadChange(tmpItemManager, aItemC, aPickManager));
 
-		// Form the 'custom' panel
-		LidarLoadPanel tmpLidarLoadPanel = new LidarLoadPanel(tmpTrackManager);
-		LidarTrackPanel tmpLidarListPanel = new LidarTrackPanel(tmpTrackManager, aPickManager, aRenderer, tmpSmallBody);
+		// Form the "custom" panel
+		LidarLoadPanel tmpLidarLoadPanel = new LidarLoadPanel(tmpItemManager);
+		LidarTrackPanel tmpLidarListPanel = new LidarTrackPanel(tmpItemManager, aRenderer, aPickManager, aSmallBody);
 
-		JPanel retPanel = new JPanel(new MigLayout("", "", "0[]0"));
+		var retPanel = new JPanel(new MigLayout("", "", "0[]0"));
 		retPanel.add(tmpLidarLoadPanel, "growx,wrap");
 		retPanel.add(tmpLidarListPanel, "growx,growy,pushx,pushy");
 		return retPanel;
@@ -110,8 +116,8 @@ public class LidarPanel extends JTabbedPane
 	/**
 	 * Helper utility method that forms the 'search' tabbed panel.
 	 */
-	private static JPanel formSearchPanel(ModelManager aModelManager, PickManager aPickManager, Renderer aRenderer,
-			SmallBodyViewConfig aBodyViewConfig)
+	private static JPanel formSearchPanel(Renderer aRenderer, StatusNotifier aStatusNotifier, PickManager aPickManager,
+			PolyhedralModel aSmallBody, SmallBodyViewConfig aBodyViewConfig, ModelManager aModelManager)
 	{
 		// MOLA search isn't working, so disable it for now.
 		if (aBodyViewConfig.lidarInstrumentName.equals(Instrument.MOLA) == true)
@@ -121,13 +127,13 @@ public class LidarPanel extends JTabbedPane
 		Instrument tmpInstrument = aBodyViewConfig.lidarInstrumentName;
 
 		// Form the LidarTrackManager
-		PolyhedralModel tmpSmallBody = aModelManager.getPolyhedralModel();
-		LidarTrackManager tmpTrackManager = new LidarTrackManager(aModelManager, tmpSmallBody);
-		aRenderer.addVtkPropProvider(tmpTrackManager);
+		var tmpItemManager = new LidarTrackManager(aRenderer, aStatusNotifier, aSmallBody);
+		aRenderer.addVtkPropProvider(tmpItemManager);
 
 		// Manually register for events of interest
-		aPickManager.getDefaultPicker().addListener(tmpTrackManager);
-		aPickManager.getDefaultPicker().addPropProvider(tmpTrackManager);
+		aPickManager.getDefaultPicker().addListener(tmpItemManager);
+		aPickManager.getDefaultPicker().addPropProvider(tmpItemManager);
+		tmpItemManager.addLoadListener((aSource, aItemC) -> handleLoadChange(tmpItemManager, aItemC, aPickManager));
 
 		// Form the appropriate 'search' panel
 		DataType dataType = null;
@@ -140,17 +146,31 @@ public class LidarPanel extends JTabbedPane
 
 		LidarSearchPanel searchPanel;
 		if (dataType == null)
-			searchPanel = new LidarSearchPanel(aBodyViewConfig, aModelManager, aPickManager, tmpTrackManager);
+			searchPanel = new LidarSearchPanel(aBodyViewConfig, aModelManager, aPickManager, tmpItemManager);
 		else
-			searchPanel = new LidarHyperTreeSearchPanel(aBodyViewConfig, aModelManager, aPickManager, tmpTrackManager,
+			searchPanel = new LidarHyperTreeSearchPanel(aBodyViewConfig, aModelManager, aPickManager, tmpItemManager,
 					dataType);
 
-		// Form the 'list' panel
-		JPanel trackPanel = new LidarTrackPanel(tmpTrackManager, aPickManager, aRenderer, tmpSmallBody);
+		// Form the "list" panel
+		var trackPanel = new LidarTrackPanel(tmpItemManager, aRenderer, aPickManager, aSmallBody);
 
-		JPanel retPanel = new JPanel(new MigLayout("", "0[]0", "0[]0"));
+		var retPanel = new JPanel(new MigLayout("", "0[]0", "0[]0"));
 		retPanel.add(searchPanel, "growx,span,wrap");
 		retPanel.add(trackPanel, "growx,growy,pushx,pushy");
 		return retPanel;
 	}
+
+	/**
+	 * Utility helper method that notifies the {@link PickManager}'s default
+	 * picker that a {@link VtkPropProvider}'s state has changed.
+	 * <p>
+	 * This notification will be sent only if {@link VtkDemPainter} corresponding
+	 * to the specified {@link Dem} has reached a "ready" state.
+	 */
+	private static <G1> void handleLoadChange(LidarManager<G1> aItemManager, Collection<G1> aItemC,
+			PickManager aPickManager)
+	{
+		aPickManager.getDefaultPicker().notifyPropProviderChanged();
+	}
+
 }

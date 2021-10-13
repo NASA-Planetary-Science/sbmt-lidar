@@ -9,6 +9,7 @@ import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
 import edu.jhuapl.saavtk.feature.FeatureAttr;
 import edu.jhuapl.saavtk.feature.FeatureType;
+import edu.jhuapl.sbmt.dem.LoadListener;
 
 import glum.item.ItemManager;
 
@@ -29,6 +30,16 @@ import glum.item.ItemManager;
  */
 public interface LidarManager<G1> extends ItemManager<G1>
 {
+	/**
+	 * Adds a {@link LoadListener} to this manager.
+	 */
+	public void addLoadListener(LoadListener<G1> aListener);
+
+	/**
+	 * Removes a {@link LoadListener} from this manager.
+	 */
+	public void delLoadListener(LoadListener<G1> aListener);
+
 	/**
 	 * Clears out any custom ColorProvider associated with the specified list of
 	 * lidar objects.
@@ -117,19 +128,19 @@ public interface LidarManager<G1> extends ItemManager<G1>
 	/**
 	 * Sets whether the specified list of lidar objects should be rendered.
 	 *
-	 * @param aItemL The list of objects of interest.
+	 * @param aItemC The list of objects of interest.
 	 * @param aBool True if the objects should be visible
 	 */
-	public void setIsVisible(List<G1> aItemL, boolean aBool);
+	public void setIsVisible(Collection<G1> aItemC, boolean aBool);
 
 	/**
 	 * Method that will set the list of lidar objects to visible and set all
 	 * other objects to not visible.
 	 *
-	 * @param aItemL The list of objects of interest. These will be the only ones
+	 * @param aItemC The list of objects of interest. These will be the only ones
 	 * that are made visible all others will be hidden.
 	 */
-	public void setOthersHiddenExcept(List<G1> aItemL);
+	public void setOthersHiddenExcept(Collection<G1> aItemC);
 
 	/**
 	 * Sets in the radial offset (of all lidar objects).
