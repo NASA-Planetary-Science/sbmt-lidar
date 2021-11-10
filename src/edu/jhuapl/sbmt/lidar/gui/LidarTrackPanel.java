@@ -72,13 +72,13 @@ import net.miginfocom.swing.MigLayout;
 
 /**
  * Panel used to display a list of lidar Tracks.
- * <P>
+ * <p>
  * The following functionality is supported:
- * <UL>
- * <LI>Display list of tracks in a table
- * <LI>Allow user to show, hide, or remove tracks
- * <LI>Allow user to drag or manually translate tracks
- * </UL>
+ * <ul>
+ * <li>Display list of tracks in a table
+ * <li>Allow user to show, hide, or remove tracks
+ * <li>Allow user to drag or manually translate tracks
+ * </ul>
  *
  * @author lopeznr1
  */
@@ -115,7 +115,7 @@ public class LidarTrackPanel extends JPanel
 	private JSpinner pointSizeSpinner;
 
 	/** Standard Constructor */
-	public LidarTrackPanel(LidarTrackManager aTrackManager, PickManager aPickManager, Renderer aRenderer,
+	public LidarTrackPanel(LidarTrackManager aTrackManager, Renderer aRenderer, PickManager aPickManager,
 			PolyhedralModel aSmallBody)
 	{
 		refTrackManager = aTrackManager;
