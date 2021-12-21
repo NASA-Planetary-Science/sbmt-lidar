@@ -652,6 +652,15 @@ public class LidarTrackManager extends BaseItemManager<LidarTrack>
 		return null;
 	}
 
+	// TODO: Add javadoc
+	public void setPercentageShown(double aBegPercent, double aEndPercent)
+	{
+		for (VtkLidarPainter<?> aPainter : vPainterM.values())
+			aPainter.setPercentageShown(aBegPercent, aEndPercent);
+
+		updateVtkVars(getAllItems());
+	}
+
 	/**
 	 * Helper method to send out notification when a load has been completed.
 	 */
