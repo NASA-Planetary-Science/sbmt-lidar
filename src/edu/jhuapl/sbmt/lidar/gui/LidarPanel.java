@@ -12,13 +12,13 @@ import edu.jhuapl.saavtk.model.PolyhedralModel;
 import edu.jhuapl.saavtk.pick.PickManager;
 import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
+import edu.jhuapl.sbmt.config.Instrument;
 import edu.jhuapl.sbmt.dem.Dem;
 import edu.jhuapl.sbmt.dem.vtk.VtkDemPainter;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil.DataType;
-import edu.jhuapl.sbmt.model.image.Instrument;
 
 import net.miginfocom.swing.MigLayout;
 
