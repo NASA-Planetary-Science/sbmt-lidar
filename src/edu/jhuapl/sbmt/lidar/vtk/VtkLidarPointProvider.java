@@ -33,7 +33,7 @@ public class VtkLidarPointProvider implements VtkResource
 	 */
 	public int getNumberOfPoints()
 	{
-		return vPointsTarget.GetNumberOfPoints();
+		return (int)vPointsTarget.GetNumberOfPoints();
 	}
 
 	/**

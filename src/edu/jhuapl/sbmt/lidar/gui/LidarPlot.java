@@ -107,8 +107,8 @@ public class LidarPlot extends JFrame implements ChartMouseListener
 			if (r instanceof XYLineAndShapeRenderer)
 			{
 				XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
-				renderer.setBaseShapesVisible(true);
-				renderer.setBaseShapesFilled(true);
+				renderer.setDefaultShapesVisible(true);
+				renderer.setDefaultShapesFilled(true);
 				renderer.setDrawSeriesLineAsPath(true);
 				renderer.setSeriesPaint(0, Color.BLACK);
 				renderer.setSeriesPaint(1, Color.RED);
@@ -162,8 +162,8 @@ public class LidarPlot extends JFrame implements ChartMouseListener
 			if (r instanceof XYLineAndShapeRenderer)
 			{
 				XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) r;
-				renderer.setBaseShapesVisible(true);
-				renderer.setBaseShapesFilled(true);
+				renderer.setDefaultShapesVisible(true);
+				renderer.setDefaultShapesFilled(true);
 				renderer.setDrawSeriesLineAsPath(true);
 				renderer.setSeriesPaint(0, Color.BLACK);
 				renderer.setSeriesPaint(1, Color.RED);

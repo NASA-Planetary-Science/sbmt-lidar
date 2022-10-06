@@ -78,7 +78,7 @@ public class VtkUtil
 		{
 			LidarPoint pt = aPointIter.next();
 
-			int tgtId = vTgtP.InsertNextPoint(pt.getTargetPosition().toArray());
+			int tgtId = (int)vTgtP.InsertNextPoint(pt.getTargetPosition().toArray());
 			vtkVertex tgtV = new vtkVertex();
 			tgtV.GetPointIds().SetId(0, tgtId);
 			vTgtCA.InsertNextCell(tgtV);
@@ -93,7 +93,7 @@ public class VtkUtil
 			double irec = pt.getIntensityReceived();
 			intensityFAB.addValue(irec);
 
-			int srcId = vSrcP.InsertNextPoint(pt.getSourcePosition().toArray());
+			int srcId = (int)vSrcP.InsertNextPoint(pt.getSourcePosition().toArray());
 			vtkVertex srcV = new vtkVertex();
 			srcV.GetPointIds().SetId(0, srcId);
 			vSrcCA.InsertNextCell(srcV);

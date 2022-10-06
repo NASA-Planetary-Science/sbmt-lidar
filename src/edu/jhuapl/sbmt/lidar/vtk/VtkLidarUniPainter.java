@@ -142,9 +142,9 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 		var cellId = vTargetGF.GetPointMinimum() + aCellId;
 		var srcPtArr = vSourceP.GetPoint(cellId);
 		var tgtPtArr = vTargetP.GetPoint(cellId);
-		var timeVal = timeFA.getValAt(cellId);
-		var rangeVal = rangeFA.getValAt(cellId);
-		var intensityVal = intensityFA.getValAt(cellId);
+		var timeVal = timeFA.getValAt((int)cellId);
+		var rangeVal = rangeFA.getValAt((int)cellId);
+		var intensityVal = intensityFA.getValAt((int)cellId);
 		return new BasicLidarPoint(tgtPtArr, srcPtArr, timeVal, rangeVal, intensityVal);
 	}
 
@@ -203,8 +203,8 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 		if (vSourceA.GetProperty().GetPointSize() == tmpPointSize)
 			return;
 
-		vSourceA.GetProperty().SetPointSize(tmpPointSize);
-		vTargetA.GetProperty().SetPointSize(tmpPointSize);
+		vSourceA.GetProperty().SetPointSize((float)tmpPointSize);
+		vTargetA.GetProperty().SetPointSize((float)tmpPointSize);
 
 		vSourceA.Modified();
 		vTargetA.Modified();
@@ -307,7 +307,7 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 		double g = tmpColorA.getGreen() / 255.0;
 		double b = tmpColorA.getBlue() / 255.0;
 		vSourceA.GetProperty().SetColor(r, g, b);
-		vSourceA.GetProperty().SetPointSize(2.0);
+		vSourceA.GetProperty().SetPointSize(2.0f);
 
 		// Instantiate VTK vars (associated with the target points)
 		FeatureType tmpFT = cTargetCP.getFeatureType();
@@ -340,7 +340,7 @@ public class VtkLidarUniPainter<G1> implements VtkLidarPainter<G1>
 		vtkPolyDataMapper vTargetDecPDM = LodUtil.createQuadricDecimatedMapper(vTargetGF.GetOutputPort());
 		vTargetA.setLodMapper(LodMode.MaxSpeed, vTargetDecPDM);
 
-		vTargetA.GetProperty().SetPointSize(2.0);
+		vTargetA.GetProperty().SetPointSize(2.0f);
 	}
 
 	/**

@@ -80,7 +80,7 @@ public class VtkPointPainter<G1> implements ItemEventListener, VtkResource
 		vActor.setLodMapper(LodMode.MaxSpeed, vPointsDecPDM);
 		vActor.GetProperty().SetColor(pointColor.getRed() / 255.0, pointColor.getGreen() / 255.0,
 				pointColor.getBlue() / 255.0);
-		vActor.GetProperty().SetPointSize(1.0);
+		vActor.GetProperty().SetPointSize(1.0f);
 
 		// Register for events of interst
 		refManager.addListener(this);
@@ -126,7 +126,7 @@ public class VtkPointPainter<G1> implements ItemEventListener, VtkResource
 	 */
 	public void setPointSize(double aSize)
 	{
-		vActor.GetProperty().SetPointSize(aSize);
+		vActor.GetProperty().SetPointSize((float)aSize);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class VtkPointPainter<G1> implements ItemEventListener, VtkResource
 			Vector3D targetV = workPoint.getTargetPosition();
 			targetV = LidarGeoUtil.transformTarget(translationV, radialOffset, targetV);
 
-			int id1 = points.InsertNextPoint(targetV.getX(), targetV.getY(), targetV.getZ());
+			int id1 = (int)points.InsertNextPoint(targetV.getX(), targetV.getY(), targetV.getZ());
 			vtkIdList idList = new vtkIdList();
 			idList.InsertNextId(id1);
 

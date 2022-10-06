@@ -149,7 +149,7 @@ public class FileSystemOctreeGenerator
 			for (int i = 0; i < 8; i++)
 			{
 				Vector3D crn = node.getCorner(i);
-				int id = points.InsertNextPoint(crn.getX(), crn.getY(), crn.getZ());
+				int id = (int)points.InsertNextPoint(crn.getX(), crn.getY(), crn.getZ());
 				hex.GetPointIds().SetId(i, id);
 			}
 			cells.InsertNextCell(hex);

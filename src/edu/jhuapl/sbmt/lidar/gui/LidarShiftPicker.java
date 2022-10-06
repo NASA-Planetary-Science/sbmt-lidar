@@ -120,7 +120,7 @@ public class LidarShiftPicker extends Picker implements ItemEventListener
 
 		// Retrieve the position of the selected LidarPoint
 		vtkActor tmpActor = vPointCP.GetActor();
-		int tmpCellId = vPointCP.GetCellId();
+		int tmpCellId = (int)vPointCP.GetCellId();
 		PickTarget tmpPickTarg = new PickTarget(tmpActor, Vector3D.ZERO, Vector3D.ZERO, tmpCellId);
 		LidarPoint tmpLP = refTrackManager.getLidarPointFrom(tmpPickTarg);
 		if (tmpLP == null)
