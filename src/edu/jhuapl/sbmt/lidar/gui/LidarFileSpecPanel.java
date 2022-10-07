@@ -38,7 +38,7 @@ import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
-import edu.jhuapl.sbmt.client.SmallBodyViewConfig;
+import edu.jhuapl.sbmt.common.client.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.gui.table.EphemerisTimeRenderer;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;

@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
-import edu.jhuapl.sbmt.client.BodyViewConfig;
+import edu.jhuapl.sbmt.common.client.BodyViewConfig;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.util.TimeUtil;
 

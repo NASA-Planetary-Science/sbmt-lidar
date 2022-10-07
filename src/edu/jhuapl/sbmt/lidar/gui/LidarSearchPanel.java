@@ -53,7 +53,7 @@ import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.pick.Picker;
 import edu.jhuapl.saavtk.structure.Ellipse;
 import edu.jhuapl.saavtk.util.BoundingBox;
-import edu.jhuapl.sbmt.client.BodyViewConfig;
+import edu.jhuapl.sbmt.common.client.BodyViewConfig;
 import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil;
