@@ -12,6 +12,7 @@ import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.saavtk.structure.StructureManager;
 import edu.jhuapl.saavtk.util.Configuration;
 import edu.jhuapl.saavtk.view.AssocActor;
+import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarException;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
@@ -20,7 +21,6 @@ import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkPointPainter;
-import edu.jhuapl.sbmt.util.TimeUtil;
 
 import glum.gui.action.PopupMenu;
 

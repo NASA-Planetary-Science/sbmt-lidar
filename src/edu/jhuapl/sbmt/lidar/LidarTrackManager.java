@@ -31,7 +31,7 @@ import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.saavtk.util.Properties;
 import edu.jhuapl.saavtk.view.AssocActor;
-import edu.jhuapl.sbmt.dem.LoadListener;
+import edu.jhuapl.sbmt.core.listeners.LoadListener;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;

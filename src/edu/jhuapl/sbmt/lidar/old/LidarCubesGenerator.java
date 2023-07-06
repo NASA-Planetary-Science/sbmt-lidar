@@ -19,8 +19,8 @@ import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.LatLon;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
-import edu.jhuapl.sbmt.common.client.SmallBodyModel;
-import edu.jhuapl.sbmt.util.TimeUtil;
+import edu.jhuapl.sbmt.core.body.SmallBodyModel;
+import edu.jhuapl.sbmt.core.util.TimeUtil;
 
 /**
  * This program goes through all the lidar data and divides all the data

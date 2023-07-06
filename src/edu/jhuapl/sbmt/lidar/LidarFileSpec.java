@@ -1,6 +1,6 @@
 package edu.jhuapl.sbmt.lidar;
 
-import edu.jhuapl.sbmt.util.TimeUtil;
+import edu.jhuapl.sbmt.core.util.TimeUtil;
 
 /**
  * Immutable object that contains information about a single lidar file.

@@ -23,7 +23,7 @@ import edu.jhuapl.saavtk.structure.Ellipse;
 import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.saavtk.util.NonexistentRemoteFile;
 import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
-import edu.jhuapl.sbmt.common.client.BodyViewConfig;
+import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeSkeleton;

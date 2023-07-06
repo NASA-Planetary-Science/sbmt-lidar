@@ -44,7 +44,7 @@ import edu.jhuapl.saavtk.pick.PickMode;
 import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.pick.Picker;
-import edu.jhuapl.sbmt.gui.table.EphemerisTimeRenderer;
+import edu.jhuapl.sbmt.core.gui.EphemerisTimeRenderer;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;

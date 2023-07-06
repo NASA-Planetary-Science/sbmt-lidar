@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
+import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
-import edu.jhuapl.sbmt.util.TimeUtil;
 
 
 public class Hayabusa2RawLidarFile extends RawLidarFile
