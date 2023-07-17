@@ -2,9 +2,9 @@ package edu.jhuapl.sbmt.lidar.util;
 
 import java.io.IOException;
 
+import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.BasicLidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
-import edu.jhuapl.sbmt.util.TimeUtil;
 
 /**
  * @author steelrj1

@@ -17,6 +17,7 @@ import vtk.vtkStringArray;
 import vtk.vtkUnstructuredGrid;
 
 import edu.jhuapl.saavtk.util.BoundingBox;
+import edu.jhuapl.sbmt.core.io.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaPointList;
 
 public class FileSystemOctreeGenerator

@@ -11,10 +11,10 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 
+import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeSkeleton;
-import edu.jhuapl.sbmt.util.TimeUtil;
 
 import glum.item.IdGenerator;
 

@@ -26,6 +26,7 @@ import vtk.vtkUnstructuredGrid;
 import edu.jhuapl.saavtk.io.readers.IpwgPlyReader;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
+import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.BasicLidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
@@ -33,7 +34,6 @@ import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.OLAL2File;
 import edu.jhuapl.sbmt.lidar.TrackFileType;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
-import edu.jhuapl.sbmt.util.TimeUtil;
 
 import glum.item.IdGenerator;
 import glum.item.IncrIdGenerator;

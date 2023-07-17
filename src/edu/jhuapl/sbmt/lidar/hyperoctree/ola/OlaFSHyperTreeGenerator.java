@@ -2,9 +2,9 @@ package edu.jhuapl.sbmt.lidar.hyperoctree.ola;
 
 import java.nio.file.Path;
 
+import edu.jhuapl.sbmt.core.io.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
-import edu.jhuapl.sbmt.lidar.misc.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
 
 

@@ -9,7 +9,7 @@ import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
 import edu.jhuapl.saavtk.feature.FeatureAttr;
 import edu.jhuapl.saavtk.feature.FeatureType;
-import edu.jhuapl.sbmt.dem.LoadListener;
+import edu.jhuapl.sbmt.core.listeners.LoadListener;
 
 import glum.item.ItemManager;
 
