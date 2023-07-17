@@ -3,7 +3,7 @@ package edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeCondenser;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeCondenser;
 
 public class Hayabusa2HyperTreeCondenser extends FSHyperTreeCondenser
 {

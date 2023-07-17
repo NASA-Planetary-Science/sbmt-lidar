@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 import edu.jhuapl.saavtk.util.FileCache;
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeNode;
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeSkeleton;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeNode;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeSkeleton;
 
 public class Hayabusa2LidarHypertreeSkeleton extends FSHyperTreeSkeleton
 {

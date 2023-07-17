@@ -23,10 +23,10 @@ import com.google.common.collect.Lists;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.NativeLibraryLoader;
-import edu.jhuapl.sbmt.lidar.hyperoctree.Dimensioned;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
-import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
-import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException;
+import edu.jhuapl.sbmt.query.hyperoctree.Dimensioned;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperBox;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperException;
 
 public class OlaFSHyperTreeStatistics implements Dimensioned
 {

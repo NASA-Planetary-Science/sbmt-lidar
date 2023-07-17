@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import edu.jhuapl.sbmt.lidar.LidarPoint;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperPoint;
 
 
 public class FSHyperPointWithFileTag implements FSHyperPoint, LidarPoint

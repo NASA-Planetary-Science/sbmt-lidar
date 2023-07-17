@@ -35,8 +35,8 @@ import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeSkeleton;
 import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2LidarPoint;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeSkeleton;
 
 import glum.item.IdGenerator;
 import glum.item.IncrIdGenerator;

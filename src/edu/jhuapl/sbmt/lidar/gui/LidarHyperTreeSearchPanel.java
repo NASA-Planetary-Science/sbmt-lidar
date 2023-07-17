@@ -26,10 +26,10 @@ import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
 import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeSkeleton;
 import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2LidarHypertreeSkeleton;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil.DataType;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeSkeleton;
 
 public class LidarHyperTreeSearchPanel extends LidarSearchPanel
 {

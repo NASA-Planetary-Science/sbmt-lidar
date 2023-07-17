@@ -32,6 +32,9 @@ import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeGenerator;
 import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaFSHyperTreeNode;
 import edu.jhuapl.sbmt.lidar.misc.LidarInstrument;
 import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeNode;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperBox;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperException;
 
 public abstract class FSHyperTreeGenerator
 {

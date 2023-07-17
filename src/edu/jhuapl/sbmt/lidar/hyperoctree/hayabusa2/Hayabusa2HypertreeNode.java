@@ -6,9 +6,9 @@ import java.nio.file.Path;
 
 import edu.jhuapl.sbmt.core.io.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
-import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeNode;
-import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
-import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException.HyperDimensionMismatchException;
+import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeNode;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperBox;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperException.HyperDimensionMismatchException;
 
 public class Hayabusa2HypertreeNode extends FSHyperTreeNode<Hayabusa2LidarPoint>
 {

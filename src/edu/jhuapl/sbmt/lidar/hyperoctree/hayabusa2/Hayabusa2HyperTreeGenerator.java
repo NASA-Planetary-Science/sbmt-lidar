@@ -7,9 +7,9 @@ import java.util.Iterator;
 import edu.jhuapl.sbmt.core.io.DataOutputStreamPool;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperTreeGenerator;
-import edu.jhuapl.sbmt.lidar.hyperoctree.HyperBox;
-import edu.jhuapl.sbmt.lidar.hyperoctree.HyperException;
 import edu.jhuapl.sbmt.lidar.misc.RawLidarFile;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperBox;
+import edu.jhuapl.sbmt.query.hyperoctree.HyperException;
 
 public class Hayabusa2HyperTreeGenerator extends FSHyperTreeGenerator
 {
