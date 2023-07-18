@@ -21,9 +21,9 @@ import javax.swing.JOptionPane;
 
 import edu.jhuapl.saavtk.model.LidarDataSource;
 import edu.jhuapl.saavtk.model.ModelManager;
+import edu.jhuapl.saavtk.model.PolyhedralModel;
 import edu.jhuapl.saavtk.util.MapUtil;
 import edu.jhuapl.sbmt.core.body.SmallBodyModel;
-import edu.jhuapl.sbmt.model.custom.CustomShapeModel;
 
 
 public class CustomLidarDataDialog extends javax.swing.JDialog {
@@ -81,8 +81,8 @@ public class CustomLidarDataDialog extends javax.swing.JDialog {
 
             if (i < cellDataListModel.size()-1)
             {
-                lidarDatasourcePath += CustomShapeModel.LIST_SEPARATOR;
-                lidarDatasourceName += CustomShapeModel.LIST_SEPARATOR;
+                lidarDatasourcePath += PolyhedralModel.LIST_SEPARATOR;
+                lidarDatasourceName += PolyhedralModel.LIST_SEPARATOR;
             }
         }
 

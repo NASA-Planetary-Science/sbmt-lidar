@@ -23,9 +23,9 @@ import edu.jhuapl.saavtk.structure.Ellipse;
 import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.saavtk.util.NonexistentRemoteFile;
 import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
-import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2LidarHypertreeSkeleton;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil.DataType;
@@ -39,7 +39,7 @@ public class LidarHyperTreeSearchPanel extends LidarSearchPanel
 	// State vars
 	private Map<LidarDataSource, FSHyperTreeSkeleton> skeletonM;
 
-	public LidarHyperTreeSearchPanel(BodyViewConfig aBodyViewConfig, ModelManager aModelManager,
+	public LidarHyperTreeSearchPanel(LidarInstrumentConfig aBodyViewConfig, ModelManager aModelManager,
 			PickManager aPickManager, LidarTrackManager aTrackManager, DataType aDataType)
 	{
 		super(aBodyViewConfig, aModelManager, aPickManager, aTrackManager);

@@ -47,6 +47,7 @@ import edu.jhuapl.saavtk.pick.Picker;
 import edu.jhuapl.sbmt.core.gui.EphemerisTimeRenderer;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.gui.color.ColorConfigPanel;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
@@ -116,13 +117,13 @@ public class LidarTrackPanel extends JPanel
 
 	/** Standard Constructor */
 	public LidarTrackPanel(LidarTrackManager aTrackManager, Renderer aRenderer, PickManager aPickManager,
-			PolyhedralModel aSmallBody)
+			PolyhedralModel aSmallBody, LidarInstrumentConfig config)
 	{
 		refTrackManager = aTrackManager;
 		refPickManager = aPickManager;
 
 		lidarPicker = new LidarShiftPicker(refTrackManager, aRenderer, aSmallBody);
-		radialOffsetScale = LidarGeoUtil.getOffsetScale(refTrackManager);
+		radialOffsetScale = LidarGeoUtil.getOffsetScale(refTrackManager, config);
 
 		setLayout(new MigLayout());
 

@@ -53,10 +53,10 @@ import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.pick.Picker;
 import edu.jhuapl.saavtk.structure.Ellipse;
 import edu.jhuapl.saavtk.util.BoundingBox;
-import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil;
 
 import glum.item.ItemEventListener;
@@ -71,7 +71,7 @@ public class LidarSearchPanel extends JPanel
 	// Reference vars
 	private final ModelManager refModelManager;
 	protected final PolyhedralModel refSmallBodyModel;
-	private final BodyViewConfig refBodyViewConfig;
+	private final LidarInstrumentConfig refBodyViewConfig;
 	private final LidarTrackManager refTrackManager;
 	private final PickManager refPickManager;
 	private final Picker refPicker;
@@ -96,12 +96,12 @@ public class LidarSearchPanel extends JPanel
 	/**
 	 * Constructor
 	 */
-	public LidarSearchPanel(BodyViewConfig aBodyViewConfig, ModelManager aModelManager, PickManager aPickManager,
+	public LidarSearchPanel(LidarInstrumentConfig config, ModelManager aModelManager, PickManager aPickManager,
 			LidarTrackManager aTrackManager)
 	{
 		refModelManager = aModelManager;
 		refSmallBodyModel = aModelManager.getPolyhedralModel();
-		refBodyViewConfig = aBodyViewConfig;
+		refBodyViewConfig = config;
 		refTrackManager = aTrackManager;
 		refPickManager = aPickManager;
 		refPicker = refPickManager.getPickerForPickMode(PickMode.CIRCLE_SELECTION);
@@ -174,7 +174,7 @@ public class LidarSearchPanel extends JPanel
 		// smallBodyModel.setLidarDatasourceIndex(0);
 
 		// Retrieve the set of available lidar sources
-		Map<String, LidarDataSource> sourceM = LidarQueryUtil.getLidarDataSourceMap(refSmallBodyModel);
+		Map<String, LidarDataSource> sourceM = LidarQueryUtil.getLidarDataSourceMap(refBodyViewConfig);
 		LinkedHashSet<LidarDataSource> tmpSourceS = new LinkedHashSet<>();
 
 		// Add the remove server data sources

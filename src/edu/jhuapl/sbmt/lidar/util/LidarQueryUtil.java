@@ -25,15 +25,14 @@ import com.google.common.base.Stopwatch;
 import edu.jhuapl.saavtk.gui.ProgressBarSwingWorker;
 import edu.jhuapl.saavtk.model.LidarDataSource;
 import edu.jhuapl.saavtk.model.PointInRegionChecker;
-import edu.jhuapl.saavtk.model.PolyhedralModel;
 import edu.jhuapl.saavtk.util.FileCache;
-import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.BasicLidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
 import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2LidarPoint;
 import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeSkeleton;
@@ -90,11 +89,9 @@ public class LidarQueryUtil
 	/**
 	 * TODO: Add documentation.
 	 */
-	public static Map<String, LidarDataSource> getLidarDataSourceMap(PolyhedralModel aPolyhedralModel)
+	public static Map<String, LidarDataSource> getLidarDataSourceMap(LidarInstrumentConfig lidarConfig)
 	{
-		BodyViewConfig tmpBodyViewConfig = (BodyViewConfig) aPolyhedralModel.getConfig();
-
-		Map<String, String> namePathM = tmpBodyViewConfig.lidarSearchDataSourceMap;
+		Map<String, String> namePathM = lidarConfig.lidarSearchDataSourceMap;
 		Map<String, LidarDataSource> retM = new LinkedHashMap<>();
 		for (String aName : namePathM.keySet())
 			retM.put(aName, new LidarDataSource(aName, namePathM.get(aName)));

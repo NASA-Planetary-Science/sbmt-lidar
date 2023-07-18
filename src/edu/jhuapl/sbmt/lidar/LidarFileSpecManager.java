@@ -30,9 +30,8 @@ import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.saavtk.view.AssocActor;
-import edu.jhuapl.sbmt.config.SmallBodyViewConfig;
-import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.core.listeners.LoadListener;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarFileSpecLoadUtil;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
@@ -66,7 +65,7 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 	// Reference vars
 	private final SceneChangeNotifier refSceneChangeNotifier;
 	private final StatusNotifier refStatusNotifier;
-	private final BodyViewConfig refBodyViewConfig;
+	private final LidarInstrumentConfig refBodyViewConfig;
 
 	// State vars
 	private List<LoadListener<LidarFileSpec>> loadListenerL;
@@ -88,7 +87,7 @@ public class LidarFileSpecManager extends BaseItemManager<LidarFileSpec>
 	 * Standard Constructor
 	 */
 	public LidarFileSpecManager(SceneChangeNotifier aSceneChangeNotifier, StatusNotifier aStatusNotifier,
-			SmallBodyViewConfig aBodyViewConfig)
+			LidarInstrumentConfig aBodyViewConfig)
 	{
 		// TODO: Just pass the needed args
 		refSceneChangeNotifier = aSceneChangeNotifier;

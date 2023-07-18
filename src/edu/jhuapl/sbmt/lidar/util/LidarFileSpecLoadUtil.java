@@ -26,11 +26,11 @@ import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.LatLon;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.SafeURLPaths;
-import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.core.config.Instrument;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2RawLidarFile;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPointProvider;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarStruct;
@@ -42,14 +42,14 @@ class BinaryDataTask extends SwingWorker<Void, Void> implements PropertyChangeLi
 	private final File refFile;
 	private final LidarFileSpecManager refManager;
 	private final LidarFileSpec refFileSpec;
-	private final BodyViewConfig refBodyViewConfig;
+	private final LidarInstrumentConfig refBodyViewConfig;
 	private ProgressMonitor progressMonitor;
 
 	private VtkLidarPointProvider workLPP;
 	private VtkLidarUniPainter<LidarFileSpec> workPainter;
 
 	public BinaryDataTask(File aFile, LidarFileSpecManager aManager, LidarFileSpec aFileSpec,
-			BodyViewConfig aBodyViewConfig)
+			LidarInstrumentConfig aBodyViewConfig)
 	{
 		refFile = aFile;
 		refManager = aManager;
@@ -132,7 +132,7 @@ public class LidarFileSpecLoadUtil
 	 * to an instrument. This should be rectified.
 	 */
 	@Deprecated
-	public static boolean isHayabusaData(BodyViewConfig aBodyViewConfig)
+	public static boolean isHayabusaData(LidarInstrumentConfig aBodyViewConfig)
 	{
 		return aBodyViewConfig.lidarInstrumentName == Instrument.LASER;
 	}
@@ -150,7 +150,7 @@ public class LidarFileSpecLoadUtil
 	 * @throws IOException
 	 */
 	public static void initLidarData(LidarFileSpecManager aManager, LidarFileSpec aFileSpec,
-			BodyViewConfig aBodyViewConfig) throws IOException
+			LidarInstrumentConfig aBodyViewConfig) throws IOException
 	{
 		// Retrieve the file of interest
 		File tmpFile = FileCache.getFileFromServer(SafeURLPaths.instance().getString(aFileSpec.getPath()));
@@ -216,7 +216,7 @@ public class LidarFileSpecLoadUtil
 	 * @param aFileSpec
 	 * @param aFile
 	 */
-	private static VtkLidarStruct loadAsciiLidarData(File aFile, BodyViewConfig aBodyViewConfig) throws IOException
+	private static VtkLidarStruct loadAsciiLidarData(File aFile, LidarInstrumentConfig aBodyViewConfig) throws IOException
 	{
 		FeatureAttrBuilder intensityFAB = new FeatureAttrBuilder();
 		vtkDoubleArray vRadiusDA = new vtkDoubleArray();
@@ -383,7 +383,7 @@ public class LidarFileSpecLoadUtil
 	 * <P>
 	 * Returns the loaded {@link VtkLidarStruct}.
 	 */
-	protected static VtkLidarStruct loadBinaryLidarData(BinaryDataTask aTask, File aFile, BodyViewConfig aBodyViewConfig)
+	protected static VtkLidarStruct loadBinaryLidarData(BinaryDataTask aTask, File aFile, LidarInstrumentConfig aBodyViewConfig)
 			throws IOException
 	{
 		vtkDoubleArray vRadiusDA = new vtkDoubleArray();

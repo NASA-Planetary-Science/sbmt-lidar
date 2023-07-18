@@ -38,10 +38,10 @@ import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
-import edu.jhuapl.sbmt.config.SmallBodyViewConfig;
 import edu.jhuapl.sbmt.core.gui.EphemerisTimeRenderer;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.gui.color.ColorConfigPanel;
 import edu.jhuapl.sbmt.lidar.util.LidarBrowseUtil;
@@ -104,7 +104,7 @@ public class LidarFileSpecPanel extends JPanel implements ActionListener, ItemEv
 	 * Standard Constructor
 	 */
 	public LidarFileSpecPanel(LidarFileSpecManager aLidarManager, PickManager aPickManager, Renderer aRenderer,
-			SmallBodyViewConfig aBodyViewConfig, String aDataSourceName)
+			LidarInstrumentConfig aBodyViewConfig, String aDataSourceName)
 	{
 		refManager = aLidarManager;
 
@@ -224,7 +224,7 @@ public class LidarFileSpecPanel extends JPanel implements ActionListener, ItemEv
 	 * Method that will populate the table with LidarFileSpecs relative to the
 	 * specified data source.
 	 */
-	public void populate(SmallBodyViewConfig aBodyViewConfig, String aDataSourceName)
+	public void populate(LidarInstrumentConfig aBodyViewConfig, String aDataSourceName)
 	{
 		String browseFileList = null;
 		if (aBodyViewConfig.lidarBrowseWithPointsDataSourceMap.get(aDataSourceName) != null)

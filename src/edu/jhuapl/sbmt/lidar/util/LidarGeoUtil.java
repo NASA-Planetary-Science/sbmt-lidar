@@ -20,11 +20,11 @@ import edu.jhuapl.saavtk.model.PolyhedralModel;
 import edu.jhuapl.saavtk.util.LatLon;
 import edu.jhuapl.saavtk.util.MathUtil;
 import edu.jhuapl.saavtk.util.Point3D;
-import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.util.gravity.Gravity;
 
 /**
@@ -84,15 +84,15 @@ public class LidarGeoUtil
 	}
 
 	// TODO: Add javadoc
-	public static double getOffsetScale(LidarTrackManager aTrackManager)
+	public static double getOffsetScale(LidarTrackManager aTrackManager, LidarInstrumentConfig config)
 	{
 		PolyhedralModel tmpSmallBody = aTrackManager.getSmallBody();
 
-		BodyViewConfig tmpBodyViewConfig = (BodyViewConfig) tmpSmallBody.getConfig();
-		if (tmpBodyViewConfig.lidarOffsetScale <= 0.0)
+//		BodyViewConfig tmpBodyViewConfig = (BodyViewConfig) tmpSmallBody.getConfig();
+		if (config.lidarOffsetScale <= 0.0)
 			return tmpSmallBody.getBoundingBoxDiagonalLength() / 1546.4224133453388;
 
-		return tmpBodyViewConfig.lidarOffsetScale;
+		return config.lidarOffsetScale;
 	}
 
 	/**

@@ -13,9 +13,9 @@ import java.util.regex.Pattern;
 
 import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
-import edu.jhuapl.sbmt.core.body.BodyViewConfig;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
+import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 
 import glum.io.ParseUtil;
 
@@ -41,7 +41,7 @@ public class LidarBrowseUtil
 	/**
 	 * Loads the list of LidarFileSpecs from the specified BodyViewConfig.
 	 */
-	public static List<LidarFileSpec> loadLidarFileSpecListFor(BodyViewConfig aBodyViewConfig) throws IOException
+	public static List<LidarFileSpec> loadLidarFileSpecListFor(LidarInstrumentConfig aBodyViewConfig) throws IOException
 	{
 		List<LidarFileSpec> retL = new ArrayList<>();
 
