@@ -12,14 +12,11 @@ import edu.jhuapl.saavtk.model.PolyhedralModel;
 import edu.jhuapl.saavtk.pick.PickManager;
 import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.sbmt.core.config.Instrument;
-import edu.jhuapl.sbmt.dem.Dem;
-import edu.jhuapl.sbmt.dem.vtk.VtkDemPainter;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil.DataType;
-
 import net.miginfocom.swing.MigLayout;
 
 /**
@@ -164,8 +161,8 @@ public class LidarPanel extends JTabbedPane
 	 * Utility helper method that notifies the {@link PickManager}'s default
 	 * picker that a {@link VtkPropProvider}'s state has changed.
 	 * <p>
-	 * This notification will be sent only if {@link VtkDemPainter} corresponding
-	 * to the specified {@link Dem} has reached a "ready" state.
+	 * This notification will be sent only if @link VtkDemPainter corresponding
+	 * to the specified @link Dem has reached a "ready" state.
 	 */
 	private static <G1> void handleLoadChange(LidarManager<G1> aItemManager, Collection<G1> aItemC,
 			PickManager aPickManager)
