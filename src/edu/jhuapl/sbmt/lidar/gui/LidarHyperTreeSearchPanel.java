@@ -17,8 +17,8 @@ import vtk.vtkPolyData;
 import edu.jhuapl.saavtk.model.LidarDataSource;
 import edu.jhuapl.saavtk.model.ModelManager;
 import edu.jhuapl.saavtk.model.PointInRegionChecker;
-import edu.jhuapl.saavtk.model.structure.AbstractEllipsePolygonModel;
 import edu.jhuapl.saavtk.pick.PickManager;
+import edu.jhuapl.saavtk.structure.AnyStructureManager;
 import edu.jhuapl.saavtk.structure.Ellipse;
 import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.saavtk.util.NonexistentRemoteFile;
@@ -67,7 +67,7 @@ public class LidarHyperTreeSearchPanel extends LidarSearchPanel
 	}
 
 	@Override
-	protected void handleActionSubmit(LidarDataSource aDataSource, AbstractEllipsePolygonModel aSelectionRegion)
+	protected void handleActionSubmit(LidarDataSource aDataSource, AnyStructureManager aSelectionRegion)
 	{
 		System.out.println("LidarHyperTreeSearchPanel: handleActionSubmit: ");
 		// Retrieve the appropriate skeleton
@@ -100,8 +100,8 @@ public class LidarHyperTreeSearchPanel extends LidarSearchPanel
 		vtkPolyData interiorPoly = new vtkPolyData();
 		if (aSelectionRegion.getNumItems() > 0)
 		{
-         int numberOfSides = aSelectionRegion.getNumberOfSides();
-			Ellipse region = aSelectionRegion.getItem(0);
+			var numberOfSides = aSelectionRegion.getRenderAttr().numRoundSides();
+			var region = (Ellipse)aSelectionRegion.getItem(0);
 
 			// Always use the lowest resolution model for getting the intersection
 			// cubes list. Therefore, if the selection region was created using a

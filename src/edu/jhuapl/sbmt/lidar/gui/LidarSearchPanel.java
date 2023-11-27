@@ -41,16 +41,15 @@ import vtk.vtkPolyData;
 
 import edu.jhuapl.saavtk.model.LidarDataSource;
 import edu.jhuapl.saavtk.model.ModelManager;
-import edu.jhuapl.saavtk.model.ModelNames;
 import edu.jhuapl.saavtk.model.PointInCylinderChecker;
 import edu.jhuapl.saavtk.model.PointInRegionChecker;
 import edu.jhuapl.saavtk.model.PolyhedralModel;
-import edu.jhuapl.saavtk.model.structure.AbstractEllipsePolygonModel;
+import edu.jhuapl.saavtk.pick.SelectionPicker;
 import edu.jhuapl.saavtk.pick.PickManager;
-import edu.jhuapl.saavtk.pick.PickManager.PickMode;
 import edu.jhuapl.saavtk.pick.PickManagerListener;
 import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.pick.Picker;
+import edu.jhuapl.saavtk.structure.AnyStructureManager;
 import edu.jhuapl.saavtk.structure.Ellipse;
 import edu.jhuapl.saavtk.util.BoundingBox;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
@@ -74,7 +73,7 @@ public class LidarSearchPanel extends JPanel
 	private final LidarInstrumentConfig refBodyViewConfig;
 	private final LidarTrackManager refTrackManager;
 	private final PickManager refPickManager;
-	private final Picker refPicker;
+	private final SelectionPicker refPicker;
 
 	// State vars
 	private LidarSearchParms cSearchParms;
@@ -104,7 +103,7 @@ public class LidarSearchPanel extends JPanel
 		refBodyViewConfig = config;
 		refTrackManager = aTrackManager;
 		refPickManager = aPickManager;
-		refPicker = refPickManager.getPickerForPickMode(PickMode.CIRCLE_SELECTION);
+		refPicker = refPickManager.getSelectionPicker();
 
 		cSearchParms = null;
 
@@ -125,15 +124,15 @@ public class LidarSearchPanel extends JPanel
 	 * Method that performs the actual query for lidar tracks when the submit
 	 * action is triggered.
 	 */
-	protected void handleActionSubmit(LidarDataSource aDataSource, AbstractEllipsePolygonModel aSelectionRegion)
+	protected void handleActionSubmit(LidarDataSource aDataSource, AnyStructureManager aSelectionManager)
 	{
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		TreeSet<Integer> cubeList = null;
 
-		if (aSelectionRegion.getNumItems() > 0)
+		if (aSelectionManager.getNumItems() > 0)
 		{
-			int numberOfSides = aSelectionRegion.getNumberOfSides();
-			Ellipse region = aSelectionRegion.getItem(0);
+			var numberOfSides = aSelectionManager.getRenderAttr().numRoundSides();
+			var region = (Ellipse)aSelectionManager.getItem(0);
 
 			// Always use the lowest resolution model for getting the intersection
 			// cubes list. Therefore, if the selection region was created using a
@@ -148,7 +147,7 @@ public class LidarSearchPanel extends JPanel
 			}
 			else
 			{
-				cubeList = refSmallBodyModel.getIntersectingCubes(new BoundingBox(aSelectionRegion.getVtkInteriorPolyDataFor(region).GetBounds()));
+				cubeList = refSmallBodyModel.getIntersectingCubes(new BoundingBox(aSelectionManager.getVtkInteriorPolyDataFor(region).GetBounds()));
 			}
 		}
 		else
@@ -159,7 +158,7 @@ public class LidarSearchPanel extends JPanel
 
 			return;
 		}
-		showData(cubeList, aSelectionRegion);
+		showData(cubeList, aSelectionManager);
 		setCursor(Cursor.getDefaultCursor());
 	}
 
@@ -274,9 +273,7 @@ public class LidarSearchPanel extends JPanel
 	 */
 	private void doActionClearRegion()
 	{
-		AbstractEllipsePolygonModel selectionModel = (AbstractEllipsePolygonModel) refModelManager
-				.getModel(ModelNames.CIRCLE_SELECTION);
-		selectionModel.removeAllStructures();
+		refPicker.clearSelection();
 	}
 
 	/**
@@ -313,10 +310,9 @@ public class LidarSearchPanel extends JPanel
 	{
 		refPickManager.setActivePicker(null);
 
-		AbstractEllipsePolygonModel selectionRegion = (AbstractEllipsePolygonModel) refModelManager
-				.getModel(ModelNames.CIRCLE_SELECTION);
 		// Delegate actual query submission
-		handleActionSubmit(aDataSource, selectionRegion);
+		var selectionManager = refPicker.getSelectionManager();
+		handleActionSubmit(aDataSource, selectionManager);
 	}
 
 	/**
@@ -547,7 +543,7 @@ public class LidarSearchPanel extends JPanel
 	}
 
 	// TODO: Add comments
-	protected void showData(TreeSet<Integer> aCubeList, AbstractEllipsePolygonModel aSelectionRegion)
+	protected void showData(TreeSet<Integer> aCubeList, AnyStructureManager aSelectionManager)
 	{
 		int minTrackLength = Integer.parseInt(minTrackSizeTF.getText());
 		if (minTrackLength < 1)
@@ -582,9 +578,9 @@ public class LidarSearchPanel extends JPanel
 
 		// Region constraints
 		PointInCylinderChecker checker = null;
-		if (aSelectionRegion.getNumItems() > 0)
+		if (aSelectionManager.getNumItems() > 0)
 		{
-			Ellipse region = aSelectionRegion.getItem(0);
+			var region = (Ellipse)aSelectionManager.getItem(0);
 			if (region.getRadius() > 0.0)
 				checker = new PointInCylinderChecker(refModelManager.getPolyhedralModel(), region.getCenter().toArray(),
 						region.getRadius());
