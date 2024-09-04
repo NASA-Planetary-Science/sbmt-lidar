@@ -11,9 +11,6 @@ import javax.swing.JOptionPane;
 
 import com.google.common.base.Stopwatch;
 
-import vtk.vtkCubeSource;
-import vtk.vtkPolyData;
-
 import edu.jhuapl.saavtk.model.LidarDataSource;
 import edu.jhuapl.saavtk.model.ModelManager;
 import edu.jhuapl.saavtk.model.PointInRegionChecker;
@@ -30,6 +27,8 @@ import edu.jhuapl.sbmt.lidar.hyperoctree.hayabusa2.Hayabusa2LidarHypertreeSkelet
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil.DataType;
 import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeSkeleton;
+import vtk.vtkCubeSource;
+import vtk.vtkPolyData;
 
 public class LidarHyperTreeSearchPanel extends LidarSearchPanel
 {

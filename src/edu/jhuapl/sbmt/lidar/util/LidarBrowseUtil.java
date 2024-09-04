@@ -16,7 +16,6 @@ import edu.jhuapl.saavtk.util.UnauthorizedAccessException;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
-
 import glum.io.ParseUtil;
 
 /**

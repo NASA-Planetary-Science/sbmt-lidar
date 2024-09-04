@@ -13,8 +13,6 @@ import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import vtk.vtkProp;
-
 import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.saavtk.color.provider.ConstColorProvider;
 import edu.jhuapl.saavtk.color.provider.ConstGroupColorProvider;
@@ -37,9 +35,9 @@ import edu.jhuapl.sbmt.lidar.util.LidarFileSpecLoadUtil;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPointProvider;
 import edu.jhuapl.sbmt.lidar.vtk.VtkPointPainter;
-
 import glum.item.BaseItemManager;
 import glum.item.ItemEventType;
+import vtk.vtkProp;
 
 /**
  * Class that provides management logic for a collection of lidar FileSpecs.

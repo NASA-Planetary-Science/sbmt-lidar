@@ -6,7 +6,6 @@ import java.util.List;
 import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.saavtk.color.provider.ConstColorProvider;
 import edu.jhuapl.sbmt.lidar.LidarManager;
-
 import glum.gui.action.PopAction;
 
 /**

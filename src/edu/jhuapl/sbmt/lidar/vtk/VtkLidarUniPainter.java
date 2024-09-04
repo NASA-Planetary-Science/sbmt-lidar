@@ -7,14 +7,6 @@ import java.util.Objects;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import vtk.vtkCellArray;
-import vtk.vtkGeometryFilter;
-import vtk.vtkPoints;
-import vtk.vtkPolyData;
-import vtk.vtkPolyDataMapper;
-import vtk.vtkProp;
-import vtk.vtkUnsignedCharArray;
-
 import edu.jhuapl.saavtk.color.provider.ColorProvider;
 import edu.jhuapl.saavtk.feature.ConstFeatureAttr;
 import edu.jhuapl.saavtk.feature.FeatureAttr;
@@ -27,6 +19,13 @@ import edu.jhuapl.sbmt.lidar.LidarFeatureType;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
+import vtk.vtkCellArray;
+import vtk.vtkGeometryFilter;
+import vtk.vtkPoints;
+import vtk.vtkPolyData;
+import vtk.vtkPolyDataMapper;
+import vtk.vtkProp;
+import vtk.vtkUnsignedCharArray;
 
 /**
  * Class used to render a single lidar data object and the corresponding points

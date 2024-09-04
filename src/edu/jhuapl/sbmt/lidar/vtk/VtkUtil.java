@@ -2,6 +2,10 @@ package edu.jhuapl.sbmt.lidar.vtk;
 
 import java.util.Iterator;
 
+import edu.jhuapl.saavtk.feature.FeatureAttr;
+import edu.jhuapl.saavtk.feature.FeatureAttrBuilder;
+import edu.jhuapl.saavtk.feature.VtkFeatureAttr;
+import edu.jhuapl.sbmt.lidar.LidarPoint;
 import vtk.vtkCellArray;
 import vtk.vtkDataObject;
 import vtk.vtkDoubleArray;
@@ -10,11 +14,6 @@ import vtk.vtkPoints;
 import vtk.vtkPolyData;
 import vtk.vtkUnsignedCharArray;
 import vtk.vtkVertex;
-
-import edu.jhuapl.saavtk.feature.FeatureAttr;
-import edu.jhuapl.saavtk.feature.FeatureAttrBuilder;
-import edu.jhuapl.saavtk.feature.VtkFeatureAttr;
-import edu.jhuapl.sbmt.lidar.LidarPoint;
 
 /**
  * Collection of VTK based utility methods.

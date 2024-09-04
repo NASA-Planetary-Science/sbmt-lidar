@@ -17,7 +17,6 @@ import edu.jhuapl.saavtk.feature.FeatureType;
 import edu.jhuapl.saavtk.gui.render.Renderer;
 import edu.jhuapl.sbmt.lidar.LidarFeatureType;
 import edu.jhuapl.sbmt.lidar.LidarManager;
-
 import glum.item.ItemEventListener;
 import glum.item.ItemEventType;
 

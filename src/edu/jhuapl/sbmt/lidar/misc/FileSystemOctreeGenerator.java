@@ -10,15 +10,14 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import com.google.common.collect.Lists;
 
+import edu.jhuapl.saavtk.util.BoundingBox;
+import edu.jhuapl.sbmt.core.io.DataOutputStreamPool;
+import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaPointList;
 import vtk.vtkCellArray;
 import vtk.vtkHexahedron;
 import vtk.vtkPoints;
 import vtk.vtkStringArray;
 import vtk.vtkUnstructuredGrid;
-
-import edu.jhuapl.saavtk.util.BoundingBox;
-import edu.jhuapl.sbmt.core.io.DataOutputStreamPool;
-import edu.jhuapl.sbmt.lidar.hyperoctree.ola.OlaPointList;
 
 public class FileSystemOctreeGenerator
 {

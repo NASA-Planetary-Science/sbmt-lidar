@@ -6,10 +6,6 @@ import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import vtk.vtkActor;
-import vtk.vtkCellPicker;
-import vtk.rendering.jogl.vtkJoglPanelComponent;
-
 import edu.jhuapl.saavtk.gui.GuiUtil;
 import edu.jhuapl.saavtk.gui.render.Renderer;
 import edu.jhuapl.saavtk.model.PolyhedralModel;
@@ -22,9 +18,11 @@ import edu.jhuapl.saavtk.vtk.VtkUtil;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
-
 import glum.item.ItemEventListener;
 import glum.item.ItemEventType;
+import vtk.vtkActor;
+import vtk.vtkCellPicker;
+import vtk.rendering.jogl.vtkJoglPanelComponent;
 
 /**
  * Class which provides the functionality that enables a user to translate a

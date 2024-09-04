@@ -10,7 +10,6 @@ import edu.jhuapl.saavtk.gui.util.MessageUtil;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.gui.LidarSaveDialog;
-
 import glum.gui.action.PopAction;
 
 /**

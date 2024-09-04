@@ -14,7 +14,6 @@ import javax.swing.JMenuItem;
 
 import edu.jhuapl.saavtk.util.ColorUtil;
 import edu.jhuapl.sbmt.lidar.LidarManager;
-
 import glum.gui.action.PopAction;
 
 /**

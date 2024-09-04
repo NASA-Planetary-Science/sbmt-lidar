@@ -15,7 +15,6 @@ import edu.jhuapl.saavtk.color.provider.ConstGroupColorProvider;
 import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
 import edu.jhuapl.saavtk.color.provider.SimpleColorProvider;
 import edu.jhuapl.saavtk.util.ColorIcon;
-
 import glum.gui.GuiUtil;
 import net.miginfocom.swing.MigLayout;
 

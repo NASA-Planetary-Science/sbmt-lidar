@@ -2,13 +2,12 @@ package edu.jhuapl.sbmt.lidar.vtk;
 
 import java.util.List;
 
-import vtk.vtkProp;
-
 import edu.jhuapl.saavtk.feature.FeatureAttr;
 import edu.jhuapl.saavtk.feature.FeatureType;
 import edu.jhuapl.saavtk.vtk.VtkResource;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
+import vtk.vtkProp;
 
 /**
  * Interface that defines methods used to render lidar data via the VTK

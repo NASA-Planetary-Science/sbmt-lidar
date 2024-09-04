@@ -5,8 +5,6 @@ import java.util.Collection;
 
 import javax.swing.JMenu;
 
-import vtk.vtkProp;
-
 import edu.jhuapl.saavtk.pick.PickTarget;
 import edu.jhuapl.saavtk.status.StatusNotifier;
 import edu.jhuapl.saavtk.structure.StructureManager;
@@ -21,8 +19,8 @@ import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkPointPainter;
-
 import glum.gui.action.PopupMenu;
+import vtk.vtkProp;
 
 /**
  * Collection of lidar UI utility methods.

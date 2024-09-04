@@ -17,7 +17,6 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import edu.jhuapl.saavtk.gui.util.Colors;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
-
 import glum.gui.GuiUtil;
 import glum.gui.component.GNumberField;
 import glum.item.ItemEventListener;
