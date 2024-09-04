@@ -110,7 +110,7 @@ public class LidarInstrumentConfigIO extends BaseFeatureConfigIO //extends BaseI
 	        c.lidarBrowseIsBinary = read(lidarBrowseIsBinary, configMetadata);
 	        c.lidarBrowseBinaryRecordSize = read(lidarBrowseBinaryRecordSize, configMetadata);
 	        c.lidarOffsetScale = read(lidarOffsetScale, configMetadata);
-	        c.lidarInstrumentName = Instrument.valueOf(""+read(lidarInstrumentName, configMetadata));
+	        c.lidarInstrumentName = Instrument.valueFor(""+read(lidarInstrumentName, configMetadata));
 
         }
 
@@ -158,7 +158,7 @@ public class LidarInstrumentConfigIO extends BaseFeatureConfigIO //extends BaseI
         write(lidarBrowseIsBinary, c.lidarBrowseIsBinary, configMetadata);
         write(lidarBrowseBinaryRecordSize, c.lidarBrowseBinaryRecordSize, configMetadata);
         write(lidarOffsetScale, c.lidarOffsetScale, configMetadata);
-        writeEnum(lidarInstrumentName, c.lidarInstrumentName, configMetadata);
+        write(lidarInstrumentName, c.lidarInstrumentName.name(), configMetadata);
 
         return configMetadata;
 	}
