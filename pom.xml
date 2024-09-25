@@ -121,7 +121,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>edu.jhuapl.ses.srn.sbmt</groupId>
+            <groupId>edu.jhuapl.ses.sbmt</groupId>
             <artifactId>sbmt-util</artifactId>
         </dependency>
     </dependencies>
