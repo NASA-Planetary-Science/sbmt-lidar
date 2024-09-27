@@ -20,7 +20,6 @@ import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.TrackFileType;
 import edu.jhuapl.sbmt.lidar.util.LidarFileUtil;
-
 import net.miginfocom.swing.MigLayout;
 
 /**

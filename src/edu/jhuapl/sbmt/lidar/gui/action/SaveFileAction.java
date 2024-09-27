@@ -15,7 +15,6 @@ import edu.jhuapl.saavtk.util.FileCache;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.sbmt.lidar.LidarFileSpec;
 import edu.jhuapl.sbmt.lidar.LidarFileSpecManager;
-
 import glum.gui.action.PopAction;
 
 /**

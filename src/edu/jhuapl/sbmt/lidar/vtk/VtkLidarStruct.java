@@ -1,9 +1,8 @@
 package edu.jhuapl.sbmt.lidar.vtk;
 
+import edu.jhuapl.saavtk.feature.FeatureAttr;
 import vtk.vtkCellArray;
 import vtk.vtkPoints;
-
-import edu.jhuapl.saavtk.feature.FeatureAttr;
 
 /**
  * Intermediate object used to hold VTK state associated with lidar data.

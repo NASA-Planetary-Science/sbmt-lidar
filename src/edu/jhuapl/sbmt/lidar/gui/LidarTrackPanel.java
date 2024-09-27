@@ -51,7 +51,6 @@ import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.gui.action.LidarGuiUtil;
 import edu.jhuapl.sbmt.lidar.gui.color.ColorConfigPanel;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
-
 import glum.gui.GuiUtil;
 import glum.gui.action.PopupMenu;
 import glum.gui.component.GSlider;

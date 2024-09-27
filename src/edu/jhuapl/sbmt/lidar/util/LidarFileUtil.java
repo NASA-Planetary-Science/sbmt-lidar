@@ -21,8 +21,6 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import com.google.common.collect.ImmutableList;
 
-import vtk.vtkUnstructuredGrid;
-
 import edu.jhuapl.saavtk.io.readers.IpwgPlyReader;
 import edu.jhuapl.saavtk.util.FileUtil;
 import edu.jhuapl.saavtk.util.MathUtil;
@@ -34,9 +32,9 @@ import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.OLAL2File;
 import edu.jhuapl.sbmt.lidar.TrackFileType;
 import edu.jhuapl.sbmt.lidar.hyperoctree.FSHyperPointWithFileTag;
-
 import glum.item.IdGenerator;
 import glum.item.IncrIdGenerator;
+import vtk.vtkUnstructuredGrid;
 
 /**
  * Class that provides a collection of utility methods needed to serialize /

@@ -4,14 +4,6 @@ import java.awt.Color;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import vtk.vtkActor;
-import vtk.vtkCellArray;
-import vtk.vtkIdList;
-import vtk.vtkPoints;
-import vtk.vtkPolyData;
-import vtk.vtkPolyDataMapper;
-import vtk.vtkUnsignedCharArray;
-
 import edu.jhuapl.saavtk.view.lod.LodMode;
 import edu.jhuapl.saavtk.view.lod.LodUtil;
 import edu.jhuapl.saavtk.view.lod.VtkLodActor;
@@ -19,9 +11,15 @@ import edu.jhuapl.saavtk.vtk.VtkResource;
 import edu.jhuapl.sbmt.lidar.LidarManager;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
-
 import glum.item.ItemEventListener;
 import glum.item.ItemEventType;
+import vtk.vtkActor;
+import vtk.vtkCellArray;
+import vtk.vtkIdList;
+import vtk.vtkPoints;
+import vtk.vtkPolyData;
+import vtk.vtkPolyDataMapper;
+import vtk.vtkUnsignedCharArray;
 
 /**
  * Class which contains the logic to render a single selected lidar point using

@@ -14,11 +14,6 @@ import java.nio.channels.FileChannel;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingWorker;
 
-import vtk.vtkCellArray;
-import vtk.vtkDoubleArray;
-import vtk.vtkIdList;
-import vtk.vtkPoints;
-
 import edu.jhuapl.saavtk.feature.FeatureAttr;
 import edu.jhuapl.saavtk.feature.FeatureAttrBuilder;
 import edu.jhuapl.saavtk.feature.VtkFeatureAttr;
@@ -36,6 +31,10 @@ import edu.jhuapl.sbmt.lidar.vtk.VtkLidarPointProvider;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarStruct;
 import edu.jhuapl.sbmt.lidar.vtk.VtkLidarUniPainter;
 import edu.jhuapl.sbmt.lidar.vtk.VtkUtil;
+import vtk.vtkCellArray;
+import vtk.vtkDoubleArray;
+import vtk.vtkIdList;
+import vtk.vtkPoints;
 
 class BinaryDataTask extends SwingWorker<Void, Void> implements PropertyChangeListener
 {

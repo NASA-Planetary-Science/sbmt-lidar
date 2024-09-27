@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.JMenuItem;
 
 import edu.jhuapl.sbmt.lidar.LidarManager;
-
 import glum.gui.action.PopAction;
 
 /**

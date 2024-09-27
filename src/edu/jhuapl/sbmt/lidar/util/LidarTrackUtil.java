@@ -15,7 +15,6 @@ import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarPoint;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.query.hyperoctree.FSHyperTreeSkeleton;
-
 import glum.item.IdGenerator;
 
 /**

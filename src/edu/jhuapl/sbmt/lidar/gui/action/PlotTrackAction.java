@@ -10,7 +10,6 @@ import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.gui.LidarPlot;
 import edu.jhuapl.sbmt.lidar.util.LidarGeoUtil;
-
 import glum.gui.action.PopAction;
 
 /**

@@ -6,7 +6,6 @@ import java.util.List;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.gui.LidarTrackTranslateDialog;
-
 import glum.gui.action.PopAction;
 
 /**

@@ -37,29 +37,27 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import vtk.vtkPolyData;
-
 import edu.jhuapl.saavtk.model.LidarDataSource;
 import edu.jhuapl.saavtk.model.ModelManager;
 import edu.jhuapl.saavtk.model.PointInCylinderChecker;
 import edu.jhuapl.saavtk.model.PointInRegionChecker;
-import edu.jhuapl.saavtk.model.PolyhedralModel;
-import edu.jhuapl.saavtk.pick.SelectionPicker;
 import edu.jhuapl.saavtk.pick.PickManager;
 import edu.jhuapl.saavtk.pick.PickManagerListener;
 import edu.jhuapl.saavtk.pick.PickUtil;
 import edu.jhuapl.saavtk.pick.Picker;
+import edu.jhuapl.saavtk.pick.SelectionPicker;
 import edu.jhuapl.saavtk.structure.AnyStructureManager;
 import edu.jhuapl.saavtk.structure.Ellipse;
 import edu.jhuapl.saavtk.util.BoundingBox;
+import edu.jhuapl.sbmt.core.body.SmallBodyModel;
 import edu.jhuapl.sbmt.core.util.TimeUtil;
 import edu.jhuapl.sbmt.lidar.LidarSearchParms;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.config.LidarInstrumentConfig;
 import edu.jhuapl.sbmt.lidar.util.LidarQueryUtil;
-
 import glum.item.ItemEventListener;
 import glum.item.ItemEventType;
+import vtk.vtkPolyData;
 
 /**
  * Panel used to provide a search for lidar tracks capability.
@@ -69,7 +67,7 @@ public class LidarSearchPanel extends JPanel
 {
 	// Reference vars
 	private final ModelManager refModelManager;
-	protected final PolyhedralModel refSmallBodyModel;
+	protected final SmallBodyModel refSmallBodyModel;
 	private final LidarInstrumentConfig refBodyViewConfig;
 	private final LidarTrackManager refTrackManager;
 	private final PickManager refPickManager;
@@ -99,7 +97,7 @@ public class LidarSearchPanel extends JPanel
 			LidarTrackManager aTrackManager)
 	{
 		refModelManager = aModelManager;
-		refSmallBodyModel = aModelManager.getPolyhedralModel();
+		refSmallBodyModel = aModelManager.getPolyhedralModel() instanceof SmallBodyModel ? (SmallBodyModel)aModelManager.getPolyhedralModel() : null;
 		refBodyViewConfig = config;
 		refTrackManager = aTrackManager;
 		refPickManager = aPickManager;
@@ -171,6 +169,7 @@ public class LidarSearchPanel extends JPanel
 //		PolyhedralModel refSmallBodyModel = refModelManager.getPolyhedralModel();
 		// if (smallBodyModel.getLidarDatasourceIndex() < 0)
 		// smallBodyModel.setLidarDatasourceIndex(0);
+		if (refSmallBodyModel == null) return;
 
 		// Retrieve the set of available lidar sources
 		Map<String, LidarDataSource> sourceM = LidarQueryUtil.getLidarDataSourceMap(refBodyViewConfig);
@@ -281,6 +280,7 @@ public class LidarSearchPanel extends JPanel
 	 */
 	private void doActionManageSources()
 	{
+		if (refSmallBodyModel == null) return;
 		CustomLidarDataDialog dialog = new CustomLidarDataDialog(refModelManager);
 		dialog.setLocationRelativeTo(JOptionPane.getFrameForComponent(this));
 		dialog.setVisible(true);

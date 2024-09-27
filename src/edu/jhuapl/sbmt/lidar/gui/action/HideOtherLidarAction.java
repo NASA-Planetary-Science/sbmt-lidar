@@ -3,7 +3,6 @@ package edu.jhuapl.sbmt.lidar.gui.action;
 import java.util.List;
 
 import edu.jhuapl.sbmt.lidar.LidarManager;
-
 import glum.gui.action.PopAction;
 
 /**

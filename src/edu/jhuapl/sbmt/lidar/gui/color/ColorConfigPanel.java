@@ -15,7 +15,6 @@ import edu.jhuapl.saavtk.color.painter.ColorBarPainter;
 import edu.jhuapl.saavtk.color.provider.GroupColorProvider;
 import edu.jhuapl.saavtk.gui.render.Renderer;
 import edu.jhuapl.sbmt.lidar.LidarManager;
-
 import glum.gui.GuiExeUtil;
 import glum.gui.component.GComboBox;
 import glum.gui.panel.CardPanel;

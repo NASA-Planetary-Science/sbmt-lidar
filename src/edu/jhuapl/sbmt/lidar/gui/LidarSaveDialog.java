@@ -23,7 +23,6 @@ import edu.jhuapl.saavtk.gui.util.Colors;
 import edu.jhuapl.sbmt.lidar.LidarTrack;
 import edu.jhuapl.sbmt.lidar.LidarTrackManager;
 import edu.jhuapl.sbmt.lidar.util.LidarFileUtil;
-
 import glum.gui.GuiUtil;
 import glum.gui.component.GTextField;
 import glum.item.ItemEventListener;
